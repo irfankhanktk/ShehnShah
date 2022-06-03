@@ -18,20 +18,28 @@ export const INPUT_STYLES = StyleSheet.create({
     paddingLeft: 0,
     fontSize: mvs(15),
     fontFamily: fonts.carosSoftRegular,
-    height: mvs(40),
     marginBottom: mvs(15),
     borderColor: colors.border,
     borderBottomWidth: StyleSheet.hairlineWidth,
+    
   },
 
   SECONDARY_INPUT: {
-    backgroundColor: colors.secondary,
-    height: mvs(38),
+    backgroundColor: colors.white,
     width: '100%',
     padding: 0,
     borderRadius: mvs(10),
     paddingHorizontal: mvs(10),
-    color: colors.primary
+    color: colors.primary,
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems:'center',
+    height:mvs(60),
+    borderRadius:10,
+    borderWidth:1,
+    borderColor:colors.gray,
+    ...colors.shadow
+    
   },
   SEND_CODE: { position: 'absolute', right: mvs(0), top: mvs(10), color: colors.primary, textDecorationLine: 'underline', fontSize: mvs(13) },
   REVIEW_CONTAINER: {

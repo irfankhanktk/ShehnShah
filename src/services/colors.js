@@ -6,7 +6,8 @@ const colors = {
   headerTitle:'#424753',
   textColor:'#54585D',
   black: '#000000',
-  primary: '#0F6EF4' ,//'#5586FF'
+  lightgrey1:'#F0F0F0',
+  primary: '#FEA409' ,//'#5586FF'
   secondary: '#F2F2F2',//'#F2F2F2',
   label: '#9A9A9A',
 
@@ -48,7 +49,7 @@ const colors = {
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
 
-    elevation: 2,
+    elevation: 1,
   },
 
   //Time color:

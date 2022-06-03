@@ -10,19 +10,95 @@ export const Signin_Styles = StyleSheet.create({
     body:{
         flex:1,
         paddingHorizontal:mvs(22),
-        paddingTop:mvs(80),
+        paddingTop:mvs(25),
     },
     logo:{
         alignSelf:'center'
     },
+    tabView:{
+        alignSelf:'center',
+        width:'95%',
+        backgroundColor:colors.lightgrey1,
+        height:mvs(40),
+        borderRadius:15,
+        flexDirection:'row',
+        top:mvs(30),
+        alignItems:'center'
+    },
+    selectedTabButton:{
+        backgroundColor:colors.primary,
+        width:'50%',
+        borderRadius:15,
+        height:mvs(40)
+    },
+    unSelectedTabButton:{
+        backgroundColor:colors.lightgrey1,
+        width:'50%',
+        borderRadius:15,
+        height:mvs(40)
+    },
+    selectedTabButtonText:{
+        color:colors.white,
+        fontSize:18,
+        fontWeight:'bold'
+    },
+    unSelectedTabButtonText:{
+        color:colors.black,
+        fontSize:18,
+        fontWeight:'bold'
+    },
+    welcomeText:{
+     fontSize:24,
+     alignSelf:'center',
+     marginTop:mvs(50),
+     color:colors.black
+    },
+    welcomeSubText:{
+        fontSize:18,
+        alignSelf:'center',
+        marginTop:mvs(2),
+        color:colors.lightgrey1,
+        textAlign:'center'
+    },
     input_container:{
-        marginTop:mvs(60),
+        marginTop:mvs(18.5),
     },
     button:{
-        marginTop:mvs(50),
+        marginTop:mvs(20),
+        height:mvs(60)
+    },
+    buttonText:{
+     color:colors.black,
+     fontSize:18,
+     fontWeight:'bold'
     },
     register:{
         marginTop:mvs(30),
         alignSelf:'center',
+    },
+    forgotText:{
+        color:colors.black,
+        fontSize:18,
+        alignSelf:'center',
+        top:mvs(10)
+    },
+    continueWithText:{
+        marginTop:mvs(17),
+        alignSelf:'center'
+    },
+    socialIconView:{
+        backgroundColor:colors.white,
+        borderRadius:10,
+        borderWidth:1,
+        borderColor:colors.gray,
+        height:mvs(51),
+        marginTop:mvs(10),
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        shadowColor:colors.shadow
+    },
+    socialIconText:{
+        marginLeft:mvs(5)
     }
 });

@@ -6,11 +6,12 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View,Image
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/Entypo';
 import Regular from '../../presentation/typography/regular-text';
+import SemiBold from '../../presentation/typography/semibold-text';
 import colors from '../../services/colors';
 import {mvs} from '../../services/metrices';
 import {INPUT_STYLES} from '../../styles/input';
@@ -41,22 +42,29 @@ const InputSecondary: FC<IProps> = ({
   maxLength,
   keyboardType,
   style,
+  leftIcon,
+  rightIcon,
   editable = true,
 }) => {
   const [eye, setEye] = React.useState(true);
   const {colors}: any = useTheme();
   return (
     <View style={[{marginBottom: mvs(18)}, containerStyle]}>
-      <Regular
+      <SemiBold
         label={label}
         style={{color: colors.text, marginBottom: mvs(10)}}
       />
       <View
         style={{
           ...INPUT_STYLES.SECONDARY_INPUT,
-          backgroundColor: colors.card,
-          ...style,
+          backgroundColor: colors.white,
+          ...style
         }}>
+        <Icon
+            name={eye ? 'eye' : 'eye-with-line'}
+            color={colors.text}
+            size={mvs(20)}
+          />
         <TextInput
           editable={editable}
           keyboardType={keyboardType}
@@ -64,21 +72,22 @@ const InputSecondary: FC<IProps> = ({
           secureTextEntry={secureTextEntry ? eye : false}
           value={value}
           placeholder={placeholder}
-          placeholderTextColor={colors.label}
+          placeholderTextColor={colors.black}
           onChangeText={onChangeText}
-          style={{color: colors.primary, padding: mvs(5), ...style}}
+          style={{color: colors.black, padding: mvs(5),
+             ...style,flex:1,borderLeftWidth:2,borderLeftColor:colors.gray,marginLeft:mvs(10),paddingLeft:mvs(10)}}
         />
-        {secureTextEntry && (
-          <TouchableOpacity
-            onPress={() => setEye(f => !f)}
-            style={{position: 'absolute', right: mvs(10), top: mvs(10)}}>
-            <Icon
-              name={eye ? 'eye' : 'eye-with-line'}
-              color={colors.text}
-              size={mvs(20)}
-            />
-          </TouchableOpacity>
-        )}
+       
+        <TouchableOpacity
+          onPress={() => setEye(f => !f)}
+          style={{right: mvs(10),justifyContent:'center',alignItems:'center'}}>
+          <Icon
+            name={eye ? 'eye' : 'eye-with-line'}
+            color={colors.text}
+            size={mvs(20)}
+          />
+        </TouchableOpacity>
+      
       </View>
     </View>
   );
