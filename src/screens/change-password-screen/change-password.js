@@ -3,7 +3,7 @@ import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import Buttons from '../../components/atoms/Button';
-import { DIVIY_INPUT_FIELD } from '../../components/atoms/Input';
+import { INPUT_FIELD } from '../../components/atoms/Input';
 import { CustomHeader } from '../../components/molecules/header/header-1x';
 import validation from '../../services/validation';
 import DIVIY_API from '../../store/api-calls';
@@ -51,7 +51,7 @@ const ChangePassword = (props) => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scroll}>
-          <DIVIY_INPUT_FIELD.InputSecondary
+          <INPUT_FIELD.InputSecondary
             secureTextEntry={true}
             editable={!loading}
             label={'Old Password'}
@@ -59,7 +59,7 @@ const ChangePassword = (props) => {
             value={payload?.old_password}
             onChangeText={t => setPayload({...payload, old_password: t})}
           />
-          <DIVIY_INPUT_FIELD.InputSecondary
+          <INPUT_FIELD.InputSecondary
             secureTextEntry={true}
             editable={!loading}
             label={'New password'}
@@ -67,7 +67,7 @@ const ChangePassword = (props) => {
             value={payload?.new_password}
             onChangeText={t => setPayload({...payload, new_password: t})}
           />
-          <DIVIY_INPUT_FIELD.InputSecondary
+          <INPUT_FIELD.InputSecondary
             secureTextEntry={true}
             editable={!loading}
             label="Re-Type Password"

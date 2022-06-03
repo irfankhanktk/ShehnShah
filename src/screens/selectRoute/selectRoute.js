@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StatusBar, SafeAreaView} from 'react-native';
-import {SLogo} from '../../assets/common-icons';
+// import {Login} from '../../assets/common-icons';
 import {mvs} from '../../services/metrices';
 import styles from './selectRoute.styles';
  import Buttons from '../../components/atoms/Button';
@@ -11,7 +11,7 @@ const SelectRoute = props => {
     <SafeAreaView style={styles.conntainer}>
       <StatusBar backgroundColor={'white'} barStyle="dark-content" />
       <View style={{alignItems: 'center', marginTop: mvs(80)}}>
-        <SLogo height={mvs(150)} width={mvs(300)} />
+        {/* <Login height={mvs(150)} width={mvs(300)} /> */}
       </View>
 
       <Buttons.ButtonPrimary

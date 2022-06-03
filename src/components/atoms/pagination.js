@@ -3,25 +3,24 @@ import {View, Text, StyleSheet, Animated, Dimensions} from 'react-native';
 import colors from '../../services/colors';
 import { mvs } from '../../services/metrices';
 const {width, height} = Dimensions.get('window');
-const DOT_SIZE = mvs(11);
-const data=[0,1,2,3,4];
+const DOT_SIZE = 8;
 export const Pagination = ({scrollX,dotStyle,list=[0,1,2,3,4],style}) => {
     const inputRange = [-width, 0, width];
     const translateX = scrollX.interpolate({
       inputRange,
-      outputRange: [-(DOT_SIZE + 10), 0, DOT_SIZE + 10],
+      outputRange: [-(DOT_SIZE + 8), 0, DOT_SIZE + 8],
     });
     return (
       <View style={[styles.pagination,style]}>
         <Animated.View
           style={[
             styles.paginationDot,
-            {
+            { 
+              width:16,
               position: 'absolute',
               transform: [{translateX}],
               zIndex: 1001,
               backgroundColor: colors.primary,
-              // right:10,
             },
           ]}
         />
@@ -39,7 +38,7 @@ export const Pagination = ({scrollX,dotStyle,list=[0,1,2,3,4],style}) => {
   const styles = StyleSheet.create({
       
   pagination: {
-    position: 'absolute',
+    // position: 'absolute',
     alignSelf: 'center',
     bottom: mvs(13),
     flexDirection: 'row',
@@ -49,7 +48,7 @@ export const Pagination = ({scrollX,dotStyle,list=[0,1,2,3,4],style}) => {
     width: DOT_SIZE,
     height: DOT_SIZE,
     borderRadius: DOT_SIZE / 2,
-    backgroundColor: colors.card,
+    backgroundColor: colors.GE0E0E0,
   },
   paginationDotContainer: {
     marginRight: 10,

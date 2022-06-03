@@ -6,10 +6,12 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,Image
+  View,
+  Image,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/Entypo';
+import * as SVGS from '../../assets/common-icons';
 import Regular from '../../presentation/typography/regular-text';
 import SemiBold from '../../presentation/typography/semibold-text';
 import colors from '../../services/colors';
@@ -21,7 +23,7 @@ import Buttons from './Button';
 type IProps = {
   label?: string | number;
   value?: string;
-  onChangeText?: (t: string) => void;
+  onChangeText?: (t: string | any) => void;
   placeholder?: string;
   containerStyle?: object;
   secureTextEntry?: boolean;
@@ -29,6 +31,10 @@ type IProps = {
   maxLength?: number | undefined;
   keyboardType?: KeyboardTypeOptions | undefined;
   style?: object;
+  children?: any;
+  isMatch?: boolean;
+  leftIcon: string;
+  rightIcon: string;
   setValue?: (arg: any) => void;
 };
 
@@ -42,12 +48,14 @@ const InputSecondary: FC<IProps> = ({
   maxLength,
   keyboardType,
   style,
-  leftIcon,
-  rightIcon,
+  leftIcon='User',
+  rightIcon='User',
   editable = true,
 }) => {
   const [eye, setEye] = React.useState(true);
   const {colors}: any = useTheme();
+  const LIcon = SVGS[leftIcon];
+  const RIcon = SVGS[rightIcon];
   return (
     <View style={[{marginBottom: mvs(18)}, containerStyle]}>
       <SemiBold
@@ -58,13 +66,13 @@ const InputSecondary: FC<IProps> = ({
         style={{
           ...INPUT_STYLES.SECONDARY_INPUT,
           backgroundColor: colors.white,
-          ...style
+          ...style,
         }}>
-        <Icon
-            name={eye ? 'eye' : 'eye-with-line'}
-            color={colors.text}
-            size={mvs(20)}
-          />
+        <LIcon
+          name={eye ? 'eye' : 'eye-with-line'}
+          color={colors.text}
+          size={mvs(20)}
+        />
         <TextInput
           editable={editable}
           keyboardType={keyboardType}
@@ -74,20 +82,43 @@ const InputSecondary: FC<IProps> = ({
           placeholder={placeholder}
           placeholderTextColor={colors.black}
           onChangeText={onChangeText}
-          style={{color: colors.black, padding: mvs(5),
-             ...style,flex:1,borderLeftWidth:2,borderLeftColor:colors.gray,marginLeft:mvs(10),paddingLeft:mvs(10)}}
+          style={{
+            color: colors.black,
+            padding: mvs(5),
+            ...style,
+            flex: 1,
+            borderLeftWidth: 2,
+            borderLeftColor: colors.gray,
+            marginLeft: mvs(10),
+            paddingLeft: mvs(10),
+          }}
         />
-       
-        <TouchableOpacity
-          onPress={() => setEye(f => !f)}
-          style={{right: mvs(10),justifyContent:'center',alignItems:'center'}}>
-          <Icon
-            name={eye ? 'eye' : 'eye-with-line'}
-            color={colors.text}
-            size={mvs(20)}
-          />
-        </TouchableOpacity>
-      
+
+        {secureTextEntry ? (
+          <TouchableOpacity
+            onPress={() => setEye(f => !f)}
+            style={{
+              right: mvs(10),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Icon
+              name={eye ? 'eye' : 'eye-with-line'}
+              color={colors.text}
+              size={mvs(20)}
+            />
+          </TouchableOpacity>
+        ) : (
+          rightIcon?<View
+            style={{
+              right: mvs(10),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+           <RIcon
+            />
+          </View>:null
+        )}
       </View>
     </View>
   );
@@ -116,7 +147,7 @@ const ReviewInput: FC<IProps> = ({
   );
 };
 
-const CustomOtpInput: FC<IProps> = ({value, setValue}) => {
+const CustomOtpInput: FC<IProps> = ({value, setValue, isMatch = true}) => {
   const {colors}: any = useTheme();
   return (
     <View style={{height: mvs(85), marginTop: mvs(28), alignItems: 'center'}}>
@@ -124,12 +155,12 @@ const CustomOtpInput: FC<IProps> = ({value, setValue}) => {
         label={'Verification Code'}
         style={{color: colors.primary, marginBottom: mvs(7)}}
       />
-      <OtpInput value={value} setValue={setValue} />
+      <OtpInput isMatch={isMatch} value={value} setValue={setValue} />
     </View>
   );
 };
 
-const DatePicker = ({onChangeText, value}) => {
+const DatePicker: FC<IProps> = ({onChangeText = () => {}, value}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -139,9 +170,9 @@ const DatePicker = ({onChangeText, value}) => {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = date => {
-    console.log('date::',date);
-    
+  const handleConfirm = (date: any) => {
+    console.log('date::', date);
+
     onChangeText(moment(date).format('lll'));
     hideDatePicker();
   };
@@ -150,12 +181,12 @@ const DatePicker = ({onChangeText, value}) => {
       style={{
         width: '100%',
       }}>
-      <Regular label={'Select time'} style={{marginBottom:mvs(10)}}/>
+      <Regular label={'Select time'} style={{marginBottom: mvs(10)}} />
       <Buttons.ButtonPrimary
         title={value}
         onClick={() => setDatePickerVisibility(true)}
-        style={{height: mvs(38),backgroundColor:colors.secondary}}
-        textStyle={{color:colors.primary}}
+        style={{height: mvs(38), backgroundColor: colors.secondary}}
+        textStyle={{color: colors.primary}}
       />
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
@@ -170,7 +201,7 @@ const DatePicker = ({onChangeText, value}) => {
   );
 };
 
-export const DIVIY_INPUT_FIELD = {
+export const INPUT_FIELD = {
   DatePicker,
   InputSecondary,
   ReviewInput,

@@ -33,17 +33,17 @@ export const OPTINPUT_STYLES = StyleSheet.create({
     alignItems:'center',
   },
   cellRoot: {
-    width: mvs(40),
-    height: mvs(54),
-    margin: 2,
+    width: mvs(55),
+    height: mvs(55),
+    // margin: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: colors.doted,
+    borderColor: colors.F0F0F0,
     borderWidth: 1,
     borderRadius:mvs(10)
   },
   cellText: {
-    color: colors.primary,
+    color: colors.B1E1F20,
     fontSize: mvs(20),
     textAlign: 'center',
   },

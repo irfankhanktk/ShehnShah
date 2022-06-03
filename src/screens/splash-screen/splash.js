@@ -8,6 +8,7 @@ import {mvs} from '../../services/metrices';
 import {ACTIONS} from '../../store/actions';
 import {Splash_Styles as styles} from './splash-styles';
 import Buttons from '../../components/atoms/Button';
+import { Logo } from '../../assets/common-icons';
 const Splash = props => {
   const {setUserInfo, navigation} = props;
   const {colors} = useTheme();
@@ -19,11 +20,11 @@ const Splash = props => {
 
       setTimeout(() => {
         if (!token || !user) {
-          navigation.replace('SelectRoute');
+          navigation.replace('Onboarding');
         } else {
           // setSocket(ioClient);
           setUserInfo(JSON.parse(user));
-          navigation.replace('SelectRoute');
+          navigation.replace('Onboarding');
         }
       }, 3000);
     })();
@@ -31,11 +32,7 @@ const Splash = props => {
 
   return (
     <View style={{...styles.container, backgroundColor: colors.background}}>
-      <Image
-        resizeMode="contain"
-        source={splash}
-        style={{width: mvs(100), height: mvs(100), borderRadius: mvs(50)}}
-      />
+      <Logo/>
     </View>
   );
 };

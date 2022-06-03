@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text} from 'react-native';
 import fonts from '../../services/fonts';
+import colors from './../../services/colors';
 type FcProps={
   label?: string | number;
   numberOfLines?: number;
@@ -8,13 +9,13 @@ type FcProps={
   size?: number ;
   onPress?: () => void;
   style?: object;
-  children: any;
+  children?: any;
 }
 const SemiBold : React.FC<FcProps> = ({
   label,
   numberOfLines = 1,
   size,
-  color,
+  color=colors.B1E1F20,
   style,
   children,
   ...props

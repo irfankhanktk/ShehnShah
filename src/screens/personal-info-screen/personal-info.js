@@ -5,7 +5,7 @@ import { ScrollView, TouchableOpacity, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
 import Buttons from '../../components/atoms/Button';
-import { DIVIY_INPUT_FIELD } from '../../components/atoms/Input';
+import { INPUT_FIELD } from '../../components/atoms/Input';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
 import { CustomHeader } from '../../components/molecules/header/header-1x';
 import SERVICES from '../../services/common-services';
@@ -93,21 +93,21 @@ const PersonalInfo = (props) => {
               )}
             </TouchableOpacity>
           </View>
-          <DIVIY_INPUT_FIELD.InputSecondary
+          <INPUT_FIELD.InputSecondary
             editable={!loading}
             label={'First Name'}
             placeholder="First Name"
             value={payload?.first_name}
             onChangeText={(t)=>setPayload({...payload,first_name:t})}
           />
-          <DIVIY_INPUT_FIELD.InputSecondary
+          <INPUT_FIELD.InputSecondary
            editable={!loading}
             label="Last Name"
             placeholder="Last Name"
             value={payload?.last_name}
             onChangeText={(t)=>setPayload({...payload,last_name:t})}
           />
-          <DIVIY_INPUT_FIELD.InputSecondary
+          <INPUT_FIELD.InputSecondary
            
            editable={false}
             label="Email"

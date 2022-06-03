@@ -4,7 +4,7 @@ import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import Buttons from '../../components/atoms/Button';
-import { DIVIY_INPUT_FIELD } from '../../components/atoms/Input';
+import { INPUT_FIELD } from '../../components/atoms/Input';
 import { CustomHeader } from '../../components/molecules/header/header-1x';
 import { mvs } from '../../services/metrices';
 import { Proposal_Styles as styles } from './proposal-styles';
@@ -42,11 +42,11 @@ const Proposal = props => {
       <CustomHeader allowBackBtn title={'Proposal'} colors={colors} />
       <View style={styles.body}>
         <ScrollView contentContainerStyle={{paddingHorizontal: mvs(22)}}>
-          <DIVIY_INPUT_FIELD.DatePicker
+          <INPUT_FIELD.DatePicker
             onChangeText={value => setPayload({...payload, time: value})}
             value={payload.time}
           />
-          <DIVIY_INPUT_FIELD.ReviewInput
+          <INPUT_FIELD.ReviewInput
             // containerStyle={{marginTop:mvs(20)}}
             value={payload.payment}
             onChangeText={t => setPayload({...payload, payment: t})}
@@ -59,7 +59,7 @@ const Proposal = props => {
                 onChange={t => setPayload({...payload, payment: t})}
               /> */}
             </View>
-          </DIVIY_INPUT_FIELD.ReviewInput>
+          </INPUT_FIELD.ReviewInput>
           <Buttons.ButtonPrimary
             onClick={() => onSubmit()}
             style={{marginTop: mvs(20)}}

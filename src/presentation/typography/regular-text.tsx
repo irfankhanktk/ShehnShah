@@ -8,25 +8,27 @@ type FcProps = {
   label?: string | number;
   numberOfLines?: number;
   color?: string;
+  lineHeight?:number
   size?: number ;
   onPress?: () => void;
   style?: object;
-  children: any;
+  children?: any;
 };
 const Regular: React.FC<FcProps> = ({
   label,
   numberOfLines = 1,
   size,
-  color,
+  color=colors.B1E1F20,
   style,
   children,
+  lineHeight,
   ...props
 }) => {
   return (
     <Text
       numberOfLines={numberOfLines}
       {...props}
-      style={{...styles.label, color: color, fontSize: size, ...style}}>
+      style={{...styles.label,lineHeight:lineHeight, color: color, fontSize: size, ...style}}>
       {label}
       {children}
     </Text>

@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { mvs } from '../../services/metrices';
 import fonts from '../../services/fonts'
+import colors from './../../services/colors';
 type FcProps={
   label?: string | number;
   numberOfLines?: number;
@@ -15,7 +16,7 @@ const Light: React.FC<FcProps> = ({
   label,
   numberOfLines = 1,
   size,
-  color,
+  color=colors.B1E1F20,
   style,
   children,
   ...props

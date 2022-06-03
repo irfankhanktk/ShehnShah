@@ -6,7 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
 import Buttons from '../../components/atoms/Button';
 import DualText from '../../components/atoms/dual-text/dual-text';
-import { DIVIY_INPUT_FIELD } from '../../components/atoms/Input';
+import { INPUT_FIELD } from '../../components/atoms/Input';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
 import SERVICES from '../../services/common-services';
 import { mvs } from '../../services/metrices';
@@ -63,40 +63,40 @@ const Signup = (props) => {
   const renderPersonalInfo = () => {
     return (
       <>
-        <DIVIY_INPUT_FIELD.InputSecondary
+        <INPUT_FIELD.InputSecondary
           value={state.first_name}
           onChangeText={t => setState({ type: 'first_name', payload: t })}
           label="First Name*"
           placeholder="First Name"
         />
-        <DIVIY_INPUT_FIELD.InputSecondary
+        <INPUT_FIELD.InputSecondary
           value={state.last_name}
           onChangeText={t => setState({ type: 'last_name', payload: t })}
           label="Last Name*"
           placeholder="Last Name"
         />
-        <DIVIY_INPUT_FIELD.InputSecondary
+        <INPUT_FIELD.InputSecondary
           keyboardType="email-address"
           value={state.email}
           onChangeText={t => setState({ type: 'email', payload: t })}
           label="Email*"
           placeholder="Email"
         />
-        <DIVIY_INPUT_FIELD.InputSecondary
+        <INPUT_FIELD.InputSecondary
           value={state.phone}
           keyboardType="numeric"
           onChangeText={t => setState({ type: 'phone', payload: t })}
           label="Phone*"
           placeholder="Phone"
         />
-        <DIVIY_INPUT_FIELD.InputSecondary
+        <INPUT_FIELD.InputSecondary
           value={state.password}
           secureTextEntry
           onChangeText={t => setState({ type: 'password', payload: t })}
           label="Password*"
           placeholder="password"
         />
-        <DIVIY_INPUT_FIELD.InputSecondary
+        <INPUT_FIELD.InputSecondary
           secureTextEntry
           value={confirmPassword}
           onChangeText={setConfirmPassword}
@@ -207,10 +207,10 @@ const Signup = (props) => {
             />
           </View>
           {renderPersonalInfo()}
-          <DIVIY_INPUT_FIELD.ReviewInput containerStyle={{minHeight:null,backgroundColor:colors.background,...colors.shadow}} label={'Select your Role'}>
+          <INPUT_FIELD.ReviewInput containerStyle={{minHeight:null,backgroundColor:colors.background,...colors.shadow}} label={'Select your Role'}>
             <CustomRadio style={{marginTop:mvs(10)}} status={state.isProvider} onChange={() => setState({ type: 'role', payload: true })} label={'Provider'} />
             <CustomRadio style={{marginTop:mvs(10)}} status={!state.isProvider} onChange={() => setState({ type: 'role', payload: false })} label={'Customer'} />
-          </DIVIY_INPUT_FIELD.ReviewInput>
+          </INPUT_FIELD.ReviewInput>
           <Buttons.ButtonPrimary
             loading={loading}
             disabled={loading}
@@ -237,7 +237,7 @@ const Signup = (props) => {
             style={{ margin: 0 }}
           >
             <View style={{ backgroundColor: '#fff', alignSelf: 'center', padding: mvs(20), borderRadius: mvs(20) }}>
-              <DIVIY_INPUT_FIELD.CustomOtpInput value={otp.input_otp} setValue={(t) => setOpt({ ...otp, input_otp: t })} />
+              <INPUT_FIELD.CustomOtpInput value={otp.input_otp} setValue={(t) => setOpt({ ...otp, input_otp: t })} />
               <View style={{ paddingTop: mvs(10) }}>
                 <Regular label={'Otp code is sent to your email'} style={{ alignSelf: 'center', marginBottom: mvs(10) }} />
                 <Regular label={state?.email} style={{ alignSelf: 'center', marginBottom: mvs(10), color: colors.primary }} />

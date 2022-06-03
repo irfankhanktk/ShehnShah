@@ -8,7 +8,7 @@ import { mvs } from './metrices';
 
 export const buttonStyles = StyleSheet.create({
   buttonPrimary: {
-    height: mvs(50),
+    height: mvs(60),
     alignItems:'center',
     justifyContent:'center',
     backgroundColor:colors.primary,
@@ -16,12 +16,13 @@ export const buttonStyles = StyleSheet.create({
     width:'100%'
   },
   buttonSecondary: {
-    height: mvs(50),
+    height: mvs(60),
     alignItems:'center',
     justifyContent:'center',
     backgroundColor:colors.white,
     borderRadius: mvs(10),
-    borderWidth:0.7,
+    borderWidth:0.5,
+    // ...colors.shadow,
     borderColor:colors.border,
     width:'100%'
   },

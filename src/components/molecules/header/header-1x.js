@@ -16,10 +16,7 @@ export const CustomHeader = ({
   allowBackBtn = false,
   spacebetween = false,
   post = false,
-  avatar = false,
-  chat = false,
   userIcon = false,
-  headerLog = false,
   style,
   colors,
   uri,
@@ -30,7 +27,7 @@ export const CustomHeader = ({
 }) => {
   const navigation=useNavigation();
   return (
-    <View style={[styles.CONTAINER, style, { backgroundColor: colors.background,...colors.shadow }]}>
+    <View style={[styles.CONTAINER, style, { backgroundColor: colors.background }]}>
       <View style={{}}>
         {allowBackBtn && (
           <View style={{ flexDirection: 'row', }}>
@@ -77,8 +74,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: mvs(73),
-    paddingHorizontal: mvs(22),
+    height: mvs(65),
+    paddingHorizontal: mvs(18),
     borderBottomLeftRadius: mvs(20),
     borderBottomRightRadius: mvs(20),
     zIndex:1,

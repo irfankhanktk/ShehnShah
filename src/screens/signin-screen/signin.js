@@ -1,19 +1,17 @@
-import {useNavigation, useTheme} from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import React from 'react';
-import {ScrollView, View} from 'react-native';
-import {connect} from 'react-redux';
-import {SLogo,Facebook,Apple,Google} from '../../assets/common-icons';
+import { ScrollView, View } from 'react-native';
+import { connect } from 'react-redux';
+import { Apple, Facebook, Google, SLogo } from '../../assets/common-icons';
 import Buttons from '../../components/atoms/Button';
-import {DIVIY_INPUT_FIELD} from '../../components/atoms/Input';
-import DIVIY_API from '../../store/api-calls';
-import {Signin_Styles as styles} from './signin-styles';
-import CustomRadio from '../../components/atoms/RadioButton';
-import ThemeContext from './../../context/theme-context';
+import { INPUT_FIELD } from '../../components/atoms/Input';
 import Bold from '../../presentation/typography/bold-text';
 import Regular from '../../presentation/typography/regular-text';
-import Light from '../../presentation/typography/light-text';
-import allColors  from '../../services/colors';
+import allColors from '../../services/colors';
 import { mvs } from '../../services/metrices';
+import DIVIY_API from '../../store/api-calls';
+import ThemeContext from './../../context/theme-context';
+import { Signin_Styles as styles } from './signin-styles';
 const Signin = props => {
   const navigation = useNavigation();
   const [loading, setLoading] = React.useState(false);
@@ -27,7 +25,7 @@ const Signin = props => {
     name:'',
     confirmPassword:''
   });
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   const onSigin = async () => {
       setSelectedTab("login")
@@ -40,7 +38,7 @@ const Signin = props => {
     setPhoneSignUp(true)
   };
   return (
-    <View style={{...styles.container, backgroundColor: colors.background}}>
+    <View style={{ ...styles.container, backgroundColor: colors.background }}>
       <ScrollView>
         <View style={styles.body}>
           <View style={{alignItems: 'center'}}>
@@ -70,15 +68,19 @@ const Signin = props => {
           <Regular label={"Please enter your email and password"} style={styles.welcomeSubText}/>
           <Regular label={"to contiue"} style={styles.welcomeSubText}/>
           <View style={styles.input_container}>
-            <DIVIY_INPUT_FIELD.InputSecondary
+            <INPUT_FIELD.InputSecondary
               value={payload.email}
+                leftIcon='User'
+                rightIcon=''
               onChangeText={t => setPayload({...payload, email: t})}
               label="EMAIL"
               placeholder="lehieuds@gmail.com"
               
             />
-            <DIVIY_INPUT_FIELD.InputSecondary
+            <INPUT_FIELD.InputSecondary
               secureTextEntry
+                leftIcon='User'
+                rightIcon=''
               value={payload.password}
               onChangeText={t => setPayload({...payload, password: t})}
               label="PASSWORD"
@@ -115,7 +117,9 @@ const Signin = props => {
           
           <View style={styles.input_container}>
 
-          <DIVIY_INPUT_FIELD.InputSecondary
+          <INPUT_FIELD.InputSecondary
+              rightIcon={false}
+              leftIcon='User'
               value={payload.name}
               onChangeText={t => setPayload({...payload, name: t})}
               label="FULL NAME"
@@ -123,23 +127,28 @@ const Signin = props => {
               
             />
 
-            <DIVIY_INPUT_FIELD.InputSecondary
+            <INPUT_FIELD.InputSecondary
               value={payload.email}
+                leftIcon='User'
+                rightIcon='Tick'
               onChangeText={t => setPayload({...payload, email: t})}
               label="EMAIL"
               placeholder="lehieuds@gmail.com"
               
             />
-            <DIVIY_INPUT_FIELD.InputSecondary
+            <INPUT_FIELD.InputSecondary
               secureTextEntry
+              leftIcon='Lock'
               value={payload.password}
               onChangeText={t => setPayload({...payload, password: t})}
               label="PASSWORD"
               placeholder="Password"
             />
 
-            <DIVIY_INPUT_FIELD.InputSecondary
+            <INPUT_FIELD.InputSecondary
               secureTextEntry
+                leftIcon='User'
+                rightIcon='Lock'
               value={payload.confirmPassword}
               onChangeText={t => setPayload({...payload, confirmPassword: t})}
               label="CONFIRM PASSWORD"
@@ -169,8 +178,10 @@ const Signin = props => {
             <Regular label={"Enter your phone number and we’ll send"} style={styles.welcomeSubText}/>
             <Regular label={"you a four-digit code in SMS."} style={styles.welcomeSubText}/>
             <View style={{...styles.input_container,marginTop:mvs(50)}}>
-              <DIVIY_INPUT_FIELD.InputSecondary
+              <INPUT_FIELD.InputSecondary
                   value={payload.name}
+                    leftIcon='User'
+                    rightIcon=''
                   keyboardType={'name-phone-pad'}
                   onChangeText={t => setPayload({...payload, name: t})}
                   label="PHONE NUMBER"

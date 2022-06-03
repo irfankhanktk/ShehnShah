@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Buttons from '../../components/atoms/Button';
-import { DIVIY_INPUT_FIELD } from '../../components/atoms/Input';
+import { INPUT_FIELD } from '../../components/atoms/Input';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
 import { CustomHeader } from '../../components/molecules/header/header-1x';
 import Regular from '../../presentation/typography/regular-text';
@@ -29,9 +29,9 @@ const CategoryDetails = (props) => {
                             <Regular style={{ color: colors.white }} label={item?.name} />
                         </View>
                     </View>
-                    <DIVIY_INPUT_FIELD.ReviewInput  label={'Description'}>
+                    <INPUT_FIELD.ReviewInput  label={'Description'}>
                          <Regular label={'Here is the description of category, you can read it'}/>
-                    </DIVIY_INPUT_FIELD.ReviewInput>
+                    </INPUT_FIELD.ReviewInput>
                    {!prev_screen&& <Buttons.ButtonPrimary onClick={()=>navigation?.navigate('Proposal')} style={{marginTop:mvs(20)}} title={'Submit a request'}/>}
                    {prev_screen&& 
                    <View>

@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Regular from '../../presentation/typography/regular-text';
 import buttonStyles from '../../services/button';
 import colors from '../../services/colors';
 import { mvs } from '../../services/metrices';
+import SemiBold from './../../presentation/typography/semibold-text';
 
 type BProps = {
   title?: string;
@@ -13,7 +13,7 @@ type BProps = {
   textStyle?: object;
   disabled?: boolean;
   loading?: boolean;
-  icon?:string;
+  icon?: string;
   props?: object;
 };
 
@@ -36,8 +36,9 @@ const ButtonPrimary: FC<BProps> = ({
       {loading ? (
         <ActivityIndicator color={colors.white} size={'small'} />
       ) : (
-        <Regular
+        <SemiBold
           {...props}
+          size={mvs(18)}
           label={title}
           style={{color: colors.white, ...textStyle}}
         />
@@ -64,8 +65,9 @@ const ButtonSecondary: FC<BProps> = ({
       {loading ? (
         <ActivityIndicator color={colors.white} size={'small'} />
       ) : (
-        <Regular
+        <SemiBold
           {...props}
+          size={mvs(18)}
           label={title}
           style={{color: colors.headerTitle, ...textStyle}}
         />
@@ -81,19 +83,23 @@ const ButtonPlus: FC<BProps> = ({
   textStyle,
   loading,
   disabled = false,
-  icon='plus',
+  icon = 'plus',
   ...props
 }) => {
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={onClick} style={buttonStyles.plus_button} {...props}>
-        <Icon name={icon} color={colors.white} size={mvs(30)}/>
-      </TouchableOpacity>
-  )
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={onClick}
+      style={buttonStyles.plus_button}
+      {...props}>
+      <Icon name={icon} color={colors.white} size={mvs(30)} />
+    </TouchableOpacity>
+  );
 };
 
 const Buttons = {
   ButtonPrimary,
   ButtonSecondary,
-  ButtonPlus
+  ButtonPlus,
 };
 export default Buttons;

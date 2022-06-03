@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import fonts from '../../services/fonts'
+import colors from './../../services/colors';
 type FcProps={
   label?: string | number;
   numberOfLines?: number;
@@ -14,7 +15,7 @@ const Bold : React.FC<FcProps> = ({
   label,
   numberOfLines = 1,
   size,
-  color,
+  color=colors.B1E1F20,
   style,
   children,
   ...props

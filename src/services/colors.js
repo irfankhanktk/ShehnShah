@@ -3,6 +3,13 @@
  */
 const colors = {
   //new color scheme
+  B1E1F20:'#1E1F20',
+  B363F4D:'#363F4D',
+  GE0E0E0:'#E0E0E0',
+  FF0000:'#FF0000',
+  F0F0F0: '#F0F0F0',
+
+
   headerTitle:'#424753',
   textColor:'#54585D',
   black: '#000000',
@@ -61,7 +68,6 @@ const colors = {
   lightgrey:'#F8F8F8',
   lightgrey1:'#8D8D8D',
   lightgrey2:'#878B93',
-  doted: '#BBC0C3',
   //Toggle Color
   toggleOff: '#D9D9D9',
 
