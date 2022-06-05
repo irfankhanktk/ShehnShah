@@ -5,17 +5,18 @@ type IProps={
   containerStyle?:object|undefined;
   style?:object|undefined;
   uri?:any;
+  borderRadius: number,
   isUser?:boolean;
   resizeMode?:string;
   props?:{
     children: JSX.Element
   };
 }
-const ImagePlaceholder:FC<IProps> = ({containerStyle,style,isUser=false, uri, resizeMode='cover', ...props}) => {
+const ImagePlaceholder:FC<IProps> = ({containerStyle,style,isUser=false,borderRadius=0, uri, resizeMode='cover', ...props}) => {
   return (
     <ImageBackground
       source={ isUser?require('../../../src/assets/images/user.png'):require('../../../src/assets/images/placeholder.png')}
-      style={{height:mvs(40),width:mvs(40),borderRadius:mvs(20),...containerStyle, overflow: 'hidden'}}>
+      style={{height:mvs(40),width:mvs(40),borderRadius:mvs(borderRadius),...containerStyle, overflow: 'hidden'}}>
       <Image
         source={uri}
         style={{

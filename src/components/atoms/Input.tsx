@@ -19,6 +19,7 @@ import {mvs} from '../../services/metrices';
 import {INPUT_STYLES} from '../../styles/input';
 import {OtpInput} from './../molecules/otp-input/otp-input';
 import Buttons from './Button';
+import PhoneInput from 'react-native-phone-input'
 
 type IProps = {
   label?: string | number;
@@ -35,6 +36,7 @@ type IProps = {
   isMatch?: boolean;
   leftIcon: string;
   rightIcon: string;
+  ref:any,
   setValue?: (arg: any) => void;
 };
 
@@ -159,6 +161,35 @@ const CustomOtpInput: FC<IProps> = ({value, setValue, isMatch = true}) => {
     </View>
   );
 };
+const PhoneTextInput: FC<IProps> = ({onChangeText, ref, containerStyle}) => {
+  return (
+    <View
+      style={[
+        {
+          width: '80%',
+          backgroundColor: 'red',
+          alignSelf: 'center',
+          height: mvs(59),
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingHorizontal: mvs(15),
+          borderRadius: mvs(15),
+        },
+        containerStyle,
+      ]}>
+      <PhoneInput
+        ref={ref}
+        initialCountry={'gb'}
+        // initialValue={'92xx xxxxxxx'}
+        textProps={{
+          placeholder: 'xxxx xxxxxxx',
+          placeholderTextColor: 'blue',
+        }}
+        onChangePhoneNumber={onChangeText}
+      />
+    </View>
+  );
+};
 
 const DatePicker: FC<IProps> = ({onChangeText = () => {}, value}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -206,4 +237,5 @@ export const INPUT_FIELD = {
   InputSecondary,
   ReviewInput,
   CustomOtpInput,
+  PhoneTextInput
 };

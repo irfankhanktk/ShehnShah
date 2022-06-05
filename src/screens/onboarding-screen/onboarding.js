@@ -54,14 +54,13 @@ const Onboarding = (props) => {
                         horizontal
                         data={list}
                         renderItem={({ item }) => (
-                            <View style={{}}>
-                                <View style={{ alignItems: 'center', paddingHorizontal: 25, }}>
+                            <View style={{width:width}}>
+                                <View style={{ alignItems: 'center',}}>
                                     <Img1 height={mvs(500)} width={mvs(326)} />
                                 </View>
                                 <View style={{ alignItems: 'center', paddingHorizontal: 25,width:mvs(311),alignSelf:'center' }}>
                                     <Bold style={{ alignSelf: 'center', marginTop: mvs(30) }} color={colors.B1E1F20} size={mvs(24)} label={'Walkthrough Title'} />
                                     <Regular numberOfLines={3} style={{ textAlign: 'center', marginTop: mvs(0) }} color={colors.B1E1F20} size={mvs(18)} label={'Lorem ipsum dolor sit amet'} />
-
                                 </View>
                             </View>
                         )}
@@ -70,8 +69,7 @@ const Onboarding = (props) => {
                 {pagination()}
                 <View style={{justifyContent:'flex-end',paddingHorizontal:mvs(22),paddingTop:mvs(30),paddingBottom:mvs(20)}}>
                     <Row>
-                     <Buttons.ButtonPrimary onClick={()=>props?.navigation?.navigate('Signin')} style={{width:'45%'}} title='Login'/>
-                     <Buttons.ButtonSecondary style={{width:'45%'}} title='Login'/>
+                     <Buttons.ButtonPrimary onClick={()=>props?.navigation?.navigate('Signin')}  title='Login'/>
                     </Row>
                 </View>
                 </ScrollView>

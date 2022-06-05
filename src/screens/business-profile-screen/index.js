@@ -1,21 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
+import { Bg } from '../../assets/images';
 import Buttons from '../../components/atoms/Button';
-import { INPUT_FIELD } from '../../components/atoms/Input';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
-import { CustomHeader } from '../../components/molecules/header/header-1x';
+import ThemeContext from '../../context/theme-context';
 import SERVICES from '../../services/common-services';
 import { mvs } from '../../services/metrices';
 import validation from '../../services/validation';
 import DIVIY_API from '../../store/api-calls';
-import { STYLES as styles } from './personal-info-style';
-import ThemeContext from './../../context/theme-context';
-const PersonalInfo = (props) => {
-  const {user_info,updatePersonalInfo} = props;
+import { STYLES as styles } from './style';
+const BusinessProfile = (props) => {
+  const {user_info,} = props;
   const {colors} = useTheme();
   const [payload, setPayload] = React.useState({
     image: '',
@@ -66,55 +64,13 @@ const PersonalInfo = (props) => {
 
   return (
     <View style={[styles.container, {backgroundColor: colors.background}]}>
-      <CustomHeader title="Personal Info" allowBackBtn colors={colors} />
+      {/* <CustomHeader title="Business Info" allowBackBtn colors={colors} /> */}
       <View style={styles.body}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scroll}>
-          <View style={{paddingHorizontal: mvs(22)}}>
-            <TouchableOpacity
-              disabled={loading}
-              onPress={onCamera}
-              style={{
-                ...styles.camera,
-                backgroundColor: colors.text,
-              }}>
-              {payload?.image ? (
-                <ImagePlaceholder
-                  uri={payload?.image?.uri}
-                  containerStyle={styles.image}
-                />
-              ) : (
-                <AntDesign
-                  name="camera"
-                  size={mvs(50)}
-                  color={colors.background}
-                />
-              )}
-            </TouchableOpacity>
-          </View>
-          <INPUT_FIELD.InputSecondary
-            editable={!loading}
-            label={'First Name'}
-            placeholder="First Name"
-            value={payload?.first_name}
-            onChangeText={(t)=>setPayload({...payload,first_name:t})}
-          />
-          <INPUT_FIELD.InputSecondary
-           editable={!loading}
-            label="Last Name"
-            placeholder="Last Name"
-            value={payload?.last_name}
-            onChangeText={(t)=>setPayload({...payload,last_name:t})}
-          />
-          <INPUT_FIELD.InputSecondary
-           
-           editable={false}
-            label="Email"
-            placeholder="Email"
-            value={user_info?.email}
-            onChangeText={(t)=>{}}
-          />
+            <ImagePlaceholder uri={Bg} containerStyle={{width:'100%',height:mvs(210)}}/>
+         {/* <ProfilePic/> */}
         </ScrollView>
         <View
           style={{
@@ -141,4 +97,4 @@ const mapDispatchToProps = {
   fetchUsers: (user_id) => DIVIY_API.fetchUsers(user_id),
   updatePersonalInfo: (payload,user_id) => DIVIY_API.updatePersonalInfo(payload),
 };
-export default connect(mapStateToProps, mapDispatchToProps)(PersonalInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(BusinessProfile);

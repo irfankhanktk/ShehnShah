@@ -10,7 +10,7 @@ export const STYLES = StyleSheet.create({
     },
     scroll:{
         flexGrow:1,
-        paddingHorizontal:mvs(22),
+        // paddingHorizontal:mvs(22),
         paddingTop:mvs(20),
         paddingBottom:mvs(100),
 

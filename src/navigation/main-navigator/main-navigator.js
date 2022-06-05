@@ -3,6 +3,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { StatusBar, View } from 'react-native';
+import BusinessProfile from '../../screens/business-profile-screen';
 import Otp from '../../screens/otp-screen/otp';
 import Splash from '../../screens/splash-screen/splash';
 import Onboarding from './../../screens/onboarding-screen/onboarding';
@@ -31,11 +32,12 @@ export const MainNavigator = () => {
   return (
     <View style={{flex:1}}>
       <StatusBar barStyle={'dark-content'} backgroundColor={colors.white}/>
-    <Stack.Navigator screenOptions={horizontalAnimation}>
+    <Stack.Navigator initialRouteName='BusinessProfile' screenOptions={horizontalAnimation}>
       <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="Onboarding" component={Onboarding} />
       <Stack.Screen name="Otp" component={Otp} />
       <Stack.Screen name="Signin" component={Signin} />
+      <Stack.Screen name="BusinessProfile" component={BusinessProfile} />
     </Stack.Navigator>
     </View>
   );
