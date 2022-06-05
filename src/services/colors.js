@@ -8,7 +8,19 @@ const colors = {
   GE0E0E0:'#E0E0E0',
   FF0000:'#FF0000',
   F0F0F0: '#F0F0F0',
-
+  G9B9B9B:'#9B9B9B',
+  GDFDFDF:'#DFDFDF',
+  GE1E1E1:'#E1E1E1',
+  border: '#707070',
+  black:'#000000',
+  FBF8F8:'#FBF8F8',
+  B1E1E1E:'#1E1E1E',
+  B323232:'#323232',
+  B1B1B1B:'#1B1B1B',
+  RFA3E3E:'#FA3E3E',
+  G878787:'#878787',
+  B2E3036:'#2E3036',
+  G5E5E5E:'#5E5E5E',
 
   headerTitle:'#424753',
   textColor:'#54585D',
@@ -27,7 +39,6 @@ const colors = {
   input_label: '#13092C',
   input_placehoder:'#BBC0C3',// '#DADBDA',
   input_txt_color: '#6f98ff',
-  border: '#707070',
   //white
   white: '#FFFFFF',
   ypsDark: '#47546E',
