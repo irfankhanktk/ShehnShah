@@ -1,9 +1,11 @@
 import { StyleSheet } from "react-native";
+import colors from "../../services/colors";
 import { mvs } from "../../services/metrices";
 
 export const STYLES = StyleSheet.create({
     container:{
         flex:1,
+        backgroundColor:colors.white,
     },
     body:{
         flex:1,

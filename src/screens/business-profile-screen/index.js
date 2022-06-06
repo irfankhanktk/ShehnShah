@@ -20,6 +20,8 @@ import { STYLES as styles } from './style';
 import ServiceButton from './../../components/molecules/services-button/index';
 import Buttons from '../../components/atoms/Button';
 import SemiBold from './../../presentation/typography/semibold-text';
+import CouponPromo from './../../components/coupon-promo/index';
+import ServiceOffering from './../../components/service-offering/index';
 const services = [
 
   { icon: 'Services', title: 'Services', value: '5 Services' },
@@ -42,7 +44,7 @@ const BusinessProfile = (props) => {
 
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={styles.container}>
       <View style={styles.body}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -126,57 +128,10 @@ const BusinessProfile = (props) => {
             <ServiceButton icon='Brake' title='Brake Service' />
             <ServiceButton icon='Engine' title='Engine' />
           </View>
-          <View style={{ backgroundColor: colors.FBF8F8,flexGrow:1, paddingBottom:mvs(30), }}>
+          <View style={{ backgroundColor: colors.FBF8F8, flexGrow: 1, paddingBottom: mvs(30), }}>
             <HeadingTitle title='Service offering' />
-            <View>
-              <ScrollView horizontal contentContainerStyle={{ paddingHorizontal: mvs(18) }}>
-                {[0, 1, 2, 3, 4].map((ele, index) => (<View style={{ width: mvs(181), marginRight: mvs(7), borderTopRightRadius: mvs(8), borderRadius: mvs(8), overflow: 'hidden' }}>
-                  <ImagePlaceholder containerStyle={{ height: mvs(104), width: '100%', }} uri={Bg} />
-                  <View style={{ padding: mvs(5), backgroundColor: colors.white }}>
-                    <Row alignItems='center'>
-                      <Row alignItems='center'>
-                        <StarFill height={mvs(13)} width={mvs(13)} />
-                        <Regular label={` ${4.9} (${2.3}k)`} />
-                      </Row>
-                      <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                        <Buttons.ButtonPrimary title='AED 30' textStyle={{ fontSize: mvs(12), color: colors.primary }} style={{ width: mvs(72), borderRadius: mvs(5), height: mvs(21), backgroundColor: `${colors.primary}30` }} />
-                      </View>
-                    </Row>
-                    <Regular color={colors.black} numberOfLines={2} label={'Subtitle or description Subtitle or...'} />
-                    <Regular size={mvs(12)} color={colors.primary} label={'Business Name'} />
-                    <Row>
-                      <Row justifyContent='flex-start'>
-                        <Minute />
-                        <Regular size={mvs(12)} color={colors.B2E3036} label={' 20 Min'} />
-                      </Row>
-                      <Row justifyContent='flex-start'>
-                        <Percent />
-                        <Regular size={mvs(12)} color={colors.B2E3036} label={' Get 20% OFF'} />
-                      </Row>
-                    </Row>
-                  </View>
-                </View>))}
-              </ScrollView>
-            </View>
-            <HeadingTitle title='Coupons & Promos' />
-            <View>
-              <ScrollView horizontal contentContainerStyle={{ paddingHorizontal: mvs(18) }}>
-                {[0, 1, 2, 3, 4].map((ele, index) => (<View style={{ width: mvs(134), marginRight: mvs(7), borderTopRightRadius: mvs(8), borderRadius: mvs(8), overflow: 'hidden' }}>
-                  <ImagePlaceholder containerStyle={{ height: mvs(91), width: '100%', }} uri={Bg} />
-                  <View style={{ padding: mvs(5), backgroundColor: colors.white }}>
-                    <Regular size={mvs(12)} color={colors.primary} label={'Business Name'} />
-                    <SemiBold color={colors.black} numberOfLines={2} label={'50% OFF Car Wash'} />
-                    <Regular size={mvs(11)} color={colors.G5E5E5E} label={'Description...'} />
-                    <TouchableOpacity style={{ width: mvs(83),backgroundColor:colors.primary, height: mvs(15), borderRadius: mvs(3),flexDirection:'row',alignItems:'center',justifyContent:'center' }}>
-                      <Cross/>
-                      <Regular label={' Cash Voucher'} style={{ textTransform:'uppercase',fontSize: mvs(8), color: colors.white }} />
-                    </TouchableOpacity>
-                    <Bold size={mvs(12)} color={colors.black} label={'3.00 AED'}/>
-                    {/* <Buttons.ButtonPrimary style={{ width: mvs(83), height: mvs(15), borderRadius: mvs(3), }} title='Cash Voucher' /> */}
-                  </View>
-                </View>))}
-              </ScrollView>
-            </View>
+            <ServiceOffering />
+            <CouponPromo />
           </View>
         </ScrollView>
       </View>

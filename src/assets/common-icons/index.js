@@ -32,4 +32,7 @@ export {default as Engine } from './engine.svg';
 export {default as Percent } from './percent.svg';
 export {default as Minute } from './minute.svg';
 export {default as Cross } from './cross.svg';
+export {default as Total } from './total.svg';
+export {default as RightArrow } from './right-arrow.svg';
+export {default as OffCarWash } from './off-car-wash.svg';
 

@@ -12,8 +12,6 @@ const ServiceCard = ({
     icon = 'Services',
     middleText,
     div = true,
-    rate=4,
-    children,
 }) => {
     const Icon = SVGS[icon];
     return (
