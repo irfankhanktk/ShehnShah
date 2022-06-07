@@ -30,7 +30,7 @@ export const CustomHeader = ({
     <View style={[styles.CONTAINER, style, { backgroundColor: colors.background }]}>
       <View style={{}}>
         {allowBackBtn && (
-          <View style={{ flexDirection: 'row', }}>
+          <View style={{ flexDirection: 'row', justifyContent:'space-between'}}>
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Back />
             </TouchableOpacity>
@@ -48,7 +48,7 @@ export const CustomHeader = ({
       {spacebetween && (
         <Regular
           label={title}
-          style={{ ...styles.TITLE, color: colors?.primary, }}
+          style={{ ...styles.TITLE, color: colors?.lightgray1 }}
         />
       )}
       <View style={{}}>

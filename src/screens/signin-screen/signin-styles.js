@@ -48,7 +48,7 @@ export const Signin_Styles = StyleSheet.create({
         fontWeight:'bold'
     },
     welcomeText:{
-     fontSize:24,
+     fontSize:20,
      alignSelf:'center',
      marginTop:mvs(50),
      color:colors.black
@@ -64,7 +64,7 @@ export const Signin_Styles = StyleSheet.create({
         marginTop:mvs(18.5),
     },
     button:{
-        marginTop:mvs(20),
+        marginTop:mvs(40),
         height:mvs(60)
     },
     buttonText:{
@@ -100,5 +100,36 @@ export const Signin_Styles = StyleSheet.create({
     },
     socialIconText:{
         marginLeft:mvs(5)
-    }
+    },
+    frontRowText:{
+        alignSelf:'center',
+        color:colors.primary,
+        fontSize:26
+    },
+    phoneContainer: {
+        flex:1,
+        height: 50,
+     },
+      textInput: {
+        paddingVertical: 0,
+        borderLeftWidth:2.5,
+        borderLeftColor:colors.gray,
+        paddingLeft:mvs(10)
+      },
+      phoneNumberView:{
+        backgroundColor: colors.white,
+        width: '100%',
+        padding: 0,
+        borderRadius: mvs(10),
+        paddingHorizontal: mvs(15),
+        color: colors.primary,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+        height:mvs(60),
+        borderRadius:10,
+        borderWidth:1,
+        borderColor:colors.gray,
+        ...colors.shadow
+      }
 });

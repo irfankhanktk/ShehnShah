@@ -46,6 +46,11 @@ const colors = {
   price_border: '#D9D9D9',
   filter_divider: '#848484',
   disputes: '#DDB922',
+  tabBackground:'#FBF8F8',
+  lightPink:'#F2E0E0',
+  red:'#FE0922',
+  greenProgress:'#69CB07',
+  lightYellow:"#F5ECDE",
   //shadow
   shadow: {
     shadowColor: '#000',

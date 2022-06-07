@@ -41,6 +41,24 @@ export const INPUT_STYLES = StyleSheet.create({
     ...colors.shadow
     
   },
+  DROPDOWN_INPUT: {
+    backgroundColor: colors.white,
+    width: '100%',
+    padding: mvs(10),
+    borderRadius: mvs(10),
+    paddingHorizontal: mvs(10),
+    marginTop:mvs(19),
+    color: colors.primary,
+    height:mvs(82),
+    borderRadius:10,
+    borderWidth:1,
+    borderColor:colors.gray,
+    ...colors.shadow
+    
+  },
+  TXTINPUT:{
+    fontSize:17
+  },
   SEND_CODE: { position: 'absolute', right: mvs(0), top: mvs(10), color: colors.primary, textDecorationLine: 'underline', fontSize: mvs(13) },
   REVIEW_CONTAINER: {
     padding: mvs(20),
@@ -65,6 +83,16 @@ export const INPUT_STYLES = StyleSheet.create({
 
     elevation: 5,
   }
+  ,
+  dropdown1BtnStyle: {
+    height: mvs(30),
+    backgroundColor: colors.white,
+    width:'100%',
+  },
+  dropdown1BtnTxtStyle: {color: colors.black, textAlign: 'left',fontWeight:'bold'},
+  dropdown1DropdownStyle: {backgroundColor: colors.white,width:'73%'},
+  dropdown1RowStyle: {backgroundColor:  colors.white, borderBottomColor: colors.black,width:'100%'},
+  dropdown1RowTxtStyle: {color: colors.black, textAlign: 'left'},
   // INPUT_CONTAINER: {
   //     // padding:0,
   //     height:mvs(55),
