@@ -9,8 +9,10 @@ import {
   View,
   Image,
 } from 'react-native';
+import SelectDropdown from 'react-native-select-dropdown';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as SVGS from '../../assets/common-icons';
 import Regular from '../../presentation/typography/regular-text';
 import SemiBold from '../../presentation/typography/semibold-text';
@@ -20,7 +22,20 @@ import {INPUT_STYLES} from '../../styles/input';
 import {OtpInput} from './../molecules/otp-input/otp-input';
 import Buttons from './Button';
 import PhoneInput from 'react-native-phone-input'
-
+const countries = [
+  'Egypt',
+  'Canada',
+  'Australia',
+  'Ireland',
+  'Brazil',
+  'England',
+  'Dubai',
+  'France',
+  'Germany',
+  'Saudi Arabia',
+  'Argentina',
+  'India',
+];
 type IProps = {
   label?: string | number;
   value?: string;
@@ -123,6 +138,74 @@ const InputSecondary: FC<IProps> = ({
         )}
       </View>
     </View>
+  );
+};
+
+const InputDropDown: FC<IProps> = ({
+  label = '',
+  value = '',
+  onChangeText,
+  placeholder = 'placeholder',
+  style
+}) => {
+  const [eye, setEye] = React.useState(true);
+  const {colors}: any = useTheme();
+
+  return (
+   <View
+        style={{ ...INPUT_STYLES.DROPDOWN_INPUT,...style}}>
+        <SemiBold
+          label={label}
+          style={{color: colors.text, marginBottom: mvs(10),marginLeft:mvs(17)}}
+        />
+        <SelectDropdown
+            data={countries}
+            defaultButtonText={placeholder}
+            onSelect={(selectedItem, index) => {
+              console.log(selectedItem, index);
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => {
+              return selectedItem;
+            }}
+            rowTextForSelection={(item, index) => {
+              return item;
+            }}
+            buttonStyle={INPUT_STYLES.dropdown1BtnStyle}
+            buttonTextStyle={INPUT_STYLES.dropdown1BtnTxtStyle}
+            renderDropdownIcon={isOpened => {
+              return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={10} />;
+            }}
+            dropdownIconPosition={'right'}
+            dropdownStyle={INPUT_STYLES.dropdown1DropdownStyle}
+            rowStyle={INPUT_STYLES.dropdown1RowStyle}
+            rowTextStyle={INPUT_STYLES.dropdown1RowTxtStyle}
+
+          />
+        
+     </View>
+   
+  );
+};
+const InputView: FC<IProps> = ({
+  label = '',
+  value = '',
+  onChangeText,
+  placeholder = 'placeholder',
+  style
+}) => {
+ 
+  const {colors}: any = useTheme();
+
+  return (
+   <View
+        style={{ ...INPUT_STYLES.DROPDOWN_INPUT,paddingLeft:mvs(26),...style}}>
+        <SemiBold
+          label={label}
+          style={{color: colors.text, marginBottom: mvs(1),fontSize:14}}
+        />
+        <TextInput style={INPUT_STYLES.TXTINPUT} placeholder={placeholder} onChangeText={onChangeText}/>
+     </View>
+   
   );
 };
 const ReviewInput: FC<IProps> = ({
@@ -237,5 +320,7 @@ export const INPUT_FIELD = {
   InputSecondary,
   ReviewInput,
   CustomOtpInput,
-  PhoneTextInput
+  PhoneTextInput,
+  InputDropDown,
+  InputView
 };

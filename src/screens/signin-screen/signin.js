@@ -1,8 +1,8 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
-import React from 'react';
+import React,{useState,useRef} from 'react';
 import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Apple, Facebook, Google, SLogo } from '../../assets/common-icons';
+import { Apple, Facebook, Google, SLogo, Tick } from '../../assets/common-icons';
 import Buttons from '../../components/atoms/Button';
 import { INPUT_FIELD } from '../../components/atoms/Input';
 import Bold from '../../presentation/typography/bold-text';
@@ -10,15 +10,15 @@ import Regular from '../../presentation/typography/regular-text';
 import allColors from '../../services/colors';
 import { mvs } from '../../services/metrices';
 import DIVIY_API from '../../store/api-calls';
-import ThemeContext from './../../context/theme-context';
+import PhoneInput from 'react-native-phone-input'
 import { Signin_Styles as styles } from './signin-styles';
 const Signin = props => {
   const navigation = useNavigation();
   const [loading, setLoading] = React.useState(false);
-  const [selectedTab, setSelectedTab] = React.useState('login');
-  const [isSignUpWithPhone, setPhoneSignUp] = React.useState(false);
-  const {showAlert} = React.useContext(ThemeContext);
-
+  const [selectedTab, setSelectedTab] = React.useState('l');
+  const [isSignUpWithPhone, setPhoneSignUp] = React.useState(true);
+  const [phoneNumber, setphoneNumber] = useState('12015550123');
+  const phoneInput = useRef(null);
   const [payload, setPayload] = React.useState({
     email: '',
     password: '',
@@ -37,14 +37,15 @@ const Signin = props => {
   const onSigUpWithPhone = async () => {
     setPhoneSignUp(true)
   };
+ 
   return (
     <View style={{ ...styles.container, backgroundColor: colors.background }}>
       <ScrollView>
         <View style={styles.body}>
-          <View style={{alignItems: 'center'}}>
+           {/* <View style={{alignItems: 'center'}}>
             <SLogo  />
           </View>
-          <View style={styles.tabView}>
+         <View style={styles.tabView}>
             <Buttons.ButtonPrimary
               disabled={loading}
               loading={loading}
@@ -61,7 +62,7 @@ const Signin = props => {
               textStyle={selectedTab=="signup"?styles.selectedTabButtonText:styles.unSelectedTabButtonText}
               title={'Register '}
             />
-          </View>
+          </View> */}
           {selectedTab=="login"?
           <>
           <Bold label={"Welcome Back!"} style={styles.welcomeText}/>
@@ -174,18 +175,26 @@ const Signin = props => {
 
           </>:isSignUpWithPhone==true?
            <>
-            <Bold label={"Create Your Account"} style={styles.welcomeText}/>
-            <Regular label={"Enter your phone number and we’ll send"} style={styles.welcomeSubText}/>
-            <Regular label={"you a four-digit code in SMS."} style={styles.welcomeSubText}/>
-            <View style={{...styles.input_container,marginTop:mvs(50)}}>
-              <INPUT_FIELD.InputSecondary
-                  value={payload.name}
-                    leftIcon='User'
-                    rightIcon=''
-                  keyboardType={'name-phone-pad'}
-                  onChangeText={t => setPayload({...payload, name: t})}
-                  label="PHONE NUMBER"
-                  placeholder="+1 (201) 555-0123"/>
+            <Regular label={"Front Row"} style={styles.frontRowText}/>
+            <Bold label={"Welcome Back!"} style={styles.welcomeText}/>
+            <Regular label={"Enter your mobile number"} style={styles.welcomeSubText}/>
+            <Regular label={"to continue."} style={styles.welcomeSubText}/>
+            <Bold label={"MOBILE"} style={{marginTop:mvs(30)}}>
+              <Regular label={" NUMBER"}/>
+             </Bold>
+            <View style={{...styles.phoneNumberView,marginTop:mvs(10)}}>
+              
+              <PhoneInput
+                  ref={phoneInput}
+                  initialCountry={'us'}
+                  initialValue="13178675309"
+                  style={styles.phoneContainer}
+                  textStyle={styles.textInput}
+                  onChangePhoneNumber={text => {
+                    setphoneNumber(text);
+                  }}
+                />
+                <Tick style={{}}/>
              </View>
               <Buttons.ButtonPrimary
                 disabled={loading}
@@ -195,28 +204,7 @@ const Signin = props => {
                 style={{...styles.button}}
                 title={'Continue'}
               />
-              <Buttons.ButtonPrimary
-                disabled={loading}
-                loading={loading}
-                onClick={onSigUpWithPhone}
-                textStyle={styles.buttonText}
-                style={{...styles.button,backgroundColor:colors.white,borderWidth:1.4,borderColor:allColors.primary}}
-                title={'Sign up with Email Address'}
-              />
-              <Regular label={"Continue With"} style={styles.continueWithText}/>
-                <View style={styles.socialIconView}>
-                    <Google/>
-                    <Regular label={"Sign in with Google"} style={styles.socialIconText}/>
-                </View>
-                <View style={styles.socialIconView}>
-                    <Facebook/>
-                    <Regular label={"Sign in with Facebook"} style={styles.socialIconText}/>
-                </View>
-                <View style={styles.socialIconView}>
-                    <Apple/>
-                    <Regular label={"Sign in with Facebook"} style={styles.socialIconText}/>
-                </View>
-          </>:null
+           </>:null
            
           }
         </View>
