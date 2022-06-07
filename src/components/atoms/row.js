@@ -2,10 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 const Row = ({
     style,
+    alignItems='flex-start',
+    justifyContent='space-between',
     children,
 }) => {
     return (
-        <View style={[styles.container,style]}>
+        <View style={[styles.container,{alignItems:alignItems,justifyContent:justifyContent},style]}>
             {children}
         </View>
     );

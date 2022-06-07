@@ -9,6 +9,9 @@ import Splash from '../../screens/splash-screen/splash';
 import Onboarding from './../../screens/onboarding-screen/onboarding';
 import Signin from './../../screens/signin-screen/signin';
 import colors from './../../services/colors';
+import ServiceDetails from './../../screens/service-details-screen/index';
+import ServiceOfferingDetails from './../../screens/service-offering-details-screen/index';
+import CouponDetails from './../../screens/coupon-details-screen/index';
 import About from '../../screens/about/about';
 import MyVehicle from '../../screens/my-vehicle/my-vehicle';
 import Congratulation from '../../screens/congratulation/congratulation';
@@ -44,6 +47,9 @@ export const MainNavigator = () => {
       <Stack.Screen name="Otp" component={Otp} />
       <Stack.Screen name="Signin" component={Signin} />
       <Stack.Screen name="BusinessProfile" component={BusinessProfile} />
+      <Stack.Screen name="ServiceDetails" component={ServiceDetails} />
+      <Stack.Screen name="ServiceOfferingDetails" component={ServiceOfferingDetails} />
+      <Stack.Screen name="CouponDetails" component={CouponDetails} />
       <Stack.Screen name="About" component={About} />
       <Stack.Screen name="MyVehicle" component={MyVehicle} />
       <Stack.Screen name="Congratulation" component={Congratulation} />

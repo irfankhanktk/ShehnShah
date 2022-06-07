@@ -1,4 +1,3 @@
-import {automotive, hobbies, home, landScapping} from '../assets';
 import * as Actions from './action-types';
 import images from './../services/images';
 

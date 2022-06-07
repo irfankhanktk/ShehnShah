@@ -1,9 +1,11 @@
 import { StyleSheet } from "react-native";
+import colors from "../../services/colors";
 import { mvs } from "../../services/metrices";
 
 export const STYLES = StyleSheet.create({
     container:{
         flex:1,
+        backgroundColor:colors.white,
     },
     body:{
         flex:1,
@@ -12,8 +14,6 @@ export const STYLES = StyleSheet.create({
         flexGrow:1,
         // paddingHorizontal:mvs(22),
         paddingTop:mvs(20),
-        paddingBottom:mvs(100),
-
     },
     item:{
         marginBottom:mvs(15),
