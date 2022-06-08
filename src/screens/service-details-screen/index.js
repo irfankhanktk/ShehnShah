@@ -55,7 +55,7 @@ const ServiceDetails = (props) => {
                         </TouchableOpacity>}
                     </View>
                     <View style={{ backgroundColor: colors.FBF8F8, flexGrow: 1, paddingBottom: mvs(30), }}>
-                        <ServiceOffering />
+                        <ServiceOffering moveTo='ServiceOfferingDetails' />
                         <CouponPromo />
                     </View>
                 </ScrollView>

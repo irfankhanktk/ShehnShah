@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { Minute, Percent, StarFill } from '../../assets/common-icons';
 import { Bg } from '../../assets/images';
 import Regular from '../../presentation/typography/regular-text';
@@ -9,12 +9,16 @@ import Buttons from '../atoms/Button';
 import ImagePlaceholder from '../atoms/Placeholder';
 import Row from '../atoms/row';
 import HeadingTitle from '../molecules/heading-title';
-const ServiceOffering = () => {
+import {useNavigation, CommonActions, useTheme} from '@react-navigation/native';
+const ServiceOffering = ({moveTo='ServiceDetails'}) => {
+    const navigation = useNavigation();
     return (
         <View>
             <View>
                 <ScrollView horizontal contentContainerStyle={{ paddingHorizontal: mvs(18) }}>
-                    {[0, 1, 2, 3, 4].map((ele, index) => (<View style={{ width: mvs(181), marginRight: mvs(7), borderTopRightRadius: mvs(8), borderRadius: mvs(8), overflow: 'hidden' }}>
+                    {[0, 1, 2, 3, 4].map((ele, index) => (
+                 <TouchableOpacity onPress={()=>navigation.navigate(moveTo+"")}>
+                    <View style={{ width: mvs(181), marginRight: mvs(7), borderTopRightRadius: mvs(8), borderRadius: mvs(8), overflow: 'hidden' }}>
                         <ImagePlaceholder containerStyle={{ height: mvs(104), width: '100%', }} uri={Bg} />
                         <View style={{ padding: mvs(5), backgroundColor: colors.white }}>
                             <Row alignItems='center'>
@@ -39,7 +43,7 @@ const ServiceOffering = () => {
                                 </Row>
                             </Row>
                         </View>
-                    </View>))}
+                    </View></TouchableOpacity>))}
                 </ScrollView>
             </View>
         </View>

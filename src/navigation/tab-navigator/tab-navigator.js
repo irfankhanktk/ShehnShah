@@ -1,62 +1,84 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useTheme} from '@react-navigation/native';
 import React from 'react';
-import {View} from 'react-native';
+import {View,StyleSheet} from 'react-native';
+import { mvs } from '../../services/metrices';
 import BottomMenu from '../../components/atoms/BottomMenu';
 import BottomMenuIcon from '../../components/atoms/BottomMenuIcon';
 import Home from '../../screens/tab-screens/home-tab/home-tab';
-import Requests from './../../screens/tab-screens/requests-tab/requests-tab';
 import Profile from '../../screens/profile/profile';
-import {Settings as Setting} from '../../screens/settings-screen/settings';
-
+import SearchTab from '../../screens/tab-screens/search-tab/search-tab';
+import TopTabNavigator from '../tab-navigator/top-tab-navigator';
+import { Edit, TabActivityIcon, TabHomeIcon, TabProfileIcon, TabSearchIcon } from '../../assets/common-icons';
+import Row from '../../components/atoms/row';
+import SemiBold from '../../presentation/typography/semibold-text';
+import colors from '../../services/colors';
+import Regular from '../../presentation/typography/regular-text';
+import BusinessProfile from '../../screens/business-profile-screen';
 const BottomTab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-  const {colors} = useTheme();
+  
   return (
-    <View style={{flex: 1, backgroundColor: colors.background}}>
+    <View style={{flex: 1, backgroundColor: colors.white}}>
       <BottomTab.Navigator
         // options={{tabBarHideOnKeyboard:true}}
         screenOptions={{headerShown: false, tabBarHideOnKeyboard: true}}
         tabBar={props => <BottomMenu {...props} colors={colors} />}>
         <BottomTab.Screen
           name="Home"
-          component={Home}
+          component={BusinessProfile}
           options={{
             title: 'Home',
             tabBarIcon: focused => (
-              <BottomMenuIcon name="home" focused={focused} />
+              <Row style={{...styles.tabOption,backgroundColor:focused==true?colors.lightYellow:colors.white}}>
+                  <TabHomeIcon/>
+                  {focused==true?<Regular label={"Home"} style={styles.lableStyle}/>:null}
+                 
+              </Row>
+              
+              // <BottomMenuIcon name="home" focused={focused} />
             ),
           }}
         />
         <BottomTab.Screen
-          name="Requests"
-          component={Requests}
+          name="Search"
+          component={SearchTab}
           options={{
-            title: 'Requests',
+            title: 'Search',
             tabBarIcon: focused => (
-              <BottomMenuIcon name="order" focused={focused} />
+              <Row style={{...styles.tabOption,backgroundColor:focused==true?colors.lightYellow:colors.white}}>
+                  {focused==true?<Regular label={"Search"} style={styles.lableStyle}/>:null}
+                  <TabSearchIcon/>
+              </Row>
             ),
           }}
         />
         <BottomTab.Screen
-          name="Setting"
-          component={Setting}
+          name="Activity"
+          component={TopTabNavigator}
           options={{
-            title: 'Setting',
+            title: 'Activity',
             tabBarIcon: focused => (
-              <BottomMenuIcon name="setting" focused={focused} />
+              <Row style={{...styles.tabOption,backgroundColor:focused==true?colors.lightYellow:colors.white}}>
+                  {focused==true?<Regular label={"Activity"} style={styles.lableStyle}/>:null}
+                  <TabActivityIcon/>
+              </Row>
             ),
           }}
         />
+        
 
         <BottomTab.Screen
           name="Profile"
           component={Profile}
           options={{
-            title: 'Profile',
+            title: '',
             tabBarIcon: focused => (
-              <BottomMenuIcon name="user" focused={focused} />
+              <Row style={{...styles.tabOption,backgroundColor:focused==true?colors.lightYellow:colors.white}}>
+              <TabProfileIcon/>
+              {focused==true?<Regular label={"Profile"} style={styles.lableStyle}/>:null}
+             </Row>
             ),
           }}
         />
@@ -64,5 +86,18 @@ const TabNavigator = () => {
     </View>
   );
 };
-
+const styles = StyleSheet.create({
+  tabOption: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width:mvs(88),
+    borderRadius:6,
+    height:mvs(32),
+    paddingHorizontal:mvs(9)
+  },
+  lableStyle:{
+    color:colors.primary,
+    fontSize:14
+  }
+});
 export default TabNavigator;

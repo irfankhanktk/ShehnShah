@@ -6,6 +6,7 @@ import {
 // import colors from '../../config/colors';
 import { mvs } from '../../services/metrices';
 import Regular from '../../presentation/typography/regular-text';
+import allColors from '../../services/colors';
 // import { getScaleValueFromWidthPer, HP, palette } from "../config";
 //exnternal
 //internal imports
@@ -25,11 +26,11 @@ const BottomMenu =({colors,...props}) => {
         justifyContent:'space-between',
         height: mvs(83),
         paddingHorizontal:mvs(22),
-        borderTopLeftRadius: mvs(20),
-        borderTopRightRadius: mvs(20),
-        backgroundColor: colors.card,
-        overflow: 'hidden',
-        width: '100%',
+        backgroundColor: colors.white,
+        alignItems:'center',
+        ...allColors.shadow,
+        borderTopWidth:0.3,
+        borderTopColor:allColors.lightgrey1,
         ...style,
       }}>
       {routes.map((route, idx) => {
@@ -80,7 +81,8 @@ const BottomMenu =({colors,...props}) => {
             <View style={styles.customIcon}>
               {icon}
               <Regular
-                label={route.name}
+                //label={route.name}
+                label={''}
                 style={{
                   fontSize: mvs(10),
                   color: colors.headerTitle,

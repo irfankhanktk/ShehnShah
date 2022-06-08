@@ -43,7 +43,7 @@ const About = props => {
           <Regular label={"Enter your personal information and "} style={styles.welcomeSubText}/>
           <Regular label={"upload profile image"} style={styles.welcomeSubText}/>
           <View style={styles.imageView}>
-              <TouchableOpacity style={styles.cameraStyle} onPress={()=>alertService("He")}>
+              <TouchableOpacity style={styles.cameraStyle}>
                     <BlackCamera/>
               </TouchableOpacity>
               
@@ -88,7 +88,7 @@ const About = props => {
             <Buttons.ButtonPrimary
                 disabled={loading}
                 loading={loading}
-                onClick={onSigin}
+                onClick={()=>navigation.navigate("MyVehicle")}
                 textStyle={{...styles.buttonText,color:colors.white}}
                 style={{...styles.button}}
                 title={'Continue'}

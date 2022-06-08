@@ -4,7 +4,7 @@ import {
   View,
   ScrollView,
   Text,
-  Image,
+  TouchableOpacity,
   StatusBar,
   SafeAreaView,
 } from 'react-native';
@@ -25,23 +25,17 @@ import { Edit } from '../../assets/common-icons';
 import ProfileAction from '../../components/atoms/profile-action';
 // create a component
 const Profile = props => {
-  const {colors} = useTheme();
+ 
   const navigation = useNavigation();
-  const logout = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 1,
-        routes: [{name: 'SelectRoute'}],
-      }),
-    );
-  };
+  
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={'white'} barStyle="dark-content" />
-      <CustomHeader colors={colors} title='Profile'   spacebetween/>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: mvs(16) }}>
+    
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
          
          <View style={styles.body}>
+         <CustomHeader colors={colors} title='Profile' titleStyle={{color:colors.black,fontSize:19}}   spacebetween/>
            <Row style={{justifyContent:'space-between',alignItems:'center'}}>
               <View style={styles.imageView}>
                 <ImagePlaceholder isUser={true} style={styles.profileImage}/>
@@ -50,23 +44,24 @@ const Profile = props => {
                 <Bold label={"Victoria Cunningham"} style={styles.welcomeText}/>
                 <Regular label={"mail@site.com"} style={styles.welcomeSubText}/>
               </View>
-              <Edit/>
+              <TouchableOpacity onPress={()=>navigation.navigate("PersonalDetails")}>
+                <Text><Edit/></Text>
+               </TouchableOpacity>
+              
             </Row> 
-
-            <View style={styles.input_container}>
+        </View>
+          <View style={styles.input_container}>
                <ProfileAction label={"My Coupons"} leftIcon={"Coupon"} rightIcon={"Arrow"} subLabel={""} selected={true}/>
                <ProfileAction label={"Toyota Corolla"} leftIcon={"Vehicle"} rightIcon={"Arrow"} subLabel={"C19001-Sharjah"} selected={false}/>
                <ProfileAction label={"Notifications"} leftIcon={"Notification"} rightIcon={"Arrow"} subLabel={"Manage All notifications"} selected={false} style={{borderBottomLeftRadius:2,borderBottomRightRadius:2}}/>
-               <ProfileAction label={"Push Notifications"} leftIcon={"Notification"} rightIcon={"Arrow"} subLabel={"Manage All notifications"} selected={false} style={{marginTop:mvs(0),borderTopLeftRadius:2,borderTopRightRadius:2}}/>
+               <ProfileAction label={"Push Notifications"} leftIcon={"Notification"} rightIcon={"Arrow"} subLabel={"Manage All notifications"} selected={false} style={{marginTop:mvs(0),borderTopLeftRadius:1,borderTopRightRadius:1,borderWidth:0.3}}/>
             
-               <ProfileAction label={"Personal Details"} leftIcon={"Personal"} rightIcon={"Arrow"} subLabel={"Your name, number, email address"} selected={false} style={{borderBottomLeftRadius:2,borderBottomRightRadius:2}}/>
-               <ProfileAction label={"Security & Privacy"} leftIcon={"Security"} rightIcon={"Arrow"} subLabel={"Passwords & other security settings"} selected={false} style={{borderRadius:2,marginTop:mvs(0)}}/>
-               <ProfileAction label={"Terms & Conditions"} leftIcon={"Tcondition"} rightIcon={"Arrow"} subLabel={"Read all our terms and conditions"} selected={false} style={{borderRadius:2,marginTop:mvs(0)}}/>
-               <ProfileAction label={"Support"} leftIcon={"PSupport"} rightIcon={"Arrow"} subLabel={"We will be happy to help"} selected={false} style={{marginTop:mvs(0),borderTopLeftRadius:2,borderTopRightRadius:2}}/>
+               <ProfileAction label={"Personal Details"} leftIcon={"Personal"} rightIcon={"Arrow"} subLabel={"Your name, number, email address"} selected={false} style={{borderBottomLeftRadius:2,borderBottomRightRadius:2,borderBottomWidth:0.3}}/>
+               <ProfileAction label={"Security & Privacy"} leftIcon={"Security"} rightIcon={"Arrow"} subLabel={"Passwords & other security settings"} selected={false} style={{borderRadius:2,marginTop:mvs(0),borderWidth:0.3}}/>
+               <ProfileAction label={"Terms & Conditions"} leftIcon={"Tcondition"} rightIcon={"Arrow"} subLabel={"Read all our terms and conditions"} selected={false} style={{borderRadius:2,marginTop:mvs(0),borderWidth:0.3}}/>
+               <ProfileAction label={"Support"} leftIcon={"PSupport"} rightIcon={"Arrow"} subLabel={"We will be happy to help"} selected={false} style={{marginTop:mvs(0),borderTopLeftRadius:2,borderTopRightRadius:2,borderTopWidth:0.3}}/>
                <ProfileAction label={"Logout"} leftIcon={"Logout"} rightIcon={""} subLabel={""} labelStyle={{marginTop:mvs(15)}} selected={false}/>
             </View>
-          </View>
-          
         </ScrollView>
     </SafeAreaView>
   );

@@ -43,7 +43,7 @@ const Congratulation = props => {
             <Buttons.ButtonPrimary
                 disabled={loading}
                 loading={loading}
-                onClick={onSigin}
+                onClick={()=>navigation.navigate("BottomTab")}
                 textStyle={{...styles.buttonText,color:colors.white}}
                 style={{...styles.button}}
                 title={"Let's Explore Services"}/>

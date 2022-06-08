@@ -64,3 +64,8 @@ export {default as Liked } from '../activities-icons/liked.svg';
 export {default as Star } from '../activities-icons/star.svg';
 export {default as PrimaryPercentage } from '../activities-icons/percentage-primary.svg';
 export {default as GrayPercentage } from '../activities-icons/percentage-gray.svg';
+
+export {default as TabActivityIcon } from '../bottom-tab/activity.svg';
+export {default as TabHomeIcon } from '../bottom-tab/home.svg';
+export {default as TabSearchIcon } from '../bottom-tab/search.svg';
+export {default as TabProfileIcon } from '../bottom-tab/profile.svg';

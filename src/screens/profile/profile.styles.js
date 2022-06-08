@@ -6,12 +6,14 @@ const styles = StyleSheet.create({
   container:{
      flex:1,
     backgroundColor:colors.white,
-    paddingTop:mvs(10)
+    backgroundColor:colors.tabBackground
   },
   body:{
       flex:1,
-      paddingHorizontal:mvs(16),
+      paddingHorizontal:mvs(32),
       paddingTop:mvs(1),
+      backgroundColor:colors.white,
+      paddingVertical:mvs(26)
   },
   welcomeText:{
    fontSize:18,
@@ -22,7 +24,8 @@ const styles = StyleSheet.create({
    fontSize:15
   },
   input_container:{
-      marginTop:mvs(18.5),
+      marginTop:mvs(1),
+      paddingHorizontal:mvs(16)
   },
   button:{
       marginTop:mvs(40),

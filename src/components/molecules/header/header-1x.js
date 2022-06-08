@@ -8,7 +8,7 @@ import { mvs } from '../../../services/metrices';
 import Buttons from '../../atoms/Button';
 import ImagePlaceholder from '../../atoms/Placeholder';
 import { useNavigation } from '@react-navigation/native';
-
+import colors from '../../../services/colors';
 export const CustomHeader = ({
   // navigation,
   route,
@@ -23,11 +23,11 @@ export const CustomHeader = ({
   loading,
   isShowDelete=false,
   onPost,
-  onPressDelete,
+  onPressDelete,titleStyle
 }) => {
   const navigation=useNavigation();
   return (
-    <View style={[styles.CONTAINER, style, { backgroundColor: colors.background }]}>
+    <View style={[styles.CONTAINER, style, {  }]}>
       <View style={{}}>
         {allowBackBtn && (
           <View style={{ flexDirection: 'row', justifyContent:'space-between'}}>
@@ -48,7 +48,7 @@ export const CustomHeader = ({
       {spacebetween && (
         <Regular
           label={title}
-          style={{ ...styles.TITLE, color: colors?.lightgray1 }}
+          style={{ ...styles.TITLE, color: colors?.lightgray1,...titleStyle }}
         />
       )}
       <View style={{}}>

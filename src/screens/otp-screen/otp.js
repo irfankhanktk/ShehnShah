@@ -37,7 +37,7 @@ const Otp = props => {
             <Regular size={mvs(14)} color={colors.B363F4D} label={'Code’ll be active for another 40 seconds'} style={{ textAlign: 'center', marginTop: mvs(4), }} />
           </View> :
             <Regular size={mvs(14)} color={colors.FF0000} label={'Passcode Incorrect'} style={{ textAlign: 'center', marginTop: mvs(45),marginBottom: mvs(28)  }} />}
-          <Buttons.ButtonPrimary style={{}} title='Continue' />
+          <Buttons.ButtonPrimary style={{}} title='Continue' onClick={()=>navigation.navigate("About")}/>
         </ScrollView>
       </View>
     </View>
