@@ -33,6 +33,7 @@ export {default as Percent } from './percent.svg';
 export {default as Minute } from './minute.svg';
 export {default as Cross } from './cross.svg';
 export {default as Total } from './total.svg';
+export {default as Caret } from './carret.svg';
 export {default as RightArrow } from './right-arrow.svg';
 export {default as OffCarWash } from './off-car-wash.svg';
 
@@ -64,8 +65,17 @@ export {default as Liked } from '../activities-icons/liked.svg';
 export {default as Star } from '../activities-icons/star.svg';
 export {default as PrimaryPercentage } from '../activities-icons/percentage-primary.svg';
 export {default as GrayPercentage } from '../activities-icons/percentage-gray.svg';
-
+export {default as WhitePercentage } from '../activities-icons/percentage-white.svg';
 export {default as TabActivityIcon } from '../bottom-tab/activity.svg';
 export {default as TabHomeIcon } from '../bottom-tab/home.svg';
 export {default as TabSearchIcon } from '../bottom-tab/search.svg';
 export {default as TabProfileIcon } from '../bottom-tab/profile.svg';
+
+export {default as MasterCard } from '../payment-icons/master-card.svg';
+export {default as VisaCard } from '../payment-icons/visa.svg';
+export {default as AmericanExpressCard } from '../payment-icons/american-express.svg';
+export {default as DirectDebitCard } from '../payment-icons/direct-debit.svg';
+export {default as CirrusCard } from '../payment-icons/cirrus.svg';
+export {default as DiscoverCard } from '../payment-icons/discover.svg';
+export {default as SelectedCard } from '../payment-icons/selected.svg';
+export {default as UnSelectedCard } from '../payment-icons/unselected.svg';

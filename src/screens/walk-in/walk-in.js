@@ -1,8 +1,5 @@
-import {
-    useTheme
-  } from '@react-navigation/native';
-import React from 'react';
-import { ActivityIndicator, FlatList, TouchableOpacity,ScrollView, View } from 'react-native';
+import React,{useRef, useState} from 'react';
+import { TouchableOpacity,ScrollView, View, TextInput, Modal } from 'react-native';
 import { connect } from 'react-redux';
 import Buttons from '../../components/atoms/Button';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
@@ -18,7 +15,20 @@ import { CustomHeader } from '../../components/molecules/header/header-1x';
 import { Walk_In_Styles as styles } from './walk-in-styles';
 import colors from '../../services/colors';
 import { Bg } from '../../assets/images';
+
+import {Vehicle, WhitePercentage } from '../../assets/common-icons';
+import SemiBold from '../../presentation/typography/semibold-text';
+import PaymentItem from '../../components/atoms/payment-item';
+
+import PaymentSheet from '../../components/payment-method/payments';
+import NewPaymentSheet from '../../components/payment-method/new-pament';
+import alertService from '../../services/alert.service';
   const WalkIn = (props) => {
+  const refRBSheet = useRef(null);
+  const refRBNewPaymentSheet = useRef(null);
+  function newPayment(){
+    refRBNewPaymentSheet.current.open()
+  }
     return (
       <View style={{ ...styles.conntainer, backgroundColor: colors.background }}>
        <CustomHeader title='New Walk In Booking' titleStyle={{fontSize:15}} spacebetween allowBackBtn/>
@@ -46,8 +56,61 @@ import { Bg } from '../../assets/images';
                         </View>
                     </Row>
                     <TotalRateMap />
-                    
+                    <Row style={styles.rowView}>
+                            <View>
+                               <Bold label={"Date & time"} size={15}/>
+                               <Regular label={"12 February 2021-9:30 AM-10:00 AM"} size={16}/>
+                            </View>
+                            <TouchableOpacity>
+                                <Regular label={"Change"} size={15} color={colors.primary}/>
+                            </TouchableOpacity>
+                    </Row>
+                    <Row style={styles.rowView}>
+                      <Vehicle/>
+                        <View style={{flex:1,marginHorizontal:mvs(9)}}>
+                               <Medium label={"Toyota Corolla "} size={16}/>
+                               <Regular label={"C19001 - Sharjah"} size={12}/>
+                          </View>
+                     </Row>
+                    <View style={styles.couponView}>
+                      <Row style={{...styles.rowView,borderBottomWidth:0,paddingVertical:8}}>
+                            <Bold label={"Coupon"} size={15}/>
+                            <TouchableOpacity>
+                                  <Regular label={"Find Coupon"} size={15} color={colors.primary}/>
+                              </TouchableOpacity>
+                      </Row>
+                      <Row style={{...styles.rowView,borderBottomWidth:0,paddingTop:0}}>
+                           <ImagePlaceholder borderRadius={mvs(8)} uri={Bg} containerStyle={{ width: mvs(69), height: mvs(69) }} />
+                          <View style={{flex:1,marginHorizontal:mvs(9)}}>
+                                <SemiBold label={"50% OFF Car Wash"} size={16}/>
+                                <Regular label={"30.00 AED"} size={14}/>
+                                <Row style={styles.voucherView}>
+                                   <WhitePercentage/>
+                                   <Regular label={"CASH VOUCHER"} size={14} color={colors.white}/>
+                                </Row>
+                            </View>
+                      </Row>
+                    </View>
+                    <View style={styles.paymentView}>
+                        <Regular label={"Payment Method"} size={16}/>
+                        <PaymentItem onClick={() => refRBNewPaymentSheet.current.open()}/>
+                        <Row style={{...styles.priceView,marginTop:mvs(16.3)}}>
+                              <Medium label={"Sub Total"} size={14}/>  
+                              <Medium label={"$45.00"} size={14}/>
+                        </Row>
+                        <Row style={{...styles.priceView}}>
+                              <Medium label={"VAT (10%)"} size={14} color={colors.lightgrey1}/>  
+                              <Medium label={"$2.00"} size={14} color={colors.lightgrey1}/>
+                        </Row>
+                        <Row style={{...styles.priceView}}>
+                              <Bold label={"Grand Total"} size={14}/>  
+                              <Bold label={"$47.00"} size={14}/>
+                        </Row>
+                        <Buttons.ButtonPrimary title='Confirm' style={styles.button}/>
+                    </View>
                 </ScrollView>
+               <PaymentSheet ref={refRBSheet}  onAddClick={()=>newPayment()}/>
+               <NewPaymentSheet ref={refRBNewPaymentSheet}/>
             </View>
       </View>
     );
