@@ -1,20 +1,17 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {useTheme} from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {View,StyleSheet} from 'react-native';
-import { mvs } from '../../services/metrices';
+import { StyleSheet, View } from 'react-native';
+import { TabActivityIcon, TabHomeIcon, TabProfileIcon, TabSearchIcon } from '../../assets/common-icons';
 import BottomMenu from '../../components/atoms/BottomMenu';
-import BottomMenuIcon from '../../components/atoms/BottomMenuIcon';
-import Home from '../../screens/tab-screens/home-tab/home-tab';
-import Profile from '../../screens/profile/profile';
-import SearchTab from '../../screens/tab-screens/search-tab/search-tab';
-import TopTabNavigator from '../tab-navigator/top-tab-navigator';
-import { Edit, TabActivityIcon, TabHomeIcon, TabProfileIcon, TabSearchIcon } from '../../assets/common-icons';
 import Row from '../../components/atoms/row';
-import SemiBold from '../../presentation/typography/semibold-text';
-import colors from '../../services/colors';
 import Regular from '../../presentation/typography/regular-text';
 import BusinessProfile from '../../screens/business-profile-screen';
+import Profile from '../../screens/profile/profile';
+import SearchTab from '../../screens/tab-screens/search-tab/search-tab';
+import colors from '../../services/colors';
+import { mvs } from '../../services/metrices';
+import TopTabNavigator from '../tab-navigator/top-tab-navigator';
+import Home from './../../screens/tab-screens/home-tab/home-tab';
 const BottomTab = createBottomTabNavigator();
 
 const TabNavigator = () => {
@@ -27,7 +24,7 @@ const TabNavigator = () => {
         tabBar={props => <BottomMenu {...props} colors={colors} />}>
         <BottomTab.Screen
           name="Home"
-          component={BusinessProfile}
+          component={Home}
           options={{
             title: 'Home',
             tabBarIcon: focused => (
@@ -41,7 +38,7 @@ const TabNavigator = () => {
             ),
           }}
         />
-        <BottomTab.Screen
+        {/* <BottomTab.Screen
           name="Search"
           component={SearchTab}
           options={{
@@ -53,7 +50,7 @@ const TabNavigator = () => {
               </Row>
             ),
           }}
-        />
+        /> */}
         <BottomTab.Screen
           name="Activity"
           component={TopTabNavigator}
@@ -61,8 +58,8 @@ const TabNavigator = () => {
             title: 'Activity',
             tabBarIcon: focused => (
               <Row style={{...styles.tabOption,backgroundColor:focused==true?colors.lightYellow:colors.white}}>
-                  {focused==true?<Regular label={"Activity"} style={styles.lableStyle}/>:null}
                   <TabActivityIcon/>
+                  {focused==true?<Regular label={"Activity"} style={styles.lableStyle}/>:null}
               </Row>
             ),
           }}

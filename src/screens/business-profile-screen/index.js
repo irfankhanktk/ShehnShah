@@ -108,7 +108,7 @@ const BusinessProfile = (props) => {
           <LabelValue label={'Friday'} value={'10:00 AM - 6:00 PM'} vColor={colors.B323232} />
           <LabelValue bw={0} label={'Satureday'} value={'10:00 AM - 6:00 PM'} vColor={colors.B323232} />
           <HeadingTitle title='Rating & Reviews' />
-          <View style={{ paddingHorizontal: mvs(18) }}>
+          <View style={{ paddingHorizontal: mvs(18), }}>
             <Row justifyContent={'space-between'}>
               <Bold color={colors.black} style={{ transform: [{ translateY: -mvs(10) }] }} size={mvs(42)} label={'4.7'} />
               <Ratings width={mvs(230)} />
@@ -119,7 +119,7 @@ const BusinessProfile = (props) => {
             </Row>
           </View>
           <ReviewsRaing />
-          <HeadingTitle title='Services' />
+          {/* <HeadingTitle title='Services' />
           <View style={{ paddingHorizontal: mvs(18) }}>
             <ServiceButton icon='CarWash' title='Car Wash' />
             <ServiceButton icon='Maintenance' title='Maintenance Schedule' />
@@ -127,8 +127,8 @@ const BusinessProfile = (props) => {
             <ServiceButton icon='Brake' title='Brake Service' />
             <ServiceButton icon='Brake' title='Brake Service' />
             <ServiceButton icon='Engine' title='Engine' />
-          </View>
-          <View style={{ backgroundColor: colors.FBF8F8, flexGrow: 1, paddingBottom: mvs(30), }}>
+          </View> */}
+          <View style={{ backgroundColor: colors.FBF8F8, flexGrow: 1, paddingBottom: mvs(30),marginTop:mvs(20) }}>
             <HeadingTitle title='Service offering' />
             <ServiceOffering />
             <CouponPromo />

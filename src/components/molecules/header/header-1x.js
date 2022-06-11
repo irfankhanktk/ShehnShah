@@ -18,7 +18,6 @@ export const CustomHeader = ({
   post = false,
   userIcon = false,
   style,
-  colors,
   uri,
   loading,
   isShowDelete=false,
