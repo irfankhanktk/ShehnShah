@@ -3,9 +3,15 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android": "npx react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
+    "debug": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "clean": "cd android && ./gradlew clean",
+    "apk": "cd android && ./gradlew assembleRelease -x bundleReleaseJsAndAssets",
+    "dapk": "cd android && ./gradlew assembleDebug -x bundleDebugJsAndAssets",
+    "bundle": "cd android && ./gradlew bundleRelease -x bundleReleaseJsAndAssets",
+    "release": "cd android && ./gradlew :app:assembleRelease",
     "test": "jest",
     "lint": "eslint ."
   },
