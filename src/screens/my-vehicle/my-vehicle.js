@@ -73,6 +73,7 @@ const MyVehicle = props => {
                 <INPUT_FIELD.InputDropDown
                 value={payload.name}
                 style={{width:'46%'}}
+                dropdownStyle={{flex: 1,}}
                 onChangeText={t => setPayload({...payload, name: t})}
                 label="COLOR"
                 placeholder='Select'/>  

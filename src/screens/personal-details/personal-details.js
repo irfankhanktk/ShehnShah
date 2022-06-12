@@ -14,7 +14,7 @@ import { BlackCamera } from '../../assets/common-icons';
 import { Personal_Details_Styles as styles } from './personal-details-styles';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
 import alertService from '../../services/alert.service';
-import PhoneInput from 'react-native-phone-input'
+import PhoneInput from 'react-native-phone-number-input'
 import { Tick } from '../../assets/common-icons';
 import Row from '../../components/atoms/row';
 import colors from '../../services/colors';
@@ -85,16 +85,20 @@ const PersonalDetails = props => {
              </Bold>
            <View style={{...styles.phoneNumberView,marginTop:mvs(10)}}>
               
-              <PhoneInput
-                  ref={phoneInput}
-                  initialCountry={'us'}
-                  initialValue="13178675309"
-                  style={styles.phoneContainer}
-                  textStyle={styles.textInput}
-                  onChangePhoneNumber={text => {
-                    setphoneNumber(text);
-                  }}
-                />
+           <PhoneInput
+                    ref={phoneInput}
+                    defaultValue="(201) 555-0123"
+                    defaultCode="US"
+                    layout="first"
+                    containerStyle={styles.phoneContainer}
+                    textContainerStyle={styles.textInput}
+                    onChangeFormattedText={(text) => {
+                      // setFormattedValue(text);
+                      console.log("Formated Value "+text)
+                    }}
+                    onChangeText={(text) => {
+                      setphoneNumber(text); }}
+                 />
                 <Tick style={{}}/>
              </View>
           <Buttons.ButtonPrimary

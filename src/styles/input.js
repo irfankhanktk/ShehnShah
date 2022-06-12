@@ -90,7 +90,7 @@ export const INPUT_STYLES = StyleSheet.create({
     width:'100%',
   },
   dropdown1BtnTxtStyle: {color: colors.black, textAlign: 'left',fontWeight:'bold'},
-  dropdown1DropdownStyle: {backgroundColor: colors.white,width:'73%'},
+  dropdown1DropdownStyle: {backgroundColor: colors.white,flex:1},
   dropdown1RowStyle: {backgroundColor:  colors.white, borderBottomColor: colors.black,width:'100%'},
   dropdown1RowTxtStyle: {color: colors.black, textAlign: 'left'},
   // INPUT_CONTAINER: {

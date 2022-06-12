@@ -53,6 +53,7 @@ type IProps = {
   rightIcon: string;
   ref:any,
   setValue?: (arg: any) => void;
+  dropdownStyle:any;
 };
 
 const InputSecondary: FC<IProps> = ({
@@ -146,7 +147,8 @@ const InputDropDown: FC<IProps> = ({
   value = '',
   onChangeText,
   placeholder = 'placeholder',
-  style
+  style,
+  dropdownStyle,
 }) => {
   const [eye, setEye] = React.useState(true);
   const {colors}: any = useTheme();
@@ -176,7 +178,7 @@ const InputDropDown: FC<IProps> = ({
               return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={10} />;
             }}
             dropdownIconPosition={'right'}
-            dropdownStyle={INPUT_STYLES.dropdown1DropdownStyle}
+            dropdownStyle={[INPUT_STYLES.dropdown1DropdownStyle,dropdownStyle]}
             rowStyle={INPUT_STYLES.dropdown1RowStyle}
             rowTextStyle={INPUT_STYLES.dropdown1RowTxtStyle}
 

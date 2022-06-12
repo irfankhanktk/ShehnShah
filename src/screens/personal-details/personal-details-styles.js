@@ -60,9 +60,10 @@ export const Personal_Details_Styles = StyleSheet.create({
      },
       textInput: {
         paddingVertical: 0,
-        borderLeftWidth:2.5,
+        borderLeftWidth:2.1,
         borderLeftColor:colors.gray,
-        paddingLeft:mvs(10)
+        paddingLeft:mvs(10),
+        backgroundColor:colors.white
       },
       phoneNumberView:{
         backgroundColor: colors.white,

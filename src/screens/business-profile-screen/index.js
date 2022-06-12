@@ -2,8 +2,9 @@ import React from 'react';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import { Cross, HeartOutline, Map, Minute, Percent, Ratings, Share, StarFill } from '../../assets/common-icons';
+import { HeartOutline, Map, Minute, Ratings, Share } from '../../assets/common-icons';
 import { Bg } from '../../assets/images';
+import PageLoader from '../../components/atoms/page-loader';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
 import Row from '../../components/atoms/row';
 import ServiceCard from '../../components/molecules/service-card';
@@ -11,17 +12,14 @@ import ThemeContext from '../../context/theme-context';
 import Regular from '../../presentation/typography/regular-text';
 import { mvs } from '../../services/metrices';
 import DIVIY_API from '../../store/api-calls';
+import CouponPromo from './../../components/coupon-promo/index';
 import HeadingTitle from './../../components/molecules/heading-title/index';
 import LabelValue from './../../components/molecules/label-value-row/index';
 import ReviewsRaing from './../../components/molecules/reviews-rating/index';
+import ServiceOffering from './../../components/service-offering/index';
 import Bold from './../../presentation/typography/bold-text';
 import colors from './../../services/colors';
 import { STYLES as styles } from './style';
-import ServiceButton from './../../components/molecules/services-button/index';
-import Buttons from '../../components/atoms/Button';
-import SemiBold from './../../presentation/typography/semibold-text';
-import CouponPromo from './../../components/coupon-promo/index';
-import ServiceOffering from './../../components/service-offering/index';
 const services = [
 
   { icon: 'Services', title: 'Services', value: '5 Services' },
@@ -39,9 +37,20 @@ const BusinessProfile = (props) => {
     first_name: '',
   });
   const { showAlert } = React.useContext(ThemeContext);
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [isMoreBtn, setIsMoreBtn] = React.useState(true);
-
+  React.useEffect(()=>{
+    (()=>{
+      setTimeout(() => {
+          setLoading(false)
+      }, 500);
+    })()
+  },[])
+  if (loading) {
+    return <View style={{flex:1}}>
+      <PageLoader />
+    </View>
+  }
 
   return (
     <View style={styles.container}>
@@ -51,9 +60,9 @@ const BusinessProfile = (props) => {
           contentContainerStyle={styles.scroll}>
           <View style={{ height: mvs(210), width: '100%' }}>
             <ImagePlaceholder uri={Bg} containerStyle={{ width: '100%', height: '100%' }} />
-            <View style={{ position: 'absolute', left: mvs(20), top: mvs(20) }} >
+            <TouchableOpacity onPress={()=>props?.navigation?.goBack()} style={{ position: 'absolute', left: mvs(20), top: mvs(20) }} >
               <FontAwesome size={mvs(25)} color={colors.white} name='angle-left' />
-            </View>
+            </TouchableOpacity>
           </View>
           <Row style={{ paddingHorizontal: mvs(16), marginTop: mvs(25) }}>
             <View style={{ padding: mvs(10), borderRadius: mvs(23), borderWidth: 0.7, borderColor: colors.GDFDFDF }}>

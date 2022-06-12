@@ -5,7 +5,7 @@ import {mvs} from '../../services/metrices';
 const PageLoader = () => {
   return (
     <View style={styles.container}>
-      <ActivityIndicator color={colors.black} size={'small'} />
+      <ActivityIndicator color={colors.primary} size={'small'} />
     </View>
   );
 };
