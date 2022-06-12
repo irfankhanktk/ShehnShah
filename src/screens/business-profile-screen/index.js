@@ -25,7 +25,7 @@ import ServiceOffering from './../../components/service-offering/index';
 const services = [
 
   { icon: 'Services', title: 'Services', value: '5 Services' },
-  { icon: 'Photos', title: 'Services', value: '% Services' },
+  { icon: 'Photos', title: 'Photos', value: '10+ Photos' },
   { icon: 'Services', title: '2.5K Reviews', value: '5 Services' },
   { icon: 'Schedule', title: 'Availability', value: 'See Schedule' },
   { icon: 'Discount', title: 'Discounts', value: 'View Promos' },
@@ -56,19 +56,32 @@ const BusinessProfile = (props) => {
             </View>
           </View>
           <Row style={{ paddingHorizontal: mvs(16), marginTop: mvs(25) }}>
-            <View style={{ width: mvs(109), padding: mvs(21), borderRadius: mvs(23), borderWidth: 0.7, borderColor: colors.GDFDFDF }}>
-              <ImagePlaceholder borderRadius={mvs(12)} uri={Bg} containerStyle={{ width: mvs(68), height: mvs(68) }} />
+            <View style={{ padding: mvs(10), borderRadius: mvs(23), borderWidth: 0.7, borderColor: colors.GDFDFDF }}>
+              <ImagePlaceholder borderRadius={mvs(12)} uri={Bg} containerStyle={{ width: mvs(55), height: mvs(55) }} />
             </View>
             <View style={{ flex: 1, marginLeft: mvs(13) }}>
-              <Bold numberOfLines={2} label={'Total Al Safeer Car Wash & Car Service'} size={mvs(20)} />
-              <Row style={{ justifyContent: 'flex-start', alignItems: 'center', marginTop: mvs(5) }}>
-                <Map />
-                <Regular color={colors.G9B9B9B} size={mvs(16)} label={'  Sharjah Al nahada road'} />
+              <Row>
+                <Bold numberOfLines={2} style={{ flex: 1 }} label={'Total Al Safeer Car Wash & Car Service'} size={mvs(20)} />
+                <Row justifyContent={'space-between'} style={{ width: mvs(60) }}>
+                  <TouchableOpacity>
+                    <Share />
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                    <HeartOutline />
+                  </TouchableOpacity>
+                </Row>
               </Row>
-              <Row justifyContent={'space-between'} style={{ marginTop: mvs(5), }}>
-                <HeartOutline />
-                <Share />
+              <Row alignItems='flex-end'>
+                <Row style={{ justifyContent: 'flex-start', alignItems: 'center', flex: 1, }}>
+                  <Map />
+                  <Regular color={colors.G9B9B9B} size={mvs(16)} label={'  Sharjah Al nahada'} />
+                </Row>
+                <Row style={{ width: mvs(80), alignItems: 'flex-end' }}>
+                  <Minute />
+                  <Bold style={{ lineHeight: mvs(15), transform: [{ translateY: mvs(2) }] }} color={colors.B323232} size={mvs(15)} label={' 5.4 KM'} />
+                </Row>
               </Row>
+
             </View>
           </Row>
           <View style={{ borderBottomWidth: 0.7, borderColor: colors.GE1E1E1, marginTop: mvs(25), marginBottom: mvs(16), marginHorizontal: mvs(16) }} />
@@ -128,7 +141,7 @@ const BusinessProfile = (props) => {
             <ServiceButton icon='Brake' title='Brake Service' />
             <ServiceButton icon='Engine' title='Engine' />
           </View> */}
-          <View style={{ backgroundColor: colors.FBF8F8, flexGrow: 1, paddingBottom: mvs(30),marginTop:mvs(20) }}>
+          <View style={{ backgroundColor: colors.FBF8F8, flexGrow: 1, paddingBottom: mvs(30), marginTop: mvs(20) }}>
             <HeadingTitle title='Service offering' />
             <ServiceOffering />
             <CouponPromo />
