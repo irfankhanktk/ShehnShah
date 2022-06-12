@@ -10,7 +10,7 @@ import Regular from '../../presentation/typography/regular-text';
 import allColors from '../../services/colors';
 import { mvs } from '../../services/metrices';
 import DIVIY_API from '../../store/api-calls';
-import PhoneInput from 'react-native-phone-input'
+import PhoneInput from 'react-native-phone-number-input'
 import { Signin_Styles as styles } from './signin-styles';
 const Signin = props => {
   const navigation = useNavigation();
@@ -19,6 +19,7 @@ const Signin = props => {
   const [isSignUpWithPhone, setPhoneSignUp] = React.useState(true);
   const [phoneNumber, setphoneNumber] = useState('12015550123');
   const phoneInput = useRef(null);
+  const [formattedValue, setFormattedValue] = useState("");
   const [payload, setPayload] = React.useState({
     email: '',
     password: '',
@@ -183,17 +184,20 @@ const Signin = props => {
               <Regular label={" NUMBER"}/>
              </Bold>
             <View style={{...styles.phoneNumberView,marginTop:mvs(10)}}>
-              
               <PhoneInput
-                  ref={phoneInput}
-                  initialCountry={'us'}
-                  initialValue="13178675309"
-                  style={styles.phoneContainer}
-                  textStyle={styles.textInput}
-                  onChangePhoneNumber={text => {
-                    setphoneNumber(text);
-                  }}
-                />
+                    ref={phoneInput}
+                    defaultValue="(201) 555-0123"
+                    defaultCode="US"
+                    layout="first"
+                    containerStyle={styles.phoneContainer}
+                    textContainerStyle={styles.textInput}
+                    onChangeFormattedText={(text) => {
+                      setFormattedValue(text);
+                      console.log("Formated Value "+text)
+                    }}
+                    onChangeText={(text) => {
+                      setphoneNumber(text); }}
+                 />
                 <Tick style={{}}/>
              </View>
               <Buttons.ButtonPrimary

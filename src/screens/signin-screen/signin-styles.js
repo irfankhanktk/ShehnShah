@@ -109,12 +109,15 @@ export const Signin_Styles = StyleSheet.create({
     phoneContainer: {
         flex:1,
         height: 50,
+        alignItems:'center'
      },
       textInput: {
         paddingVertical: 0,
-        borderLeftWidth:2.5,
+        borderLeftWidth:1.3,
         borderLeftColor:colors.gray,
-        paddingLeft:mvs(10)
+        paddingLeft:mvs(10),
+        backgroundColor:colors.white,
+        height:mvs(45)
       },
       phoneNumberView:{
         backgroundColor: colors.white,
