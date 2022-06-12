@@ -10,18 +10,18 @@ import Buttons from '../atoms/Button';
 import ImagePlaceholder from '../atoms/Placeholder';
 import Row from '../atoms/row';
 import Bold from './../../presentation/typography/bold-text';
-const ServiceOffering = ({moveTo='ServiceDetails'}) => {
+const ServiceOffering = ({ moveTo = 'ServiceDetails' }) => {
     const navigation = useNavigation();
     return (
         <View>
             <View>
                 <ScrollView horizontal contentContainerStyle={{ paddingHorizontal: mvs(18) }}>
                     {[0, 1, 2, 3, 4].map((ele, index) => (
-                 <TouchableOpacity onPress={()=>navigation.navigate(moveTo+"")}>
-                    <View style={{ width: mvs(250), marginRight: mvs(7), borderTopRightRadius: mvs(8), borderRadius: mvs(8), overflow: 'hidden' }}>
-                        <ImagePlaceholder containerStyle={{ height: mvs(120), width: '100%', }} uri={Bg} />
-                        <View style={{ padding: mvs(5), backgroundColor: colors.white }}>
-                            {/* <Row alignItems='center'>
+                        <TouchableOpacity onPress={() => navigation.navigate(moveTo + "")}>
+                            <View style={{ width: mvs(250), marginRight: mvs(7), borderTopRightRadius: mvs(8), borderRadius: mvs(8), overflow: 'hidden' }}>
+                                <ImagePlaceholder containerStyle={{ height: mvs(120), width: '100%', }} uri={Bg} />
+                                <View style={{ padding: mvs(5), backgroundColor: colors.white }}>
+                                    {/* <Row alignItems='center'>
                                 <Row alignItems='center'>
                                     <StarFill height={mvs(13)} width={mvs(13)} />
                                     <Regular label={` ${4.9} (${2.3}k)`} />
@@ -30,22 +30,23 @@ const ServiceOffering = ({moveTo='ServiceDetails'}) => {
                                     <Buttons.ButtonPrimary title='AED 30' textStyle={{ fontSize: mvs(12), color: colors.primary }} style={{ width: mvs(72), borderRadius: mvs(5), height: mvs(21), backgroundColor: `${colors.primary}30` }} />
                                 </View>
                             </Row> */}
-                            <Bold color={colors.black} numberOfLines={2} label={'Subtitle or description'} />
-                            <Regular size={mvs(13)} color={colors.black} numberOfLines={2} label={'Subtitle or description'} />
-                            {/* <Regular size={mvs(12)} color={colors.primary} label={'Business Name'} /> */}
-                            <Row style={{marginTop:mvs(10)}}>
-                                {/* <Row justifyContent='flex-start'>
+                                    <Bold color={colors.black} numberOfLines={2} label={'Subtitle or description'} />
+                                    <Regular size={mvs(13)} color={colors.black} numberOfLines={2} label={'Subtitle or description'} />
+                                    {/* <Regular size={mvs(12)} color={colors.primary} label={'Business Name'} /> */}
+                                    <Row style={{ marginTop: mvs(10) }}>
+                                        {/* <Row justifyContent='flex-start'>
                                     <Minute />
                                     <Regular size={mvs(12)} color={colors.B2E3036} label={' 20 Min'} />
                                 </Row> */}
-                                <Row justifyContent='flex-start'>
-                                    <Percent />
-                                    <Regular size={mvs(12)} color={colors.B2E3036} label={' Get 20% OFF'} />
-                                </Row>
-                                <Buttons.ButtonPrimary title='AED 30' textStyle={{ fontSize: mvs(12), color: colors.primary }} style={{ width: mvs(72), borderRadius: mvs(5), height: mvs(21), backgroundColor: `${colors.primary}30` }} />
-                            </Row>
-                        </View>
-                    </View></TouchableOpacity>))}
+                                        <Row justifyContent='flex-start'>
+                                            <Percent />
+                                            <Regular size={mvs(12)} color={colors.B2E3036} label={' Get 20% OFF'} />
+                                        </Row>
+                                        <Buttons.ButtonPrimary title='AED 30' textStyle={{ fontSize: mvs(12), color: colors.primary }} style={{ width: mvs(72), borderRadius: mvs(5), height: mvs(21), backgroundColor: `${colors.primary}30` }} />
+                                    </Row>
+                                </View>
+                            </View>
+                        </TouchableOpacity>))}
                 </ScrollView>
             </View>
         </View>
