@@ -9,11 +9,11 @@ import RatingStar from './../rating-star/index';
 import Regular from './../../../presentation/typography/regular-text';
 import { Bg } from '../../../assets/images';
 const ReviewsRaing = ({
-    bg=`${colors.primary}70`,
+    bg='#ffedce',
 }) => {
     return (
         <View style={{ marginTop: mvs(30) }}>
-            <ScrollView horizontal contentContainerStyle={{ paddingHorizontal: mvs(18) }}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: mvs(18) }}>
                 {[0, 1, 2, 3, 4].map((ele, index) => (
                     <View style={{ paddingHorizontal: mvs(12), marginRight: mvs(16), width: width - mvs(65), paddingVertical: mvs(16), backgroundColor: bg, borderRadius: mvs(5) }}>
                         <Row justifyContent='flex-start' style={{}}>

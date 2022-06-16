@@ -47,7 +47,7 @@ export const CustomHeader = ({
       {spacebetween && (
         <Regular
           label={title}
-          style={{ ...styles.TITLE, color: colors?.lightgray1,...titleStyle }}
+          style={{ ...styles.TITLE, color: colors.primary,...titleStyle }}
         />
       )}
       <View style={{}}>

@@ -56,7 +56,7 @@ const ServiceDetails = (props) => {
                     </View>
                     <View style={{ backgroundColor: colors.FBF8F8, flexGrow: 1, paddingBottom: mvs(30), }}>
                         <ServiceOffering moveTo='ServiceOfferingDetails' />
-                        <CouponPromo />
+                        <CouponPromo {...props} />
                     </View>
                 </ScrollView>
             </View>

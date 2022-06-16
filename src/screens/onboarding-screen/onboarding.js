@@ -47,6 +47,7 @@ const Onboarding = (props) => {
             
                 <ScrollView showsVerticalScrollIndicator={false} style={styles.body}>
                     <Animated.FlatList
+                        showsHorizontalScrollIndicator={false}
                         onScroll={onScrollEvent()}
                         style={{}}
                         contentContainerStyle={{}}
@@ -67,14 +68,13 @@ const Onboarding = (props) => {
                         keyExtractor={(item, index) => index + ''}
                     />
                 {pagination()}
-                <View style={{justifyContent:'flex-end',paddingHorizontal:mvs(22),paddingTop:mvs(30),paddingBottom:mvs(20)}}>
+                <View style={{justifyContent:'flex-end',paddingHorizontal:mvs(22),paddingTop:mvs(20),paddingBottom:mvs(40)}}>
                     <Row>
                      <Buttons.ButtonPrimary onClick={()=>props?.navigation?.navigate('Signin')}  title='Login'/>
                     </Row>
                 </View>
                 </ScrollView>
           
-            
         </View>
     );
 };

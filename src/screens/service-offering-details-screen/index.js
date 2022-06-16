@@ -87,16 +87,20 @@ const ServiceOfferingDetails = (props) => {
                     </View>
                     <ReviewsRaing bg={colors.GD8D8D8} />
                     <View style={{ backgroundColor: colors.FBF8F8, flexGrow: 1, paddingBottom: mvs(30), }}>
-                        <CouponPromo />
-                        <Row style={{ paddingHorizontal: mvs(18), marginTop: mvs(20),marginBottom:mvs(10) }}>
+                        <CouponPromo {...props} />
+                        {/* <Row style={{ paddingHorizontal: mvs(18), marginTop: mvs(20),marginBottom:mvs(10) }}>
                             <Bold label={'People also search for'} size={mvs(20)} color={colors.black} />
                             <TouchableOpacity>
                                 <Regular label={'See All'} size={mvs(16)} color={colors.primary} />
                             </TouchableOpacity>
                         </Row>
-                        <ServiceOffering />
+                        <ServiceOffering /> */}
 
                     </View>
+                    <View style={{ paddingHorizontal: mvs(18) }}>
+                        <Buttons.ButtonPrimary onClick={()=>props?.navigation?.navigate('WalkIn')} title='Book Now' />
+                    </View>
+
                 </ScrollView>
             </View>
         </View>

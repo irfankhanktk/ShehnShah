@@ -30,7 +30,7 @@ const Congratulation = props => {
   return (
   <View style={{ ...styles.container, backgroundColor: colors.background }}>
       
-     <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: mvs(16) }}>
+     <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: mvs(16),paddingBottom:mvs(30) }}>
          
       <View style={styles.body}>
          <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
@@ -50,7 +50,7 @@ const Congratulation = props => {
             <Buttons.ButtonPrimary
                 disabled={loading}
                 loading={loading}
-                onClick={onSigin}
+                onClick={()=>navigation.navigate("Onboarding")}
                 textStyle={styles.buttonText}
                 style={{...styles.button,backgroundColor:colors.white,borderColor:allColors.primary,borderWidth:2}}
                 title={'How it works?'}/>

@@ -33,7 +33,7 @@ import alertService from '../../services/alert.service';
       <View style={{ ...styles.conntainer, backgroundColor: colors.background }}>
        <CustomHeader title='New Walk In Booking' titleStyle={{fontSize:15}} spacebetween allowBackBtn/>
        <View style={styles.body}>
-                <ScrollView contentContainerStyle={{ flexGrow: 1, }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1,paddingBottom:mvs(30) }}>
                     <View />
                     <Row style={{ paddingHorizontal: mvs(18) }}>
                         <ImagePlaceholder borderRadius={mvs(8)} uri={Bg} containerStyle={{ width: mvs(110), height: mvs(110) }} />

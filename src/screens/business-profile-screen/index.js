@@ -12,7 +12,6 @@ import ThemeContext from '../../context/theme-context';
 import Regular from '../../presentation/typography/regular-text';
 import { mvs } from '../../services/metrices';
 import DIVIY_API from '../../store/api-calls';
-import CouponPromo from './../../components/coupon-promo/index';
 import HeadingTitle from './../../components/molecules/heading-title/index';
 import LabelValue from './../../components/molecules/label-value-row/index';
 import ReviewsRaing from './../../components/molecules/reviews-rating/index';
@@ -95,7 +94,7 @@ const BusinessProfile = (props) => {
           </Row>
           <View style={{ borderBottomWidth: 0.7, borderColor: colors.GE1E1E1, marginTop: mvs(25), marginBottom: mvs(16), marginHorizontal: mvs(16) }} />
           <Row>
-            <ScrollView horizontal contentContainerStyle={{ paddingHorizontal: mvs(18) }}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: mvs(18) }}>
               {services.map((item, index) => <ServiceCard middleText={index === 2 ? '4.1' : null} value={index === 2 ? null : item.value} title={item.title} icon={item.icon} div={services.length - 1 !== index} />)}
             </ScrollView>
           </Row>
@@ -108,7 +107,7 @@ const BusinessProfile = (props) => {
           </View>
           <HeadingTitle title='Gallery' />
           <View>
-            <ScrollView contentContainerStyle={{ paddingHorizontal: mvs(18) }} horizontal>
+            <ScrollView showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: mvs(18) }} horizontal>
               {[0, 1, 2, 3].map((ele, index) => <View key={index} style={{ marginRight: mvs(10), height: mvs(158), width: mvs(236) }}>
                 <ImagePlaceholder containerStyle={{ height: '100%', width: '100%', borderRadius: mvs(16) }} uri={Bg} />
               </View>)}
@@ -152,8 +151,8 @@ const BusinessProfile = (props) => {
           </View> */}
           <View style={{ backgroundColor: colors.FBF8F8, flexGrow: 1, paddingBottom: mvs(30), marginTop: mvs(20) }}>
             <HeadingTitle title='Service offering' />
-            <ServiceOffering />
-            <CouponPromo />
+            <ServiceOffering moveTo='ServiceOfferingDetails' />
+            {/* <CouponPromo /> */}
           </View>
         </ScrollView>
       </View>

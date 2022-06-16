@@ -72,8 +72,8 @@ const InputSecondary: FC<IProps> = ({
 }) => {
   const [eye, setEye] = React.useState(true);
   const {colors}: any = useTheme();
-  const LIcon = SVGS[leftIcon];
-  const RIcon = SVGS[rightIcon];
+  const LIcon = SVGS[leftIcon as keyof typeof SVGS];
+  const RIcon = SVGS[rightIcon as keyof typeof SVGS];
   return (
     <View style={[{marginBottom: mvs(18)}, containerStyle]}>
       <SemiBold

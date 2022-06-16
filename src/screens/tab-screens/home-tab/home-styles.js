@@ -9,7 +9,8 @@ export const Home_Styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    paddingHorizontal:mvs(18)
+    paddingHorizontal:mvs(18),
+    justifyContent:'center',
   },
   card:{
     backgroundColor:colors.white,

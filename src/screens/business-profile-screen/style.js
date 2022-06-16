@@ -14,6 +14,7 @@ export const STYLES = StyleSheet.create({
         flexGrow:1,
         // paddingHorizontal:mvs(22),
         paddingTop:mvs(20),
+        paddingBottom:mvs(30)
     },
     item:{
         marginBottom:mvs(15),

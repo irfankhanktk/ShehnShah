@@ -1,28 +1,15 @@
 import React from 'react';
-import { ScrollView, View, TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Bg } from '../../assets/images';
-import ImagePlaceholder from '../../components/atoms/Placeholder';
-import Row from '../../components/atoms/row';
 import { CustomHeader } from '../../components/molecules/header/header-1x';
 import HeadingTitle from '../../components/molecules/heading-title';
-import Bold from '../../presentation/typography/bold-text';
-import Medium from '../../presentation/typography/medium-text';
+import LabelValue from '../../components/molecules/label-value-row';
+import TotalRateMap from '../../components/molecules/total-rate-map/index';
 import Regular from '../../presentation/typography/regular-text';
 import colors from '../../services/colors';
 import { mvs } from '../../services/metrices';
-import { Styles as styles } from './styles';
-import ServiceOffering from '../../components/service-offering/index';
-import CouponPromo from '../../components/coupon-promo/index';
-import { CarWash, Map, OffCarWash, Percent, Ratings, RightArrow, Total } from '../../assets/common-icons';
-import Buttons from '../../components/atoms/Button';
-import ServiceCard from '../../components/molecules/service-card';
-import RatingStar from '../../components/molecules/rating-star';
-import TotalRateMap from '../../components/molecules/total-rate-map/index';
-import ReviewsRaing from '../../components/molecules/reviews-rating';
 import CouponCard from './../../components/molecules/coupon-card/index';
-import SemiBold from '../../presentation/typography/semibold-text';
-import LabelValue from '../../components/molecules/label-value-row';
+import { Styles as styles } from './styles';
 const about = 'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
 const services = [
 

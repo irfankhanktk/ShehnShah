@@ -10,12 +10,12 @@ import Buttons from '../atoms/Button';
 import ImagePlaceholder from '../atoms/Placeholder';
 import Row from '../atoms/row';
 import Bold from './../../presentation/typography/bold-text';
-const ServiceOffering = ({ moveTo = 'ServiceDetails' }) => {
+const ServiceOffering = ({ moveTo = 'ServiceOfferingDetails' }) => {
     const navigation = useNavigation();
     return (
         <View>
             <View>
-                <ScrollView horizontal contentContainerStyle={{ paddingHorizontal: mvs(18) }}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: mvs(18) }}>
                     {[0, 1, 2, 3, 4].map((ele, index) => (
                         <TouchableOpacity onPress={() => navigation.navigate(moveTo + "")}>
                             <View style={{ width: mvs(250), marginRight: mvs(7), borderTopRightRadius: mvs(8), borderRadius: mvs(8), overflow: 'hidden' }}>

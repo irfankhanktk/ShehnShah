@@ -3,12 +3,12 @@ import {View, Text, StyleSheet, Animated, Dimensions} from 'react-native';
 import colors from '../../services/colors';
 import { mvs } from '../../services/metrices';
 const {width, height} = Dimensions.get('window');
-const DOT_SIZE = mvs(8);
+const DOT_SIZE = mvs(10);
 export const Pagination = ({scrollX,dotStyle,list=[0,1,2,3,4],style}) => {
     const inputRange = [-width, 0, width];
     const translateX = scrollX.interpolate({
       inputRange,
-      outputRange: [-(DOT_SIZE + mvs(10)), 0, DOT_SIZE + mvs(10)],
+      outputRange: [-(DOT_SIZE + 10), 0, DOT_SIZE + 10],
     });
     return (
       <View style={[styles.pagination,style]}>
@@ -16,7 +16,7 @@ export const Pagination = ({scrollX,dotStyle,list=[0,1,2,3,4],style}) => {
           style={[
             styles.paginationDot,
             { 
-              width:16,
+              width:mvs(10),
               position: 'absolute',
               transform: [{translateX}],
               zIndex: 1001,

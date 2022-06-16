@@ -17,11 +17,6 @@ const Home = (props) => {
 
   return (
     <View style={{ ...styles.conntainer}}>
-      <CustomHeader
-        title='Home'
-        style={{ flexDirection: 'row-reverse', }}
-        userIcon
-      />
       <View style={styles.body}>
           <Buttons.ButtonPrimary  onClick={()=>props?.navigation?.navigate('BusinessProfile')} title='Business Profile'/>
       </View>
