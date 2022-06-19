@@ -21,6 +21,7 @@ import RatingStar from '../../components/molecules/rating-star';
 import TotalRateMap from './../../components/molecules/total-rate-map/index';
 import ReviewsRaing from '../../components/molecules/reviews-rating';
 import ScheduleModal from './../../components/molecules/modals/schedule-modal';
+import moment from 'moment';
 const about = 'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
 const services = [
 
@@ -32,7 +33,9 @@ const ServiceOfferingDetails = (props) => {
     const { route, navigation } = props;
     const [isMoreBtn, setIsMoreBtn] = React.useState(true);
     const [scheduleModal, setScheduleModal] = React.useState(true);
-    const [items,setItems]=React.useState([{title:'item A'},{title:'item B'},{title:'item C'}]);
+    const [items, setItems] = React.useState(['9:30 AM - 10:00 AM', '9:30 AM - 11:00 AM', '9:20 AM - 10:00 AM']);
+    const [selectedValue, setSelectedValue] = React.useState('9:30 AM - 10:00 AM');
+    const [date, setDate] = React.useState(moment());
     return (
         <View style={styles.conntainer}>
             <CustomHeader
@@ -100,12 +103,19 @@ const ServiceOfferingDetails = (props) => {
 
                     </View>
                     <View style={{ paddingHorizontal: mvs(18) }}>
-                        <Buttons.ButtonPrimary onClick={()=>props?.navigation?.navigate('WalkIn')} title='Book Now' />
+                        <Buttons.ButtonPrimary onClick={() => props?.navigation?.navigate('WalkIn')} title='Book Now' />
                     </View>
 
                 </ScrollView>
             </View>
-            <ScheduleModal setVisible={()=>setScheduleModal(false)} items={items} setItems={setItems} visible={scheduleModal}/>
+            <ScheduleModal
+                date={date}
+                setDate={setDate}
+                value={selectedValue}
+                setValue={setSelectedValue}
+                setVisible={() => setScheduleModal(false)}
+                items={items} setItems={setItems}
+                visible={scheduleModal} />
         </View>
     );
 };

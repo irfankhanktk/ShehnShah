@@ -35,6 +35,8 @@ export {default as Cross } from './cross.svg';
 export {default as Total } from './total.svg';
 export {default as Caret } from './carret.svg';
 export {default as RightArrow } from './right-arrow.svg';
+export {default as LeftBlackArrow } from './left-black-arrow.svg';
+export {default as RightBlackArrow } from './right-black-arrow.svg';
 export {default as OffCarWash } from './off-car-wash.svg';
 
 export {default as BlackCamera } from './black-camera.svg';
@@ -79,3 +81,4 @@ export {default as CirrusCard } from '../payment-icons/cirrus.svg';
 export {default as DiscoverCard } from '../payment-icons/discover.svg';
 export {default as SelectedCard } from '../payment-icons/selected.svg';
 export {default as UnSelectedCard } from '../payment-icons/unselected.svg';
+export {default as Cam } from './cam.svg';

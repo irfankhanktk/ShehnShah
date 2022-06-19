@@ -21,7 +21,10 @@ import {mvs} from '../../services/metrices';
 import {INPUT_STYLES} from '../../styles/input';
 import {OtpInput} from './../molecules/otp-input/otp-input';
 import Buttons from './Button';
-import PhoneInput from 'react-native-phone-input'
+import PhoneInput from 'react-native-phone-input';
+import PickerModal from './../molecules/modals/picker-modal';
+import Row from './row';
+import Bold from '../../presentation/typography/bold-text';
 const countries = [
   'Egypt',
   'Canada',
@@ -38,6 +41,7 @@ const countries = [
 ];
 type IProps = {
   label?: string | number;
+  title?: string | number;
   value?: string;
   onChangeText?: (t: string | any) => void;
   placeholder?: string;
@@ -51,9 +55,10 @@ type IProps = {
   isMatch?: boolean;
   leftIcon: string;
   rightIcon: string;
-  ref:any,
+  ref: any;
   setValue?: (arg: any) => void;
-  dropdownStyle:any;
+  dropdownStyle: any;
+  items: string[];
 };
 
 const InputSecondary: FC<IProps> = ({
@@ -66,8 +71,8 @@ const InputSecondary: FC<IProps> = ({
   maxLength,
   keyboardType,
   style,
-  leftIcon='User',
-  rightIcon='User',
+  leftIcon = 'User',
+  rightIcon = 'User',
   editable = true,
 }) => {
   const [eye, setEye] = React.useState(true);
@@ -126,17 +131,16 @@ const InputSecondary: FC<IProps> = ({
               size={mvs(20)}
             />
           </TouchableOpacity>
-        ) : (
-          rightIcon?<View
+        ) : rightIcon ? (
+          <View
             style={{
               right: mvs(10),
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-           <RIcon
-            />
-          </View>:null
-        )}
+            <RIcon />
+          </View>
+        ) : null}
       </View>
     </View>
   );
@@ -145,22 +149,36 @@ const InputSecondary: FC<IProps> = ({
 const InputDropDown: FC<IProps> = ({
   label = '',
   value = '',
+  title='',
   onChangeText,
   placeholder = 'placeholder',
   style,
   dropdownStyle,
+  items = [],
 }) => {
   const [eye, setEye] = React.useState(true);
   const {colors}: any = useTheme();
-
+  const [visible, setVisible] = React.useState(false);
   return (
-   <View
-        style={{ ...INPUT_STYLES.DROPDOWN_INPUT,...style}}>
-        <SemiBold
-          label={label}
-          style={{color: colors.text, marginBottom: mvs(10),marginLeft:mvs(17)}}
-        />
-        <SelectDropdown
+    <TouchableOpacity
+      onPress={() => setVisible(true)}
+      style={{...INPUT_STYLES.DROPDOWN_INPUT, ...style}}>
+      <Row alignItems='center'>
+        <>
+        <View style={{paddingLeft:10}}>
+          <SemiBold
+            label={label}
+            style={{
+              color: colors.text,
+              marginBottom: mvs(10),
+            }}
+          />
+          <Bold label={!value?placeholder:value} />
+        </View>
+          <SVGS.Caret />
+        </>
+      </Row>
+      {/* <SelectDropdown
             data={countries}
             defaultButtonText={placeholder}
             onSelect={(selectedItem, index) => {
@@ -175,17 +193,23 @@ const InputDropDown: FC<IProps> = ({
             buttonStyle={INPUT_STYLES.dropdown1BtnStyle}
             buttonTextStyle={INPUT_STYLES.dropdown1BtnTxtStyle}
             renderDropdownIcon={isOpened => {
-              return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={10} />;
+              return :<FontAwesome name={isOpened ? 'chevron-up'  'chevron-down'} color={'#444'} size={10} />;
             }}
             dropdownIconPosition={'right'}
             dropdownStyle={[INPUT_STYLES.dropdown1DropdownStyle,dropdownStyle]}
             rowStyle={INPUT_STYLES.dropdown1RowStyle}
             rowTextStyle={INPUT_STYLES.dropdown1RowTxtStyle}
 
-          />
-        
-     </View>
-   
+          /> */}
+      <PickerModal
+        title={title}
+        value={value}
+        setValue={onChangeText}
+        setVisible={() => setVisible(false)}
+        items={items}
+        visible={visible}
+      />
+    </TouchableOpacity>
   );
 };
 const InputView: FC<IProps> = ({
@@ -193,21 +217,23 @@ const InputView: FC<IProps> = ({
   value = '',
   onChangeText,
   placeholder = 'placeholder',
-  style
+  style,
 }) => {
- 
   const {colors}: any = useTheme();
 
   return (
-   <View
-        style={{ ...INPUT_STYLES.DROPDOWN_INPUT,paddingLeft:mvs(26),...style}}>
-        <SemiBold
-          label={label}
-          style={{color: colors.text, marginBottom: mvs(1),fontSize:14}}
-        />
-        <TextInput style={INPUT_STYLES.TXTINPUT} placeholder={placeholder} onChangeText={onChangeText}/>
-     </View>
-   
+    <View
+      style={{...INPUT_STYLES.DROPDOWN_INPUT, paddingLeft: mvs(26), ...style}}>
+      <SemiBold
+        label={label}
+        style={{color: colors.text, marginBottom: mvs(1), fontSize: 14}}
+      />
+      <TextInput
+        style={INPUT_STYLES.TXTINPUT}
+        placeholder={placeholder}
+        onChangeText={onChangeText}
+      />
+    </View>
   );
 };
 const ReviewInput: FC<IProps> = ({
@@ -324,5 +350,5 @@ export const INPUT_FIELD = {
   CustomOtpInput,
   PhoneTextInput,
   InputDropDown,
-  InputView
+  InputView,
 };

@@ -14,6 +14,7 @@ type IProps={
   };
 }
 const ImagePlaceholder:FC<IProps> = ({containerStyle,style,isUser=false,borderRadius=0, uri,imageStyle, resizeMode='cover', ...props}) => {
+  
   return (
     <ImageBackground
       source={ isUser?require('../../../src/assets/images/user.png'):require('../../../src/assets/images/placeholder.png')}
@@ -29,9 +30,6 @@ const ImagePlaceholder:FC<IProps> = ({containerStyle,style,isUser=false,borderRa
         }}
         // resizeMode={resizeMode}
       />
-      <View style={{position: 'absolute', bottom: mvs(5),...style}}>
-        {props.children}
-      </View>
     </ImageBackground>
   );
 };

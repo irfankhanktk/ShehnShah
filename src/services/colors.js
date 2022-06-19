@@ -3,6 +3,8 @@
  */
 const colors = {
   //new color scheme
+  F9F9F9:'#F9F9F9',
+  B3B3B3B:'#3B3B3B',
   B1E1F20:'#1E1F20',
   B363F4D:'#363F4D',
   GE0E0E0:'#E0E0E0',

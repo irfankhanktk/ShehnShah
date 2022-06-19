@@ -18,10 +18,13 @@ import Regular from '../../../presentation/typography/regular-text';
 import ActivityItem from '../../../components/atoms/activity-item';
 import allColors from '../../../services/colors';
 import Medium from '../../../presentation/typography/medium-text';
+import ReviewModal from '../../../components/molecules/modals/review-modal';
 // createa component
 const Bookings = props => {
   const {colors} = useTheme();
   const navigation = useNavigation();
+  const [images,setImages]=React.useState([])
+  const [visible,setVisible]=React.useState(true);
   const[schedule,setScheduleData]=useState([
     {
       bussinessName:'Total Al Safeer Car Wash…',address:'Sharjah Al nahada road',
@@ -144,6 +147,7 @@ const Bookings = props => {
                
           </View>}
         </ScrollView>
+        <ReviewModal setVisible={()=>setVisible(false)} items={images} setItems={setImages} visible={visible}/>
     </SafeAreaView>
   );
 };

@@ -9,7 +9,7 @@ type FcProps={
   size?: number ;
   onPress?: () => void;
   style?: object;
-  children: any;
+  children?: any;
   }
 const Bold : React.FC<FcProps> = ({
   label,
@@ -17,7 +17,7 @@ const Bold : React.FC<FcProps> = ({
   size,
   color=colors.B1E1F20,
   style,
-  children,
+  children=<></>,
   ...props
 }) => {
   return (

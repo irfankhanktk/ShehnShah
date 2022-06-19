@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 const Row = ({
-    style,
+    style={},
     alignItems='flex-start',
     justifyContent='space-between',
     children,

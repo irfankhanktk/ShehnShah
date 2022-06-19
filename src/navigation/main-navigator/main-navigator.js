@@ -42,7 +42,7 @@ export const MainNavigator = () => {
   return (
     <View style={{ flex: 1 }}>
       <StatusBar barStyle={'dark-content'} backgroundColor={colors.white} />
-      <Stack.Navigator initialRouteName='ServiceOfferingDetails' screenOptions={horizontalAnimation}>
+      <Stack.Navigator initialRouteName='Splash' screenOptions={horizontalAnimation}>
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Onboarding" component={Onboarding} />
         <Stack.Screen name="Otp" component={Otp} />
