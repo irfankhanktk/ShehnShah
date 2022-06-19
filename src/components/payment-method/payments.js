@@ -1,31 +1,21 @@
-import {StyleSheet,View,TouchableOpacity} from 'react-native';
-import colors from '../../services/colors';
-import {mvs} from '../../services/metrices';
-import RBSheet from "react-native-raw-bottom-sheet";
-import React,{useState} from 'react';
-import PaymentItem from '../../components/atoms/payment-item';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import ReactNativeModal from 'react-native-modal';
 import { Back } from '../../assets/headers-icons';
-import Buttons from '../atoms/Button';
+import PaymentItem from '../molecules/payment-item/payment-item';
 import Regular from '../../presentation/typography/regular-text';
+import colors from '../../services/colors';
+import { mvs } from '../../services/metrices';
 import Row from '../atoms/row';
-const PaymentSheet =React.forwardRef((props,ref,onAddClick) => {
-    const[paymentMethods,setPaymentMethods]=useState([
-        {Card:"MasterCard",Number:'**** **** **** 8748',Icon:"Caret",Selected:true},
-        {Card:"VisaCard",Number:'**** **** **** 8748',Icon:"Caret",Selected:false}
-      ]);
+const PaymentSheet =({onAddClick,setVisible,visible=false,paymentMethods=[],onChange}) => {
+  
     return (
-       <RBSheet
-        ref={ref}
-        height={358}
-        openDuration={250}
-        customStyles={{
-          container: {
-            borderTopLeftRadius:30,
-            borderTopRightRadius:30,
-            paddingTop:mvs(32)
-          }
-        }}>
-          <View style={{paddingHorizontal:mvs(18)}}>
+       <ReactNativeModal
+        onBackdropPress={setVisible}
+        onBackButtonPress={setVisible}
+        isVisible={visible}
+        style={{margin:0}}>
+          <View style={styles.container}>
                <Row style={{...styles.sheetRowView}}>
                   <Back/>
                   <Regular label={"Payment Method"} size={20} style={{flex:1,marginHorizontal:mvs(20)}}/>
@@ -35,21 +25,26 @@ const PaymentSheet =React.forwardRef((props,ref,onAddClick) => {
                </Row>
               <View style={{marginVertical:mvs(20)}}>
                   {
-                    paymentMethods.map(element => {
+                    paymentMethods.map((element,index) => {
                       return (
-                        <View key={element.Card} style={{marginTop:mvs(12)}}>
-                           <PaymentItem value={element.Number} leftIcon={element.Card} rightIcon={element.Selected?"SelectedCard":"UnSelectedCard"}/>
+                        <View key={index} style={{marginTop:mvs(12)}}>
+                           <PaymentItem onClick={()=>{
+                            let copy= [...paymentMethods];
+                            copy=copy?.map(x=>({...x,Selected:false}));
+                            copy[index].Selected=true;
+                            onChange(copy);
+                           }}  value={element.Number} leftIcon={element.Card} rightIcon={element.Selected?"SelectedCard":"UnSelectedCard"}/>
                         </View>
                       );
                       })
                   }
 
               </View>
-              <Buttons.ButtonPrimary title='Choose' style={{marginTop:mvs(37)}}/>
+              {/* <Buttons.ButtonPrimary title='Choose' style={{marginTop:mvs(37)}}/> */}
           </View>
-      </RBSheet>
+      </ReactNativeModal>
     );
-});
+}
 export default PaymentSheet;
 const styles = StyleSheet.create({
       sheetRowView:{
@@ -57,5 +52,6 @@ const styles = StyleSheet.create({
         paddingVertical:mvs(8),
         alignItems:'center',
         paddingLeft:0,paddingRight:0
-      }
+      },
+      container:{paddingHorizontal:mvs(18),width:'100%',borderTopLeftRadius:mvs(15),borderTopRightRadius:mvs(15),position:'absolute',bottom:0,backgroundColor:colors.white}
 });

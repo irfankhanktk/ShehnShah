@@ -20,6 +20,7 @@ import ServiceCard from '../../components/molecules/service-card';
 import RatingStar from '../../components/molecules/rating-star';
 import TotalRateMap from './../../components/molecules/total-rate-map/index';
 import ReviewsRaing from '../../components/molecules/reviews-rating';
+import ScheduleModal from './../../components/molecules/modals/schedule-modal';
 const about = 'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
 const services = [
 
@@ -30,7 +31,8 @@ const services = [
 const ServiceOfferingDetails = (props) => {
     const { route, navigation } = props;
     const [isMoreBtn, setIsMoreBtn] = React.useState(true);
-
+    const [scheduleModal, setScheduleModal] = React.useState(true);
+    const [items,setItems]=React.useState([{title:'item A'},{title:'item B'},{title:'item C'}]);
     return (
         <View style={styles.conntainer}>
             <CustomHeader
@@ -103,6 +105,7 @@ const ServiceOfferingDetails = (props) => {
 
                 </ScrollView>
             </View>
+            <ScheduleModal setVisible={()=>setScheduleModal(false)} items={items} setItems={setItems} visible={scheduleModal}/>
         </View>
     );
 };

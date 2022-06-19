@@ -1,21 +1,23 @@
-import {StyleSheet,View,ScrollView} from 'react-native';
-import colors from '../../services/colors';
-import {mvs} from '../../services/metrices';
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
-import React,{useState} from 'react';
-import PaymentItem from '../../components/atoms/payment-item';
+import { AmericanExpressCard, CirrusCard, DirectDebitCard, DiscoverCard, MasterCard, VisaCard } from '../../assets/common-icons';
 import { Back } from '../../assets/headers-icons';
-import Buttons from '../atoms/Button';
+import Bold from '../../presentation/typography/bold-text';
 import Regular from '../../presentation/typography/regular-text';
+import { mvs } from '../../services/metrices';
+import Buttons from '../atoms/Button';
 import Row from '../atoms/row';
 import PaymentInput from './payment-input';
-import Bold from '../../presentation/typography/bold-text';
-import { AmericanExpressCard, CirrusCard, DirectDebitCard, DiscoverCard, MasterCard, VisaCard } from '../../assets/common-icons';
-const NewPaymentSheet =React.forwardRef((props,ref) => {
-    const[paymentMethods,setPaymentMethods]=useState([
-        {Card:"MasterCard",Number:'**** **** **** 8748',Icon:"Caret",Selected:true},
-        {Card:"VisaCard",Number:'**** **** **** 8748',Icon:"Caret",Selected:false}
-      ]);
+const NewPaymentSheet =React.forwardRef((props,ref,) => {
+    const [newMethod,setNewMethod]=React.useState({
+      Card:"",
+      Number:'',
+      Icon:"Caret",
+      Name:''
+    });
+    const {setPaymentMethods,paymentMethods}=props;
+    console.log('paymentMethods::',paymentMethods);
     return (
        <RBSheet
         ref={ref}
@@ -35,12 +37,12 @@ const NewPaymentSheet =React.forwardRef((props,ref) => {
                   <Regular label={"Add New Method"} size={20} style={{flex:1,marginHorizontal:mvs(20)}}/>
               </Row>
               <View style={{marginTop:mvs(5),marginHorizontal:mvs(18)}}>
-                  <PaymentInput placeholder='John Doe' label='Cardholder Name'/>
-                  <PaymentInput placeholder='1234 5678 9123 8978' label='Card Number'/>
+                  <PaymentInput onChange={(t)=>setNewMethod({...newMethod,Name:t})} placeholder='John Doe' label='Cardholder Name'/>
+                  <PaymentInput onChange={(t)=>setNewMethod({...newMethod,Number:t})} placeholder='1234 5678 9123 8978' label='Card Number'/>
                   
                   <Row style={{ justifyContent:'space-between',marginTop:mvs(5)}}>
-                    <PaymentInput placeholder='' label='Exp. Date' style={{width:'45%'}}/>
-                    <PaymentInput placeholder='123' label='CVV\CVC' style={{width:'45%'}}/>
+                    <PaymentInput  onChange={(t)=>setNewMethod({...newMethod,expiryDate:t})} placeholder='' label='Exp. Date' style={{width:'45%'}}/>
+                    <PaymentInput onChange={(t)=>setNewMethod({...newMethod,cvc:t})} placeholder='123' label='CVV\CVC' style={{width:'45%'}}/>
                   </Row>
                   <Regular numberOfLines={3} style={{marginTop:mvs(16)}} size={15} label={"To verify your card, a small amount will be charged to it. After verification the amount will be automatically refunded"}/>
                   <Bold label={"We Accept"} size={15}  style={{marginTop:mvs(16)}}/>
@@ -53,7 +55,9 @@ const NewPaymentSheet =React.forwardRef((props,ref) => {
                       <CirrusCard style={{marginLeft:4}}/>
                       
                   </Row>
-                  <Buttons.ButtonPrimary title='Save Card' style={{marginTop:mvs(51)}}/>
+                  <Buttons.ButtonPrimary onClick={()=>{
+                    setPaymentMethods([...paymentMethods,{Card:"VisaCard",Number:'**** **** **** 8748',Icon:"Caret",Selected:false}])
+                  }} title='Save Card' style={{marginTop:mvs(51)}}/>
               </View>
           </View>
           </ScrollView>

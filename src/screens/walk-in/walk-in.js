@@ -18,7 +18,7 @@ import { Bg } from '../../assets/images';
 
 import {Vehicle, WhitePercentage } from '../../assets/common-icons';
 import SemiBold from '../../presentation/typography/semibold-text';
-import PaymentItem from '../../components/atoms/payment-item';
+import PaymentItem from '../../components/molecules/payment-item/payment-item';
 
 import PaymentSheet from '../../components/payment-method/payments';
 import NewPaymentSheet from '../../components/payment-method/new-pament';
@@ -29,6 +29,11 @@ import alertService from '../../services/alert.service';
   function newPayment(){
     refRBNewPaymentSheet.current.open()
   }
+  const [paymentModal,setPaymentModal]=React.useState(false)
+  const[paymentMethods,setPaymentMethods]=useState([
+    {Card:"MasterCard",Number:'**** **** **** 8748',Icon:"Caret",Selected:true},
+    {Card:"VisaCard",Number:'**** **** **** 8748',Icon:"Caret",Selected:false}
+  ]);
     return (
       <View style={{ ...styles.conntainer, backgroundColor: colors.background }}>
        <CustomHeader title='New Walk In Booking' titleStyle={{fontSize:15}} spacebetween allowBackBtn/>
@@ -93,7 +98,7 @@ import alertService from '../../services/alert.service';
                     </View>
                     <View style={styles.paymentView}>
                         <Regular label={"Payment Method"} size={16}/>
-                        <PaymentItem onClick={() => refRBNewPaymentSheet.current.open()}/>
+                        <PaymentItem onClick={() => setPaymentModal(true)}/>
                         <Row style={{...styles.priceView,marginTop:mvs(16.3)}}>
                               <Medium label={"Sub Total"} size={14}/>  
                               <Medium label={"$45.00"} size={14}/>
@@ -109,8 +114,12 @@ import alertService from '../../services/alert.service';
                         <Buttons.ButtonPrimary title='Confirm' style={styles.button}/>
                     </View>
                 </ScrollView>
-               <PaymentSheet ref={refRBSheet}  onAddClick={()=>newPayment()}/>
-               <NewPaymentSheet ref={refRBNewPaymentSheet}/>
+               <PaymentSheet onChange={setPaymentMethods} setVisible={()=>setPaymentModal(false)} paymentMethods={paymentMethods} visible={paymentModal}  onAddClick={()=>newPayment()}/>
+               <NewPaymentSheet paymentMethods={paymentMethods} setPaymentMethods={(methods)=>{
+                console.log('new methods:::',methods);
+                setPaymentMethods(methods);
+                refRBNewPaymentSheet?.current?.close(false);
+                }}  ref={refRBNewPaymentSheet}/>
             </View>
       </View>
     );
