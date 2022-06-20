@@ -12,16 +12,18 @@ const RatingStar = ({
     rate = 4,
     width = '100%',
     disabled=true,
-    onPress =(rate)=>{}
+    list=[1, 2, 3, 4, 5],
+    onPress =(rate)=>{},
+    style
 
 }) => {
     return (
-        <Row style={{ width: width }}>
+        <Row style={{ width: width, ...style}}>
             {
-                [1, 2, 3, 4, 5].map((item, index) => (
+                list?.map((item, index) => (
                     //  <AntDesign key={index} name={item>rate?'staro':'star'} size={size} color={item>rate?stroke:fill}/>
                     item > rate ? (
-                        <TouchableOpacity onPress={()=>onPress(item)} disabled={disabled}>
+                        <TouchableOpacity  onPress={()=>onPress(item)} disabled={disabled}>
                             <StarOutline width={mvs(size)} height={mvs(size)} />
                         </TouchableOpacity>)
                         :

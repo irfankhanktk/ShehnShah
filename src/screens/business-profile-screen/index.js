@@ -19,6 +19,7 @@ import ServiceOffering from './../../components/service-offering/index';
 import Bold from './../../presentation/typography/bold-text';
 import colors from './../../services/colors';
 import { STYLES as styles } from './style';
+import RatingStar from './../../components/molecules/rating-star/index';
 const services = [
 
   { icon: 'Services', title: 'Services', value: '5 Services' },
@@ -38,15 +39,15 @@ const BusinessProfile = (props) => {
   const { showAlert } = React.useContext(ThemeContext);
   const [loading, setLoading] = React.useState(true);
   const [isMoreBtn, setIsMoreBtn] = React.useState(true);
-  React.useEffect(()=>{
-    (()=>{
+  React.useEffect(() => {
+    (() => {
       setTimeout(() => {
-          setLoading(false)
+        setLoading(false)
       }, 500);
     })()
-  },[])
+  }, [])
   if (loading) {
-    return <View style={{flex:1}}>
+    return <View style={{ flex: 1 }}>
       <PageLoader />
     </View>
   }
@@ -59,7 +60,7 @@ const BusinessProfile = (props) => {
           contentContainerStyle={styles.scroll}>
           <View style={{ height: mvs(210), width: '100%' }}>
             <ImagePlaceholder uri={Bg} containerStyle={{ width: '100%', height: '100%' }} />
-            <TouchableOpacity onPress={()=>props?.navigation?.goBack()} style={{ position: 'absolute', left: mvs(20), top: mvs(20) }} >
+            <TouchableOpacity onPress={() => props?.navigation?.goBack()} style={{ position: 'absolute', left: mvs(20), top: mvs(20) }} >
               <FontAwesome size={mvs(25)} color={colors.white} name='angle-left' />
             </TouchableOpacity>
           </View>
@@ -132,7 +133,22 @@ const BusinessProfile = (props) => {
           <View style={{ paddingHorizontal: mvs(18), }}>
             <Row justifyContent={'space-between'}>
               <Bold color={colors.black} style={{ transform: [{ translateY: -mvs(10) }] }} size={mvs(42)} label={'4.7'} />
-              <Ratings width={mvs(230)} />
+              <Row>
+              <View>
+                <RatingStar rate={5} size={mvs(7)} list={[1, 2, 3, 4, 5]} width={mvs(40)} style={{alignSelf: 'flex-end',}}/>
+                <RatingStar rate={5} size={mvs(7)} list={[1, 2, 3, 4]} width={mvs(32)} style={{alignSelf: 'flex-end',marginTop: mvs(2.4)}}/>
+                <RatingStar rate={5} size={mvs(7)} list={[1, 2, 3]} width={mvs(24)} style={{alignSelf: 'flex-end',marginTop: mvs(2.4)}}/>
+                <RatingStar rate={5} size={mvs(7)} list={[1, 2]} width={mvs(16)} style={{alignSelf: 'flex-end',marginTop: mvs(2.4)}}/>
+                <RatingStar rate={5} size={mvs(7)} list={[1]} width={mvs(8)} style={{alignSelf: 'flex-end',justifyContent:'flex-end',marginTop: mvs(2.4)}}/>
+              </View>
+              <View style={{paddingLeft:mvs(10)}}>
+                <View style={{ height: mvs(4), borderRadius: mvs(5), backgroundColor: colors.primary, width: mvs(183) }} />
+                <View style={{ height: mvs(4), borderRadius: mvs(5), marginTop: mvs(5), backgroundColor: colors.primary, width: mvs(36) }} />
+                <View style={{ height: mvs(4), borderRadius: mvs(5), marginTop: mvs(5), backgroundColor: colors.primary, width: mvs(16) }} />
+                <View style={{ height: mvs(4), borderRadius: mvs(5), marginTop: mvs(5), backgroundColor: colors.primary, width: mvs(2) }} />
+                <View style={{ height: mvs(4), borderRadius: mvs(5), marginTop: mvs(5), backgroundColor: colors.primary, width: mvs(2) }} />
+              </View>
+              </Row>
             </Row>
             <Row>
               <Bold color={colors.black} size={mvs(12)} label={'out of 5'} />

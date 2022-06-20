@@ -1,34 +1,38 @@
-import React,{useRef, useState} from 'react';
-import { TouchableOpacity,ScrollView, View, TextInput, Modal } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import Buttons from '../../components/atoms/Button';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
 import Row from '../../components/atoms/row';
 import TotalRateMap from '../../components/molecules/total-rate-map';
-import Medium from '../../presentation/typography/medium-text';
 import Bold from '../../presentation/typography/bold-text';
+import Medium from '../../presentation/typography/medium-text';
   // import HomeCard from './../../../components/molecules/home-card/home-card';
+import { Bg } from '../../assets/images';
+import { CustomHeader } from '../../components/molecules/header/header-1x';
 import Regular from '../../presentation/typography/regular-text';
+import colors from '../../services/colors';
 import { mvs } from '../../services/metrices';
 import DIVIY_API from '../../store/api-calls';
-import { CustomHeader } from '../../components/molecules/header/header-1x';
 import { Walk_In_Styles as styles } from './walk-in-styles';
-import colors from '../../services/colors';
-import { Bg } from '../../assets/images';
 
-import {Vehicle, WhitePercentage } from '../../assets/common-icons';
-import SemiBold from '../../presentation/typography/semibold-text';
+import moment from 'moment';
+import { Vehicle, WhitePercentage } from '../../assets/common-icons';
 import PaymentItem from '../../components/molecules/payment-item/payment-item';
-
-import PaymentSheet from '../../components/payment-method/payments';
 import NewPaymentSheet from '../../components/payment-method/new-pament';
-import alertService from '../../services/alert.service';
+import PaymentSheet from '../../components/payment-method/payments';
+import SemiBold from '../../presentation/typography/semibold-text';
+import ScheduleModal from './../../components/molecules/modals/schedule-modal';
   const WalkIn = (props) => {
   const refRBSheet = useRef(null);
   const refRBNewPaymentSheet = useRef(null);
   function newPayment(){
     refRBNewPaymentSheet.current.open()
   }
+  const [scheduleModal, setScheduleModal] = React.useState(true);
+  const [items, setItems] = React.useState(['9:30 AM - 10:00 AM', '9:30 AM - 11:00 AM', '9:20 AM - 10:00 AM']);
+  const [selectedValue, setSelectedValue] = React.useState('9:30 AM - 10:00 AM');
+  const [date, setDate] = React.useState(moment());
   const [paymentModal,setPaymentModal]=React.useState(false)
   const[paymentMethods,setPaymentMethods]=useState([
     {Card:"MasterCard",Number:'**** **** **** 8748',Icon:"Caret",Selected:true},
@@ -64,9 +68,9 @@ import alertService from '../../services/alert.service';
                     <Row style={styles.rowView}>
                             <View>
                                <Bold label={"Date & time"} size={15}/>
-                               <Regular label={"12 February 2021-9:30 AM-10:00 AM"} size={16}/>
+                               <Regular label={`${date?.format('DD MMMM YYYY')} ${selectedValue}`} size={16}/>
                             </View>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>setScheduleModal(true)}>
                                 <Regular label={"Change"} size={15} color={colors.primary}/>
                             </TouchableOpacity>
                     </Row>
@@ -121,6 +125,14 @@ import alertService from '../../services/alert.service';
                 refRBNewPaymentSheet?.current?.close(false);
                 }}  ref={refRBNewPaymentSheet}/>
             </View>
+            <ScheduleModal
+                date={date}
+                setDate={setDate}
+                value={selectedValue}
+                setValue={setSelectedValue}
+                setVisible={() => setScheduleModal(false)}
+                items={items} setItems={setItems}
+                visible={scheduleModal} />
       </View>
     );
   };

@@ -32,10 +32,7 @@ const services = [
 const ServiceOfferingDetails = (props) => {
     const { route, navigation } = props;
     const [isMoreBtn, setIsMoreBtn] = React.useState(true);
-    const [scheduleModal, setScheduleModal] = React.useState(true);
-    const [items, setItems] = React.useState(['9:30 AM - 10:00 AM', '9:30 AM - 11:00 AM', '9:20 AM - 10:00 AM']);
-    const [selectedValue, setSelectedValue] = React.useState('9:30 AM - 10:00 AM');
-    const [date, setDate] = React.useState(moment());
+
     return (
         <View style={styles.conntainer}>
             <CustomHeader
@@ -108,14 +105,7 @@ const ServiceOfferingDetails = (props) => {
 
                 </ScrollView>
             </View>
-            <ScheduleModal
-                date={date}
-                setDate={setDate}
-                value={selectedValue}
-                setValue={setSelectedValue}
-                setVisible={() => setScheduleModal(false)}
-                items={items} setItems={setItems}
-                visible={scheduleModal} />
+            
         </View>
     );
 };
