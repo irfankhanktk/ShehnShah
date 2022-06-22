@@ -147,7 +147,7 @@ const Bookings = props => {
                
           </View>}
         </ScrollView>
-        <ReviewModal setVisible={()=>setVisible(false)} items={images} setItems={setImages} visible={visible}/>
+
     </SafeAreaView>
   );
 };

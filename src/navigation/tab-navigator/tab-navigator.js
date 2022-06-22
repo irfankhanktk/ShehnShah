@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { TabActivityIcon, TabHomeIcon, TabProfileIcon, TabSearchIcon } from '../../assets/common-icons';
 import BottomMenu from '../../components/atoms/BottomMenu';
 import Row from '../../components/atoms/row';
+import CouponModal from '../../components/molecules/modals/coupon-modal';
 import Regular from '../../presentation/typography/regular-text';
 import BusinessProfile from '../../screens/business-profile-screen';
 import Profile from '../../screens/profile/profile';
@@ -80,6 +81,7 @@ const TabNavigator = () => {
           }}
         />
       </BottomTab.Navigator>
+    
     </View>
   );
 };

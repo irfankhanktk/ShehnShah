@@ -24,8 +24,8 @@ const ScheduleModal = ({
         <ReactNativeModal
             propagateSwipe
             isVisible={visible}
-            onBackdropPress={() => setVisible(false)}
-            onSwipeComplete={() => setVisible(false)}
+            onBackdropPress={() => {}}
+            onSwipeComplete={() => {}}
             swipeDirection='up'
             style={{ margin: 0 }}>
             <View style={styles.container}>
@@ -42,7 +42,7 @@ const ScheduleModal = ({
                     {items.map((item, index) => (
                         <TouchableOpacity style={{ width: '100%' }} onPress={() => {
                             setValue(item);
-                            setVisible(false);
+                            // setVisible(false);
                         }}>
                             <Row style={{ ...styles.PAYMENTDROPDOWN, }}>
                                 <Bold size={15} style={{ flex: 1, marginHorizontal: mvs(8) }} label={item} />

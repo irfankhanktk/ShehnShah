@@ -17,7 +17,9 @@ const PaymentSheet =({onAddClick,setVisible,visible=false,paymentMethods=[],onCh
         style={{margin:0}}>
           <View style={styles.container}>
                <Row style={{...styles.sheetRowView}}>
+                <TouchableOpacity onPress={()=>setVisible(false)}>
                   <Back/>
+                </TouchableOpacity>
                   <Regular label={"Payment Method"} size={20} style={{flex:1,marginHorizontal:mvs(20)}}/>
                   <TouchableOpacity onPress={onAddClick}>
                         <Regular label={"Add New"} size={15} color={colors.primary}/>

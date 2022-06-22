@@ -23,17 +23,20 @@ import NewPaymentSheet from '../../components/payment-method/new-pament';
 import PaymentSheet from '../../components/payment-method/payments';
 import SemiBold from '../../presentation/typography/semibold-text';
 import ScheduleModal from './../../components/molecules/modals/schedule-modal';
+import CouponModal from './../../components/molecules/modals/coupon-modal';
   const WalkIn = (props) => {
   const refRBSheet = useRef(null);
   const refRBNewPaymentSheet = useRef(null);
   function newPayment(){
     refRBNewPaymentSheet.current.open()
   }
-  const [scheduleModal, setScheduleModal] = React.useState(true);
+  const [scheduleModal, setScheduleModal] = React.useState(false);
+  const [couponValue,setCouponValue]=React.useState(0);
   const [items, setItems] = React.useState(['9:30 AM - 10:00 AM', '9:30 AM - 11:00 AM', '9:20 AM - 10:00 AM']);
   const [selectedValue, setSelectedValue] = React.useState('9:30 AM - 10:00 AM');
   const [date, setDate] = React.useState(moment());
   const [paymentModal,setPaymentModal]=React.useState(false)
+  const [couponModal,setCouponModal]=React.useState(false)
   const[paymentMethods,setPaymentMethods]=useState([
     {Card:"MasterCard",Number:'**** **** **** 8748',Icon:"Caret",Selected:true},
     {Card:"VisaCard",Number:'**** **** **** 8748',Icon:"Caret",Selected:false}
@@ -84,15 +87,15 @@ import ScheduleModal from './../../components/molecules/modals/schedule-modal';
                     <View style={styles.couponView}>
                       <Row style={{...styles.rowView,borderBottomWidth:0,paddingVertical:8}}>
                             <Bold label={"Coupon"} size={15}/>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>setCouponModal(true)}>
                                   <Regular label={"Find Coupon"} size={15} color={colors.primary}/>
                               </TouchableOpacity>
                       </Row>
                       <Row style={{...styles.rowView,borderBottomWidth:0,paddingTop:0}}>
-                           <ImagePlaceholder borderRadius={mvs(8)} uri={Bg} containerStyle={{ width: mvs(69), height: mvs(69) }} />
+                           <ImagePlaceholder borderRadius={mvs(8)} uri={Bg} containerStyle={{ width: mvs(69), height: mvs(70) }} />
                           <View style={{flex:1,marginHorizontal:mvs(9)}}>
-                                <SemiBold label={"50% OFF Car Wash"} size={16}/>
-                                <Regular label={"30.00 AED"} size={14}/>
+                                <SemiBold label={"50% OFF Car Wash"} size={15}/>
+                                <Regular label={"30.00 AED"} size={13}/>
                                 <Row style={styles.voucherView}>
                                    <WhitePercentage/>
                                    <Regular label={"CASH VOUCHER"} size={14} color={colors.white}/>
@@ -133,6 +136,7 @@ import ScheduleModal from './../../components/molecules/modals/schedule-modal';
                 setVisible={() => setScheduleModal(false)}
                 items={items} setItems={setItems}
                 visible={scheduleModal} />
+              <CouponModal items ={[0,1,2]} setVisible={setCouponModal} setValue={setCouponValue} value={couponValue} title={'Coupon'} visible={couponModal}/>
       </View>
     );
   };

@@ -20,6 +20,7 @@ import Bold from './../../presentation/typography/bold-text';
 import colors from './../../services/colors';
 import { STYLES as styles } from './style';
 import RatingStar from './../../components/molecules/rating-star/index';
+import ReviewModal from './../../components/molecules/modals/review-modal';
 const services = [
 
   { icon: 'Services', title: 'Services', value: '5 Services' },
@@ -31,6 +32,8 @@ const services = [
 const about = 'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
 const BusinessProfile = (props) => {
   const { user_info, } = props;
+  const [images,setImages]=React.useState([])
+  const [visible,setVisible]=React.useState(true);
   const [payload, setPayload] = React.useState({
     image: '',
     last_name: '',
@@ -75,7 +78,9 @@ const BusinessProfile = (props) => {
                   <TouchableOpacity>
                     <Share />
                   </TouchableOpacity>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={()=>{
+                    setVisible(true);
+                  }}>
                     <HeartOutline />
                   </TouchableOpacity>
                 </Row>
@@ -172,6 +177,7 @@ const BusinessProfile = (props) => {
           </View>
         </ScrollView>
       </View>
+      <ReviewModal setVisible={()=>setVisible(false)} items={images} setItems={setImages} visible={visible}/>
     </View>
   );
 };
