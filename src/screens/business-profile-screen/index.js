@@ -33,7 +33,7 @@ const about = 'Gresasy Elbo Auto Repair has been the leader in automotive repair
 const BusinessProfile = (props) => {
   const { user_info, } = props;
   const [images,setImages]=React.useState([])
-  const [visible,setVisible]=React.useState(true);
+  const [visible,setVisible]=React.useState(false);
   const [payload, setPayload] = React.useState({
     image: '',
     last_name: '',
@@ -43,17 +43,13 @@ const BusinessProfile = (props) => {
   const [loading, setLoading] = React.useState(true);
   const [isMoreBtn, setIsMoreBtn] = React.useState(true);
   React.useEffect(() => {
-    (() => {
-      setTimeout(() => {
-        setLoading(false)
-      }, 500);
-    })()
+  
   }, [])
-  if (loading) {
-    return <View style={{ flex: 1 }}>
-      <PageLoader />
-    </View>
-  }
+  // if (loading) {
+  //   return <View style={{ flex: 1 }}>
+  //     <PageLoader />
+  //   </View>
+  // }
 
   return (
     <View style={styles.container}>
