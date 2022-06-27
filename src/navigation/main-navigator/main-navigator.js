@@ -2,7 +2,7 @@
 
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { StatusBar, View } from 'react-native';
+import { SafeAreaView, StatusBar, View } from 'react-native';
 import BusinessProfile from '../../screens/business-profile-screen';
 import Otp from '../../screens/otp-screen/otp';
 import Splash from '../../screens/splash-screen/splash';
@@ -40,7 +40,7 @@ const horizontalAnimation = {
 };
 export const MainNavigator = () => {
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <StatusBar barStyle={'dark-content'} backgroundColor={colors.white} />
       <Stack.Navigator initialRouteName='Splash' screenOptions={horizontalAnimation}>
         <Stack.Screen name="Splash" component={Splash} />
@@ -59,6 +59,6 @@ export const MainNavigator = () => {
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="WalkIn" component={WalkIn} />
       </Stack.Navigator>
-    </View>
+    </SafeAreaView>
   );
 };

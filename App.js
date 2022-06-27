@@ -9,6 +9,7 @@ import SERVICES from './src/services/common-services';
 import palette from './src/services/palette';
 import store from './src/store';
 import ThemeContext from './src/context/theme-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 // const defaultMode = Appearance.getColorScheme() || 'light';
 const App = () => {
   // const [themeState, setThemeState] = useState(defaultMode);
@@ -54,14 +55,16 @@ const App = () => {
 
   const theme = themeApplied === 'dark' ? { ...DefaultTheme.colors, ...palette.darkTheme } : { ...DefaultTheme.colors, ...palette.lightTheme }
   return (
-    <Provider store={store}>
-      <ThemeContext.Provider value={themeContext}>
-        <NavigationContainer theme={theme}>
-          <MainNavigator />
-        </NavigationContainer>
-        <DropdownAlert ref={alertRef} />
-      </ThemeContext.Provider>
-    </Provider>
+    <SafeAreaProvider>
+      <Provider store={store}>
+        <ThemeContext.Provider value={themeContext}>
+          <NavigationContainer theme={theme}>
+            <MainNavigator />
+          </NavigationContainer>
+          <DropdownAlert ref={alertRef} />
+        </ThemeContext.Provider>
+      </Provider>
+    </SafeAreaProvider>
   );
 };
 export default App;
