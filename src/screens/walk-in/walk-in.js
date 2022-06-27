@@ -31,7 +31,7 @@ import CouponModal from './../../components/molecules/modals/coupon-modal';
     refRBNewPaymentSheet.current.open()
   }
   const [scheduleModal, setScheduleModal] = React.useState(false);
-  const [couponValue,setCouponValue]=React.useState(0);
+  const [couponValue,setCouponValue]=React.useState(false);
   const [items, setItems] = React.useState(['9:30 AM - 10:00 AM', '9:30 AM - 11:00 AM', '9:20 AM - 10:00 AM']);
   const [selectedValue, setSelectedValue] = React.useState('9:30 AM - 10:00 AM');
   const [date, setDate] = React.useState(moment());
@@ -41,6 +41,7 @@ import CouponModal from './../../components/molecules/modals/coupon-modal';
     {Card:"MasterCard",Number:'**** **** **** 8748',Icon:"Caret",Selected:true},
     {Card:"VisaCard",Number:'**** **** **** 8748',Icon:"Caret",Selected:false}
   ]);
+  const [coupon,setCoupon]=React.useState(null);
     return (
       <View style={{ ...styles.conntainer, backgroundColor: colors.background }}>
        <CustomHeader title='New Walk In Booking' titleStyle={{fontSize:15}} spacebetween allowBackBtn/>
@@ -87,8 +88,15 @@ import CouponModal from './../../components/molecules/modals/coupon-modal';
                     <View style={styles.couponView}>
                       <Row style={{...styles.rowView,borderBottomWidth:0,paddingVertical:8}}>
                             <Bold label={"Coupon"} size={15}/>
-                            <TouchableOpacity onPress={()=>setCouponModal(true)}>
-                                  <Regular label={"Find Coupon"} size={15} color={colors.primary}/>
+                            <TouchableOpacity onPress={()=>{
+                              if(!couponValue){
+
+                                setCouponModal(true)
+                              }else{
+                                setCouponValue(false);
+                              }
+                              }}>
+                                  <Regular label={!couponValue? "Find Coupon":"Remove"} size={15} color={colors.primary}/>
                               </TouchableOpacity>
                       </Row>
                       <Row style={{...styles.rowView,borderBottomWidth:0,paddingTop:0}}>
@@ -136,7 +144,7 @@ import CouponModal from './../../components/molecules/modals/coupon-modal';
                 setVisible={() => setScheduleModal(false)}
                 items={items} setItems={setItems}
                 visible={scheduleModal} />
-              <CouponModal items ={[0,1,2]} setVisible={setCouponModal} setValue={setCouponValue} value={couponValue} title={'Coupon'} visible={couponModal}/>
+              <CouponModal items ={[1,2,3]} setVisible={setCouponModal} setValue={setCouponValue} value={couponValue} title={'Coupon'} visible={couponModal}/>
       </View>
     );
   };

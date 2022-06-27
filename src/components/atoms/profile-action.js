@@ -8,7 +8,8 @@ import fonts from '../../services/fonts';
 import { mvs } from '../../services/metrices';
 import Row from './row';
 import * as SVG from '../../assets/common-icons';
-const ProfileAction = ({selected=true,onChange,label,subLabel='',labelStyle,style,subLabelStyle,leftIcon='Coupon',rightIcon='Arrow'}) => {
+import CustomSwitch from './Switch';
+const ProfileAction = ({selected=true,onChange,value=true,label,subLabel='',labelStyle,style,subLabelStyle,leftIcon='Coupon',rightIcon='Arrow'}) => {
     const LeftSvg=SVG[leftIcon+(selected==true?"s":"")];
     const RightSvg=SVG[rightIcon+(selected==true?"s":"")];
     return (
@@ -19,7 +20,8 @@ const ProfileAction = ({selected=true,onChange,label,subLabel='',labelStyle,styl
                        <SemiBold label={label} style={{fontSize:16,marginTop:mvs(5),...labelStyle,color:!selected? colors.black:colors.white}}/>
                        <Regular label={subLabel} style={{fontSize:12,...subLabelStyle,color:!selected? colors.black:colors.white}}/>
                    </View>
-          { RightSvg && (<RightSvg style={{tintColor:selected? colors.white:colors.primary}}/>) }
+                   {leftIcon==='Notification'&&<CustomSwitch value={value} onChange={onChange}/>}
+          { RightSvg &&leftIcon!=='Notification'&& (<RightSvg style={{tintColor:selected? colors.white:colors.primary}}/>) }
        </Row>
     );
 };

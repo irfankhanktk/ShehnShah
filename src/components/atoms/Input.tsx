@@ -178,29 +178,7 @@ const InputDropDown: FC<IProps> = ({
           <SVGS.Caret />
         </>
       </Row>
-      {/* <SelectDropdown
-            data={countries}
-            defaultButtonText={placeholder}
-            onSelect={(selectedItem, index) => {
-              console.log(selectedItem, index);
-            }}
-            buttonTextAfterSelection={(selectedItem, index) => {
-              return selectedItem;
-            }}
-            rowTextForSelection={(item, index) => {
-              return item;
-            }}
-            buttonStyle={INPUT_STYLES.dropdown1BtnStyle}
-            buttonTextStyle={INPUT_STYLES.dropdown1BtnTxtStyle}
-            renderDropdownIcon={isOpened => {
-              return :<FontAwesome name={isOpened ? 'chevron-up'  'chevron-down'} color={'#444'} size={10} />;
-            }}
-            dropdownIconPosition={'right'}
-            dropdownStyle={[INPUT_STYLES.dropdown1DropdownStyle,dropdownStyle]}
-            rowStyle={INPUT_STYLES.dropdown1RowStyle}
-            rowTextStyle={INPUT_STYLES.dropdown1RowTxtStyle}
-
-          /> */}
+      
       <PickerModal
         title={title}
         value={value}

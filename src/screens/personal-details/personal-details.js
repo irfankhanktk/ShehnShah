@@ -13,11 +13,11 @@ import DIVIY_API from '../../store/api-calls';
 import { BlackCamera } from '../../assets/common-icons';
 import { Personal_Details_Styles as styles } from './personal-details-styles';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
-import alertService from '../../services/alert.service';
 import PhoneInput from 'react-native-phone-number-input'
 import { Tick } from '../../assets/common-icons';
 import Row from '../../components/atoms/row';
 import colors from '../../services/colors';
+import SERVICES from './../../services/common-services';
 const PersonalDetails = props => {
   const navigation = useNavigation();
   const [loading, setLoading] = React.useState(false);
@@ -27,7 +27,8 @@ const PersonalDetails = props => {
     email: '',
     password: '',
     name:'',
-    confirmPassword:''
+    confirmPassword:'',
+    image: ''
   });
   
 
@@ -47,11 +48,20 @@ const PersonalDetails = props => {
        
          <Row>
            <View style={styles.imageView}>
-              <TouchableOpacity style={styles.cameraStyle} onPress={()=>alertService("He")}>
-                    <BlackCamera/>
+            
+           <ImagePlaceholder uri={payload?.image?.uri ? { uri: payload?.image?.uri } : null} isUser={true} containerStyle={styles.profileImage} />
+              <TouchableOpacity
+                style={styles.cameraStyle}
+                onPress={async () => {
+                  try {
+                    const res = await SERVICES._returnImageGallery();
+                    setPayload({ ...payload, image: res })
+                  } catch (error) {
+                    console.log('error:', error);
+                  }
+                }}>
+                <BlackCamera />
               </TouchableOpacity>
-              
-             <ImagePlaceholder isUser={true} style={styles.profileImage}/>
            </View>
            <View style={{flex:1,paddingLeft:mvs(16)}}>
              <Bold label={"Change profile image"} style={styles.welcomeText}/>

@@ -35,9 +35,9 @@ export const Personal_Details_Styles = StyleSheet.create({
     },
     profileImage:{
         alignSelf:'center',
-        borderRadius:10000,
-        height:mvs(60),
-        width:mvs(60)
+        borderRadius:60,
+        height:'100%',
+        width:'100%'
     },
     imageView:{
         alignSelf:'center',

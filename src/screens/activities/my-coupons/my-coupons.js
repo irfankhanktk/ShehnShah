@@ -71,7 +71,7 @@ const MyCoupons = props => {
                      discount={item.discount}
                      status='active'
                      AED={item.aed}
-                     onPress={()=>alert("Active")}
+                     onPress={()=>props?.navigation?.navigate('CouponDetails')}
                      progress={item.progress}
                      price={item.price}
                      />
