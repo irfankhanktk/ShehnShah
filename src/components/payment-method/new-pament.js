@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { AmericanExpressCard, CirrusCard, DirectDebitCard, DiscoverCard, MasterCard, VisaCard } from '../../assets/common-icons';
 import { Back } from '../../assets/headers-icons';
@@ -33,7 +33,9 @@ const NewPaymentSheet =React.forwardRef((props,ref,) => {
       <ScrollView contentContainerStyle={{ flexGrow: 1, }}>
           <View style={{paddingHorizontal:mvs(18)}}>
                <Row style={{...styles.sheetRowView}}>
+                <TouchableOpacity onPress={()=>ref?.current?.close()}>
                   <Back/>
+                </TouchableOpacity>
                   <Regular label={"Add New Method"} size={20} style={{flex:1,marginHorizontal:mvs(20)}}/>
               </Row>
               <View style={{marginTop:mvs(5),marginHorizontal:mvs(18)}}>

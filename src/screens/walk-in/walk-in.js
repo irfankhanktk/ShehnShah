@@ -43,7 +43,7 @@ import CouponModal from './../../components/molecules/modals/coupon-modal';
   ]);
   const [coupon,setCoupon]=React.useState(null);
     return (
-      <View style={{ ...styles.conntainer, backgroundColor: colors.background }}>
+      <View style={{ ...styles.conntainer, backgroundColor: colors.background }}>l
        <CustomHeader title='New Walk In Booking' titleStyle={{fontSize:15}} spacebetween allowBackBtn/>
        <View style={styles.body}>
                 <ScrollView contentContainerStyle={{ flexGrow: 1,paddingBottom:mvs(30) }}>

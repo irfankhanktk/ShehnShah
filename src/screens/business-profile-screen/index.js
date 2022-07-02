@@ -42,6 +42,7 @@ const BusinessProfile = (props) => {
   const { showAlert } = React.useContext(ThemeContext);
   const [loading, setLoading] = React.useState(true);
   const [isMoreBtn, setIsMoreBtn] = React.useState(true);
+  const ref = React.useRef(null);
   React.useEffect(() => {
   
   }, [])
@@ -55,6 +56,10 @@ const BusinessProfile = (props) => {
     <View style={styles.container}>
       <View style={styles.body}>
         <ScrollView
+          onScroll={(e)=>{
+            console.log(e?.nativeEvent?.contentOffset?.y);
+          }}
+          ref={ref}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scroll}>
           <View style={{ height: mvs(210), width: '100%' }}>
@@ -97,7 +102,19 @@ const BusinessProfile = (props) => {
           <View style={{ borderBottomWidth: 0.7, borderColor: colors.GE1E1E1, marginTop: mvs(25), marginBottom: mvs(16), marginHorizontal: mvs(16) }} />
           <Row>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: mvs(18) }}>
-              {services.map((item, index) => <ServiceCard middleText={index === 2 ? '4.1' : null} value={index === 2 ? null : item.value} title={item.title} icon={item.icon} div={services.length - 1 !== index} />)}
+              {services.map((item, index) => <ServiceCard onPress={()=>{
+                let y=300;
+                if(index===1){
+                    y=500
+                }else if (index===2){
+                  y=700;
+                
+                }else if (index===3){
+                  y=900;
+                }
+                ref?.current?.scrollTo({ x: 0, y: y, animated: true });
+              }} middleText={index === 2 ? '4.1' : null} value={index === 2 ? null : item.value}
+               title={item.title} icon={item.icon} div={services.length - 1 !== index} />)}
             </ScrollView>
           </Row>
           <HeadingTitle title='About' />

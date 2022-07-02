@@ -24,9 +24,9 @@ const ScheduleModal = ({
         <ReactNativeModal
             propagateSwipe
             isVisible={visible}
-            onBackdropPress={() => {}}
-            onSwipeComplete={() => {}}
-            swipeDirection='up'
+            onBackdropPress={setVisible}
+            onSwipeComplete={setVisible}
+            swipeDirection='down'
             style={{ margin: 0 }}>
             <View style={styles.container}>
                 <>
