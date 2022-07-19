@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "npx react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "npx react-native run-ios",
     "start": "react-native start",
     "debug": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "clean": "cd android && ./gradlew clean",
