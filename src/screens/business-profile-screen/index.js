@@ -415,13 +415,4 @@ const BusinessProfile = props => {
   );
 };
 
-const mapStateToProps = store => ({
-  user_info: store.state.user_info,
-});
-
-const mapDispatchToProps = {
-  fetchUsers: user_id => DIVIY_API.fetchUsers(user_id),
-  updatePersonalInfo: (payload, user_id) =>
-    DIVIY_API.updatePersonalInfo(payload),
-};
-export default connect(mapStateToProps, mapDispatchToProps)(BusinessProfile);
+export default BusinessProfile;

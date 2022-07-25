@@ -7,8 +7,8 @@ import {MainNavigator} from './src/navigation';
 import './src/services/axios-interceptors';
 import SERVICES from './src/services/common-services';
 import palette from './src/services/palette';
-import store from './src/store';
-//import {store} from './src/Redux/Store';
+// import store from './src/store';
+import {store} from './src/Redux/Store';
 
 import ThemeContext from './src/context/theme-context';
 import {SafeAreaProvider} from 'react-native-safe-area-context';

@@ -1,15 +1,15 @@
-import { useNavigation, useTheme } from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { connect } from 'react-redux';
+import {ScrollView, View} from 'react-native';
+import {connect} from 'react-redux';
 import Buttons from '../../components/atoms/Button';
-import { INPUT_FIELD } from '../../components/atoms/Input';
-import { CustomHeader } from '../../components/molecules/header/header-1x';
+import {INPUT_FIELD} from '../../components/atoms/Input';
+import {CustomHeader} from '../../components/molecules/header/header-1x';
 import validation from '../../services/validation';
 import DIVIY_API from '../../store/api-calls';
-import { STYLES as styles } from './change-password-style';
+import {STYLES as styles} from './change-password-style';
 import ThemeContext from './../../context/theme-context';
-const ChangePassword = (props) => {
+const ChangePassword = props => {
   const {user_info, updatePassword} = props;
   const {colors} = useTheme();
   const navigation = useNavigation();
@@ -93,12 +93,4 @@ const ChangePassword = (props) => {
   );
 };
 
-const mapStateToProps = (store) => ({
-  user_info: store.state.user_info,
-});
-
-const mapDispatchToProps = {
-  fetchUsers: (user_id) => DIVIY_API.fetchUsers(user_id),
-  updatePassword: (payload) => DIVIY_API.updatePassword(payload),
-};
-export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword);
+export default ChangePassword;

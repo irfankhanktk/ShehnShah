@@ -173,15 +173,4 @@ const Requests = props => {
   );
 };
 
-const mapStateToProps = store => ({
-  home_categories: store.state.home_categories,
-  categories: store.state.categories,
-  user_info: store.state.user_info,
-});
-
-const mapDispatchToProps = {
-  fetchHomeCategories: () => DIVIY_API.fetchHomeCategories(),
-  fetchSubCategories: parent_cat_id =>
-    DIVIY_API.fetchSubCategories(parent_cat_id),
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Requests);
+export default Requests;

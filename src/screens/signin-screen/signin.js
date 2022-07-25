@@ -14,14 +14,17 @@ import PhoneInput from 'react-native-phone-number-input';
 import {Signin_Styles as styles} from './signin-styles';
 import alertService from '../../services/alert.service';
 import {intValidation} from '../../services/validation';
+import Toast from 'react-native-toast-message';
+import {BaseURL} from '../../ApiServices';
+
 const Signin = props => {
   const navigation = useNavigation();
   const [loading, setLoading] = React.useState(false);
-  const [selectedTab, setSelectedTab] = React.useState('l');
+  const [selectedTab, setSelectedTab] = React.useState('');
   const [isSignUpWithPhone, setPhoneSignUp] = React.useState(true);
   const [phoneNumber, setphoneNumber] = useState('12015550123');
   const phoneInput = useRef(null);
-  const [formattedValue, setFormattedValue] = useState('');
+  const [formattedValue, setFormattedValue] = useState('3130971390');
   const [payload, setPayload] = React.useState({
     email: '',
     password: '',
@@ -40,14 +43,54 @@ const Signin = props => {
   const onSigUpWithPhone = async () => {
     setPhoneSignUp(true);
   };
+  const delayAPI = () => {
+    setTimeout(() => {
+      navigation.navigate('Otp', {phone: formattedValue});
+    }, 4000);
+  };
+  const getMobile = async () => {
+    if (formattedValue.length <= 0) {
+      return showToast('error', 'Please Enter mobile number');
+    } else {
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
 
-  const getMobile = async => {
-    if (formattedValue === '') {
-      return console.log('Plx Enter Number');
-    } else if (intValidation(formattedValue)) {
-      return console.log('false');
+      var raw = JSON.stringify({
+        phone: formattedValue,
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+      setLoading(true);
+      await fetch(BaseURL + 'auth/login', requestOptions)
+        .then(response => response.json())
+        .then(result => {
+          if (result != null) {
+            setLoading(false);
+            showToast('success', result.message.message);
+            delayAPI();
+          }
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log('error', error);
+        });
     }
-    console.log('true');
+  };
+
+  const showToast = (type, text1, text2) => {
+    Toast.show({
+      type: type,
+      text1: text1,
+      text2: text2,
+      position: 'top',
+      autoHide: true,
+      visibilityTime: 3000,
+    });
   };
   return (
     <View style={{...styles.container, backgroundColor: colors.background}}>
@@ -224,7 +267,7 @@ const Signin = props => {
               <View style={{...styles.phoneNumberView, marginTop: mvs(10)}}>
                 <PhoneInput
                   ref={phoneInput}
-                  // defaultValue="(201) 555-0123"
+                  defaultValue="3130971390"
                   defaultCode="US"
                   layout="first"
                   containerStyle={styles.phoneContainer}
@@ -242,8 +285,8 @@ const Signin = props => {
               <Buttons.ButtonPrimary
                 disabled={loading}
                 loading={loading}
-                // onClick={getMobile}
-                onClick={() => navigation.navigate('Otp')}
+                onClick={getMobile}
+                //onClick={() => navigation.navigate('Otp')}
                 textStyle={{...styles.buttonText, color: colors.white}}
                 style={{...styles.button}}
                 title={'Continue'}
@@ -252,15 +295,9 @@ const Signin = props => {
           ) : null}
         </View>
       </ScrollView>
+      <Toast />
     </View>
   );
 };
 
-const mapStateToProps = store => ({
-  // home_posts: store.state.home_posts,
-});
-
-const mapDispatchToProps = {
-  signin: payload => DIVIY_API.signin(payload),
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Signin);
+export default Signin;

@@ -1,13 +1,13 @@
-import { useTheme } from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 import moment from 'moment';
 import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { connect } from 'react-redux';
+import {ScrollView, View} from 'react-native';
+import {connect} from 'react-redux';
 import Buttons from '../../components/atoms/Button';
-import { INPUT_FIELD } from '../../components/atoms/Input';
-import { CustomHeader } from '../../components/molecules/header/header-1x';
-import { mvs } from '../../services/metrices';
-import { Proposal_Styles as styles } from './proposal-styles';
+import {INPUT_FIELD} from '../../components/atoms/Input';
+import {CustomHeader} from '../../components/molecules/header/header-1x';
+import {mvs} from '../../services/metrices';
+import {Proposal_Styles as styles} from './proposal-styles';
 const types = [
   {
     label: 'Amazon Pay',
@@ -71,12 +71,4 @@ const Proposal = props => {
   );
 };
 
-const mapStateToProps = store => ({
-  home_categories: store.state.home_categories,
-  user_info: store.state.user_info,
-});
-
-const mapDispatchToProps = {
-  postRequest: (user_id, page) => DIVIY_API.postRequest(user_id, page),
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Proposal);
+export default Proposal;

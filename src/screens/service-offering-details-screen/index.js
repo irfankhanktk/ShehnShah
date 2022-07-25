@@ -209,15 +209,4 @@ const ServiceOfferingDetails = props => {
   );
 };
 
-const mapStateToProps = store => ({
-  home_categories: store.state.home_categories,
-  user_info: store.state.user_info,
-});
-
-const mapDispatchToProps = {
-  fetchHomePosts: (user_id, page) => DIVIY_API.fetchHomePosts(user_id, page),
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ServiceOfferingDetails);
+export default ServiceOfferingDetails;

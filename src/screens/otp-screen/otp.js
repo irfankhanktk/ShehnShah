@@ -1,58 +1,152 @@
 //import liraries
-import React, { useState } from 'react';
-import { FlatList, TouchableOpacity, View, Text, StatusBar, ScrollView } from 'react-native';
-import { connect } from 'react-redux';
+import React, {useState} from 'react';
+import {
+  FlatList,
+  TouchableOpacity,
+  View,
+  Text,
+  StatusBar,
+  ScrollView,
+} from 'react-native';
+import {connect} from 'react-redux';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
 import Regular from '../../presentation/typography/regular-text';
-import { mvs } from '../../services/metrices';
+import {mvs} from '../../services/metrices';
 import DIVIY_API from '../../store/api-calls';
-import { useNavigation, CommonActions, useTheme } from '@react-navigation/native';
+import {useNavigation, CommonActions, useTheme} from '@react-navigation/native';
 import styles from './otp-styles';
 import moment from 'moment';
-import { CustomHeader } from '../../components/molecules/header/header-1x';
+import {CustomHeader} from '../../components/molecules/header/header-1x';
 import colors from './../../services/colors';
 import Bold from '../../presentation/typography/bold-text';
-import { INPUT_FIELD } from './../../components/atoms/Input';
-import { Active } from '../../assets/tabbar-icons';
+import {INPUT_FIELD} from './../../components/atoms/Input';
+import {Active} from '../../assets/tabbar-icons';
 import Buttons from '../../components/atoms/Button';
-const Otp = props => {
-  const navigation = useNavigation();
+import Toast from 'react-native-toast-message';
+import {BaseURL} from '../../ApiServices';
+const Otp = ({navigation, route}, props) => {
+  // const navigation = useNavigation();
+  const {phone} = route.params;
+
   const [value, setValue] = React.useState('');
   const [isMatch, setIsMatch] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
+  const {} = props;
+  const showToast = (type, text1, text2) => {
+    Toast.show({
+      type: type,
+      text1: text1,
+      text2: text2,
+      position: 'top',
+      autoHide: true,
+      visibilityTime: 3000,
+    });
+  };
+  const delayAPI = () => {
+    setTimeout(() => {
+      navigation.navigate('About');
+    }, 4000);
+  };
+  const verifyOTP = async () => {
+    if (value.length <= 0) {
+      return showToast('error', 'Please enter Verification Code');
+    } else {
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
 
-  const {
-  } = props;
+      var raw = JSON.stringify({
+        phone: phone,
+        code: value,
+      });
 
-
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+      setLoading(true);
+      await fetch(BaseURL + 'auth/verify-otp', requestOptions)
+        .then(response => response.json())
+        .then(result => {
+          if (result != null) {
+            if (result.error) {
+              setLoading(false);
+              setIsMatch(false);
+            }
+            setLoading(false);
+            showToast('success', result.message.message);
+            delayAPI();
+            console.log(result);
+          }
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log('error', error);
+        });
+    }
+  };
   return (
-    <View style={{ ...styles.conntainer, backgroundColor: colors.white }}>
-      <CustomHeader colors={colors} title='' allowBackBtn />
+    <View style={{...styles.conntainer, backgroundColor: colors.white}}>
+      <CustomHeader colors={colors} title="" allowBackBtn />
       <View style={styles.body}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: mvs(22) }}>
-          <Bold size={mvs(24)} style={{ textAlign: 'center', marginTop: mvs(108) }} label={'Enter Verification Code'} />
-          <Regular size={mvs(18)} lineHeight={mvs(26)} numberOfLines={2} style={{ textAlign: 'center', }} label={`Enter verification code. We've sent you the PIN at +1  (201) 555-0123`} />
-          <INPUT_FIELD.CustomOtpInput isMatch={isMatch} value={value} setValue={setValue} />
-          {isMatch ? <View style={{ alignItems: 'center', marginTop: mvs(30), marginBottom: mvs(18) }}>
-            <Active />
-            <Regular size={mvs(14)} color={colors.B363F4D} label={'Code’ll be active for another 40 seconds'} style={{ textAlign: 'center', marginTop: mvs(4), }} />
-          </View> :
-            <Regular size={mvs(14)} color={colors.FF0000} label={'Passcode Incorrect'} style={{ textAlign: 'center', marginTop: mvs(45),marginBottom: mvs(28)  }} />}
-          <Buttons.ButtonPrimary style={{}} title='Continue' onClick={()=>navigation.navigate("About")}/>
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1, paddingHorizontal: mvs(22)}}>
+          <Bold
+            size={mvs(24)}
+            style={{textAlign: 'center', marginTop: mvs(108)}}
+            label={'Enter Verification Code'}
+          />
+          <Regular
+            size={mvs(18)}
+            lineHeight={mvs(26)}
+            numberOfLines={2}
+            style={{textAlign: 'center'}}
+            label={`Enter verification code. We've sent you the PIN at ${phone}`}
+          />
+          <INPUT_FIELD.CustomOtpInput
+            isMatch={isMatch}
+            value={value}
+            setValue={setValue}
+          />
+          {isMatch ? (
+            <View
+              style={{
+                alignItems: 'center',
+                marginTop: mvs(30),
+                marginBottom: mvs(18),
+              }}>
+              <Active />
+              <Regular
+                size={mvs(14)}
+                color={colors.B363F4D}
+                label={'Code’ll be active for another 40 seconds'}
+                style={{textAlign: 'center', marginTop: mvs(4)}}
+              />
+            </View>
+          ) : (
+            <Regular
+              size={mvs(14)}
+              color={colors.FF0000}
+              label={'Passcode Incorrect'}
+              style={{
+                textAlign: 'center',
+                marginTop: mvs(45),
+                marginBottom: mvs(28),
+              }}
+            />
+          )}
+          <Buttons.ButtonPrimary
+            style={{}}
+            loading={loading}
+            title="Continue"
+            onClick={verifyOTP}
+          />
         </ScrollView>
       </View>
+      <Toast />
     </View>
   );
 };
 
-const mapStateToProps = store => ({
-  home_categories: store.state.home_categories,
-  categories: store.state.categories,
-  user_info: store.state.user_info,
-});
-
-const mapDispatchToProps = {
-  fetchHomeCategories: () => DIVIY_API.fetchHomeCategories(),
-  fetchSubCategories: parent_cat_id =>
-    DIVIY_API.fetchSubCategories(parent_cat_id),
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Otp);
+export default Otp;
