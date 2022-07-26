@@ -1,7 +1,8 @@
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import axios from 'axios';
-import { URLS } from '../store/api-urls';
+
+import {URLS} from '../store/api-urls';
 import DIVIY_API from '../store/api-calls';
 
 const CancelToken = axios.CancelToken;
@@ -17,7 +18,8 @@ client.interceptors.request.use(
     config.headers = {
       Accept: 'application/json',
       'Cache-Control': 'no-cache',
-      'Content-Type': 'multipart/form-data, application/json,application/x-www-form-urlencoded',
+      'Content-Type':
+        'multipart/form-data, application/json,application/x-www-form-urlencoded',
     };
 
     config.params = config.params || {};
@@ -50,21 +52,19 @@ client.interceptors.response.use(
       return Promise.reject('Hi Dude');
     } else if (error?.response?.status === 401) {
       originalRequest._retry = true;
-      await DIVIY_API.refreshToken(
-        JSON.parse(token)?.refresh_token,
-      );
-// console.log("Token info: ",tokenInfo)
+      await DIVIY_API.refreshToken(JSON.parse(token)?.refresh_token);
+      // console.log("Token info: ",tokenInfo)
       // if (tokenInfo) {
       //   await AsyncStorage.setItem('@token', JSON.stringify({token:tokenInfo}));
       //   axios.defaults.headers.common['Authorization'] =
       //     'Bearer ' + tokenInfo?.access_token;
       //   return client(originalRequest);
       // } else {
-        // AsyncStorage.multiRemove(['user_data', 'token']).then(res => {
-        //   // props.navigation.navigate('signIn');
-        //   global.navigation.navigate('getStarted');
-        //   global.navigation.dispatch(StackActions.replace('getStarted'));
-        // });
+      // AsyncStorage.multiRemove(['user_data', 'token']).then(res => {
+      //   // props.navigation.navigate('signIn');
+      //   global.navigation.navigate('getStarted');
+      //   global.navigation.dispatch(StackActions.replace('getStarted'));
+      // });
       //   return Promise.reject(error);
       // }
     }

@@ -24,6 +24,7 @@ export const OtpInput = ({value, setValue, isMatch = false}) => {
       ref={ref}
       {...props}
       value={value}
+      isFocused={true}
       onChangeText={txt => {
         setValue(txt);
         // propsParent.code(txt)

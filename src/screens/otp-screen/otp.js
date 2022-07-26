@@ -44,7 +44,7 @@ const Otp = ({navigation, route}, props) => {
   };
   const delayAPI = () => {
     setTimeout(() => {
-      navigation.navigate('About');
+      navigation.navigate('About', {phone});
     }, 4000);
   };
   const verifyOTP = async () => {
@@ -73,19 +73,23 @@ const Otp = ({navigation, route}, props) => {
             if (result.error) {
               setLoading(false);
               setIsMatch(false);
+              showToast('error', result.message);
+              return;
             }
             setLoading(false);
             showToast('success', result.message.message);
             delayAPI();
-            console.log(result);
+            console.log('otp=======', result);
           }
         })
         .catch(error => {
           setLoading(false);
+          showToast('error', 'Something went wrong!');
           console.log('error', error);
         });
     }
   };
+
   return (
     <View style={{...styles.conntainer, backgroundColor: colors.white}}>
       <CustomHeader colors={colors} title="" allowBackBtn />

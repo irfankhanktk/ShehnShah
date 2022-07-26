@@ -16,21 +16,83 @@ import ImagePlaceholder from '../../components/atoms/Placeholder';
 import alertService from '../../services/alert.service';
 import DualText from '../../components/atoms/dual-text/dual-text';
 import SERVICES from './../../services/common-services';
+import Toast from 'react-native-toast-message';
+import {BaseURL} from '../../ApiServices';
+import {storeData} from '../../localStorage';
 
-const About = props => {
+const About = ({route}, props) => {
+  const {phone} = route.params;
   const navigation = useNavigation();
   const [loading, setLoading] = React.useState(false);
 
   const [payload, setPayload] = React.useState({
     email: '',
-    password: '',
     name: '',
-    confirmPassword: '',
     image: '',
   });
   const {colors} = useTheme();
+  const showToast = (type, text1, text2) => {
+    Toast.show({
+      type: type,
+      text1: text1,
+      text2: text2,
+      position: 'top',
+      autoHide: true,
+      visibilityTime: 3000,
+    });
+  };
+  const delayAPI = () => {
+    setTimeout(() => {
+      navigation.navigate('MyVehicle');
+    }, 4000);
+  };
+  const saveProfile = async () => {
+    const emailRegx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (payload.name === '') {
+      return showToast('error', 'Name is required');
+    } else if (payload.email === '') {
+      return showToast('error', 'Email is required');
+    } else if (!payload.email.match(emailRegx)) {
+      return showToast('error', 'Invalid email ');
+    } else {
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
 
-  const onSigin = async () => {};
+      var raw = JSON.stringify({
+        name: payload.name,
+        email: payload.email,
+        password: '123456',
+        phone,
+        role_id: '4',
+        user_type: 'customer',
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow',
+      };
+      setLoading(true);
+      await fetch(BaseURL + 'auth/signup', requestOptions)
+        .then(response => response.json())
+        .then(result => {
+          if (result != null) {
+            setLoading(false);
+            storeData('token', result.data.token);
+
+            showToast('success', result.message.message);
+            delayAPI();
+            console.log('result=======', result);
+          }
+        })
+        .catch(error => {
+          showToast('error', 'Something went wrong!');
+          setLoading(false);
+          console.log('error', error);
+        });
+    }
+  };
 
   return (
     <View style={{...styles.container, backgroundColor: colors.background}}>
@@ -75,7 +137,10 @@ const About = props => {
               rightIcon={false}
               leftIcon="User"
               value={payload.name}
-              onChangeText={t => setPayload({...payload, name: t})}
+              onChangeText={t => {
+                console.log('name======', t);
+                setPayload({...payload, name: t});
+              }}
               label="FULL NAME"
               placeholder="John Doe"
             />
@@ -84,7 +149,10 @@ const About = props => {
               value={payload.email}
               leftIcon="User"
               rightIcon="Tick"
-              onChangeText={t => setPayload({...payload, email: t})}
+              onChangeText={t => {
+                console.log('email======', t);
+                setPayload({...payload, email: t});
+              }}
               label="EMAIL"
               placeholder="lehieuds@gmail.com"
             />
@@ -107,13 +175,15 @@ const About = props => {
           <Buttons.ButtonPrimary
             disabled={loading}
             loading={loading}
-            onClick={() => navigation.navigate('MyVehicle')}
+            onClick={saveProfile}
+            //onClick={() => navigation.navigate('MyVehicle')}
             textStyle={{...styles.buttonText, color: colors.white}}
             style={{...styles.button}}
             title={'Continue'}
           />
         </View>
       </ScrollView>
+      <Toast />
     </View>
   );
 };

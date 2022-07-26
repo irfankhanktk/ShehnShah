@@ -8,7 +8,12 @@ import SemiBold from './../../../presentation/typography/semibold-text';
 import RatingStar from './../rating-star/index';
 import Regular from './../../../presentation/typography/regular-text';
 import {Bg} from '../../../assets/images';
-const ReviewsRaing = ({bg = '#ffedce'}) => {
+import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
+import LinearGradient from 'react-native-linear-gradient';
+
+const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
+
+const ReviewsRaing = ({bg = '#ffedce', data, loading}) => {
   return (
     <View style={{marginTop: mvs(30)}}>
       <ScrollView
@@ -26,52 +31,88 @@ const ReviewsRaing = ({bg = '#ffedce'}) => {
               borderRadius: mvs(5),
             }}>
             <Row justifyContent="flex-start" style={{}}>
-              <ImagePlaceholder
-                containerStyle={{
-                  height: mvs(33),
-                  width: mvs(33),
-                  borderRadius: mvs(17),
-                }}
-                uri={Bg}
-              />
-              <View style={{marginLeft: mvs(10)}}>
-                <SemiBold
-                  size={mvs(14)}
-                  color={colors.B1B1B1B}
-                  label={'Garnet Bins '}
-                />
-                <RatingStar fill={colors.B323232} width={mvs(90)} />
-              </View>
-              <View style={{flex: 1}}>
-                <Regular
-                  style={{
-                    alignSelf: 'flex-end',
-                    color: colors.black,
-                    fontSize: mvs(12),
+              <ShimmerPlaceholder
+                style={{height: mvs(33), width: mvs(33), borderRadius: mvs(17)}}
+                visible={loading}>
+                <ImagePlaceholder
+                  containerStyle={{
+                    height: mvs(33),
+                    width: mvs(33),
+                    borderRadius: mvs(17),
                   }}
-                  label={'Yesterday 09:28'}
+                  uri={Bg}
                 />
+              </ShimmerPlaceholder>
+              <View style={{marginLeft: mvs(10)}}>
+                <ShimmerPlaceholder
+                  style={{
+                    height: mvs(33),
+                    width: mvs(100),
+                  }}
+                  visible={loading}>
+                  <SemiBold
+                    size={mvs(14)}
+                    color={colors.B1B1B1B}
+                    label={'Garnet Bins '}
+                  />
+                  <RatingStar fill={colors.B323232} width={mvs(90)} />
+                </ShimmerPlaceholder>
               </View>
+              <ShimmerPlaceholder
+                style={{
+                  height: mvs(33),
+                  width: mvs(100),
+                  marginLeft: mvs(80),
+                }}
+                visible={loading}>
+                <View style={{flex: 1}}>
+                  <Regular
+                    style={{
+                      alignSelf: 'flex-end',
+                      color: colors.black,
+                      fontSize: mvs(12),
+                    }}
+                    label={'Yesterday 09:28'}
+                  />
+                </View>
+              </ShimmerPlaceholder>
             </Row>
-            <Regular
-              style={{marginVertical: mvs(15)}}
-              size={mvs(12)}
-              numberOfLines={2}
-              label={
-                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam.'
-              }
-            />
+            <ShimmerPlaceholder
+              style={{
+                height: mvs(33),
+                width: '90%',
+                alignSelf: 'center',
+                marginVertical: mvs(15),
+              }}
+              visible={loading}>
+              <Regular
+                style={{marginVertical: mvs(15)}}
+                size={mvs(12)}
+                numberOfLines={2}
+                label={
+                  'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam.'
+                }
+              />
+            </ShimmerPlaceholder>
             <Row justifyContent={'space-between'}>
               {[0, 1, 2, 3, 4].map((ele, index) => (
                 <View key={index} style={{height: mvs(52), width: mvs(52)}}>
-                  <ImagePlaceholder
-                    containerStyle={{
+                  <ShimmerPlaceholder
+                    style={{
                       height: '100%',
                       width: '100%',
                       borderRadius: mvs(16),
                     }}
-                    uri={Bg}
-                  />
+                    visible={loading}>
+                    <ImagePlaceholder
+                      containerStyle={{
+                        height: '100%',
+                        width: '100%',
+                        borderRadius: mvs(16),
+                      }}
+                      uri={Bg}
+                    />
+                  </ShimmerPlaceholder>
                 </View>
               ))}
             </Row>

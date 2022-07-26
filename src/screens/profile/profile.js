@@ -4,6 +4,7 @@ import {
   View,
   ScrollView,
   Text,
+  Alert,
   TouchableOpacity,
   StatusBar,
   SafeAreaView,
@@ -23,11 +24,35 @@ import Bold from '../../presentation/typography/bold-text';
 import Regular from '../../presentation/typography/regular-text';
 import {Edit} from '../../assets/common-icons';
 import ProfileAction from '../../components/atoms/profile-action';
+import {removeData} from '../../localStorage';
 // create a component
 const Profile = props => {
   const navigation = useNavigation();
   const [value, setValue] = React.useState(true);
   const [value2, setValue2] = React.useState(true);
+
+  const logOut = () => {
+    return Alert.alert('Warning', 'Are you sure you want to Logout?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'LogOut',
+        onPress: async () => {
+          const res = await removeData('token');
+          console.log('res=======', res);
+          if (res) {
+            navigation.navigate('Onboarding');
+          } else {
+            console.log('Something went wrong!');
+          }
+        },
+      },
+    ]);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={'white'} barStyle="dark-content" />
@@ -142,6 +167,7 @@ const Profile = props => {
             label={'Logout'}
             leftIcon={'Logout'}
             rightIcon={''}
+            onPress={logOut}
             subLabel={''}
             labelStyle={{marginTop: mvs(15)}}
             selected={false}

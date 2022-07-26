@@ -77,6 +77,7 @@ const Signin = props => {
         })
         .catch(error => {
           setLoading(false);
+          showToast('error', 'Something went wrong!');
           console.log('error', error);
         });
     }
@@ -268,7 +269,7 @@ const Signin = props => {
                 <PhoneInput
                   ref={phoneInput}
                   defaultValue="3130971390"
-                  defaultCode="US"
+                  defaultCode="PK"
                   layout="first"
                   containerStyle={styles.phoneContainer}
                   textContainerStyle={styles.textInput}

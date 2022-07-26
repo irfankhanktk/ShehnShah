@@ -27,6 +27,14 @@ import colors from './../../services/colors';
 import {STYLES as styles} from './style';
 import RatingStar from './../../components/molecules/rating-star/index';
 import ReviewModal from './../../components/molecules/modals/review-modal';
+import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
+import LinearGradient from 'react-native-linear-gradient';
+import FastImage from 'react-native-fast-image';
+import {getData} from '../../localStorage';
+import {BaseURL} from '../../ApiServices';
+
+const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
+
 const services = [
   {icon: 'Services', title: 'Services', value: '5 Services'},
   {icon: 'Photos', title: 'Photos', value: '10+ Photos'},
@@ -45,11 +53,39 @@ const BusinessProfile = props => {
     last_name: '',
     first_name: '',
   });
+  const [userToken, setuserToken] = React.useState('');
   const {showAlert} = React.useContext(ThemeContext);
   const [loading, setLoading] = React.useState(true);
   const [isMoreBtn, setIsMoreBtn] = React.useState(true);
   const ref = React.useRef(null);
-  React.useEffect(() => {}, []);
+  const getToken = async () => {
+    const res = await getData('token');
+    if (res != null) {
+      setuserToken(res);
+    }
+  };
+
+  const getUserProfile = async () => {
+    var requestOptions = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+      redirect: 'follow',
+    };
+
+    await fetch(`${BaseURL}p/public/businesses/1/profile`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  };
+  React.useEffect(() => {
+    getToken();
+  }, [loading]);
   // if (loading) {
   //   return <View style={{ flex: 1 }}>
   //     <PageLoader />
@@ -67,10 +103,14 @@ const BusinessProfile = props => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scroll}>
           <View style={{height: mvs(210), width: '100%'}}>
-            <ImagePlaceholder
-              uri={Bg}
-              containerStyle={{width: '100%', height: '100%'}}
-            />
+            <ShimmerPlaceholder
+              style={{width: '100%', height: '100%'}}
+              visible={loading}>
+              <ImagePlaceholder
+                uri={Bg}
+                containerStyle={{width: '100%', height: '100%'}}
+              />
+            </ShimmerPlaceholder>
             <TouchableOpacity
               onPress={() => props?.navigation?.goBack()}
               style={{position: 'absolute', left: mvs(20), top: mvs(20)}}>
@@ -89,60 +129,77 @@ const BusinessProfile = props => {
                 borderWidth: 0.7,
                 borderColor: colors.GDFDFDF,
               }}>
-              <ImagePlaceholder
-                borderRadius={mvs(12)}
-                uri={Bg}
-                containerStyle={{width: mvs(55), height: mvs(55)}}
-              />
-            </View>
-            <View style={{flex: 1, marginLeft: mvs(13)}}>
-              <Row>
-                <Bold
-                  numberOfLines={2}
-                  style={{flex: 1}}
-                  label={'Total Al Safeer Car Wash & Car Service'}
-                  size={mvs(20)}
+              <ShimmerPlaceholder
+                style={{width: mvs(55), borderRadius: mvs(27), height: mvs(55)}}
+                visible={loading}>
+                <ImagePlaceholder
+                  borderRadius={mvs(12)}
+                  uri={Bg}
+                  containerStyle={{width: mvs(55), height: mvs(55)}}
                 />
-                <Row justifyContent={'space-between'} style={{width: mvs(60)}}>
-                  <TouchableOpacity>
-                    <Share />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setVisible(true);
-                    }}>
-                    <HeartOutline />
-                  </TouchableOpacity>
-                </Row>
-              </Row>
-              <Row alignItems="flex-end">
-                <Row
-                  style={{
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    flex: 1,
-                  }}>
-                  <Map />
-                  <Regular
-                    color={colors.G9B9B9B}
-                    size={mvs(16)}
-                    label={'  Sharjah Al nahada'}
-                  />
-                </Row>
-                <Row style={{width: mvs(80), alignItems: 'flex-end'}}>
-                  <Minute />
-                  <Bold
-                    style={{
-                      lineHeight: mvs(15),
-                      transform: [{translateY: mvs(2)}],
-                    }}
-                    color={colors.B323232}
-                    size={mvs(15)}
-                    label={' 5.4 KM'}
-                  />
-                </Row>
-              </Row>
+              </ShimmerPlaceholder>
             </View>
+            <ShimmerPlaceholder
+              style={{
+                width: '80%',
+                alignSelf: 'center',
+                // borderWidth: 1,
+                height: mvs(80),
+                marginLeft: mvs(5),
+              }}
+              visible={loading}>
+              <View style={{flex: 1, marginLeft: mvs(13)}}>
+                <Row>
+                  <Bold
+                    numberOfLines={2}
+                    style={{flex: 1}}
+                    label={'Total Al Safeer Car Wash & Car Service'}
+                    size={mvs(20)}
+                  />
+                  <Row
+                    justifyContent={'space-between'}
+                    style={{width: mvs(60)}}>
+                    <TouchableOpacity>
+                      <Share />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        setVisible(true);
+                      }}>
+                      <HeartOutline />
+                    </TouchableOpacity>
+                  </Row>
+                </Row>
+
+                <Row alignItems="flex-end">
+                  <Row
+                    style={{
+                      justifyContent: 'flex-start',
+                      alignItems: 'center',
+                      flex: 1,
+                    }}>
+                    <Map />
+                    <Regular
+                      color={colors.G9B9B9B}
+                      size={mvs(16)}
+                      label={'  Sharjah Al nahada'}
+                    />
+                  </Row>
+                  <Row style={{width: mvs(80), alignItems: 'flex-end'}}>
+                    <Minute />
+                    <Bold
+                      style={{
+                        lineHeight: mvs(15),
+                        transform: [{translateY: mvs(2)}],
+                      }}
+                      color={colors.B323232}
+                      size={mvs(15)}
+                      label={' 5.4 KM'}
+                    />
+                  </Row>
+                </Row>
+              </View>
+            </ShimmerPlaceholder>
           </Row>
           <View
             style={{
@@ -183,23 +240,27 @@ const BusinessProfile = props => {
             </ScrollView>
           </Row>
           <HeadingTitle title="About" />
-          <View style={{paddingHorizontal: mvs(18)}}>
-            <Regular
-              numberOfLines={null}
-              label={
-                about?.length > 185 && isMoreBtn
-                  ? `${about?.slice(0, 183)} ...`
-                  : about
-              }
-              size={mvs(16)}
-              color={colors.B1E1E1E}
-            />
-            {isMoreBtn && about?.length > 185 && (
-              <TouchableOpacity onPress={() => setIsMoreBtn(false)}>
-                <Regular color={colors.primary} label={'Read More'} />
-              </TouchableOpacity>
-            )}
-          </View>
+          <ShimmerPlaceholder
+            style={{width: '95%', alignSelf: 'center', height: mvs(100)}}
+            visible={loading}>
+            <View style={{paddingHorizontal: mvs(18)}}>
+              <Regular
+                numberOfLines={null}
+                label={
+                  about?.length > 185 && isMoreBtn
+                    ? `${about?.slice(0, 183)} ...`
+                    : about
+                }
+                size={mvs(16)}
+                color={colors.B1E1E1E}
+              />
+              {isMoreBtn && about?.length > 185 && (
+                <TouchableOpacity onPress={() => setIsMoreBtn(false)}>
+                  <Regular color={colors.primary} label={'Read More'} />
+                </TouchableOpacity>
+              )}
+            </View>
+          </ShimmerPlaceholder>
           <HeadingTitle title="Gallery" />
           <View>
             <ScrollView
@@ -207,171 +268,231 @@ const BusinessProfile = props => {
               contentContainerStyle={{paddingHorizontal: mvs(18)}}
               horizontal>
               {[0, 1, 2, 3].map((ele, index) => (
-                <View
-                  key={index}
+                <ShimmerPlaceholder
                   style={{
                     marginRight: mvs(10),
                     height: mvs(158),
                     width: mvs(236),
-                  }}>
-                  <ImagePlaceholder
-                    containerStyle={{
-                      height: '100%',
-                      width: '100%',
-                      borderRadius: mvs(16),
-                    }}
-                    uri={Bg}
-                  />
-                </View>
+                  }}
+                  visible={loading}>
+                  <View
+                    key={index}
+                    style={{
+                      marginRight: mvs(10),
+                      height: mvs(158),
+                      width: mvs(236),
+                    }}>
+                    <ImagePlaceholder
+                      containerStyle={{
+                        height: '100%',
+                        width: '100%',
+                        borderRadius: mvs(16),
+                      }}
+                      uri={Bg}
+                    />
+                  </View>
+                </ShimmerPlaceholder>
               ))}
             </ScrollView>
           </View>
           <HeadingTitle title="Contact information" />
           <View>
-            <LabelValue label={'Address'} value={'05698 Simonis Point'} />
-            <LabelValue label={'Website'} value={'www.shehnshah .com'} />
-            <LabelValue label={'Phone'} value={'+96 348 4545651'} />
-            <LabelValue
-              label={'Email Address'}
-              value={'mail@site.com'}
-              bw={0}
-            />
+            <ShimmerPlaceholder
+              style={styles.contactInformation}
+              visible={loading}>
+              <LabelValue label={'Address'} value={'05698 Simonis Point'} />
+            </ShimmerPlaceholder>
+            <ShimmerPlaceholder
+              style={styles.contactInformation}
+              visible={loading}>
+              <LabelValue label={'Website'} value={'www.shehnshah .com'} />
+            </ShimmerPlaceholder>
+            <ShimmerPlaceholder
+              style={styles.contactInformation}
+              visible={loading}>
+              <LabelValue label={'Phone'} value={'+96 348 4545651'} />
+            </ShimmerPlaceholder>
+            <ShimmerPlaceholder
+              style={styles.contactInformation}
+              visible={loading}>
+              <LabelValue
+                label={'Email Address'}
+                value={'mail@site.com'}
+                bw={0}
+              />
+            </ShimmerPlaceholder>
           </View>
           <HeadingTitle title="Business Hours" />
-          <LabelValue
-            label={'Sunday'}
-            value={'Closed'}
-            vColor={colors.RFA3E3E}
-          />
-          <LabelValue
-            label={'Monday'}
-            value={'10:00 AM - 6:00 PM'}
-            vColor={colors.B323232}
-          />
-          <LabelValue
-            label={'Tuesday'}
-            value={'10:00 AM - 6:00 PM'}
-            vColor={colors.B323232}
-          />
-          <LabelValue
-            label={'Wednesday'}
-            value={'10:00 AM - 6:00 PM'}
-            vColor={colors.B323232}
-          />
-          <LabelValue
-            label={'Thursday'}
-            value={'10:00 AM - 6:00 PM'}
-            vColor={colors.B323232}
-          />
-          <LabelValue
-            label={'Friday'}
-            value={'10:00 AM - 6:00 PM'}
-            vColor={colors.B323232}
-          />
-          <LabelValue
-            bw={0}
-            label={'Satureday'}
-            value={'10:00 AM - 6:00 PM'}
-            vColor={colors.B323232}
-          />
+          <ShimmerPlaceholder
+            style={styles.contactInformation}
+            visible={loading}>
+            <LabelValue
+              label={'Sunday'}
+              value={'Closed'}
+              vColor={colors.RFA3E3E}
+            />
+          </ShimmerPlaceholder>
+          <ShimmerPlaceholder
+            style={styles.contactInformation}
+            visible={loading}>
+            <LabelValue
+              label={'Monday'}
+              value={'10:00 AM - 6:00 PM'}
+              vColor={colors.B323232}
+            />
+          </ShimmerPlaceholder>
+          <ShimmerPlaceholder
+            style={styles.contactInformation}
+            visible={loading}>
+            <LabelValue
+              label={'Tuesday'}
+              value={'10:00 AM - 6:00 PM'}
+              vColor={colors.B323232}
+            />
+          </ShimmerPlaceholder>
+          <ShimmerPlaceholder
+            style={styles.contactInformation}
+            visible={loading}>
+            <LabelValue
+              label={'Wednesday'}
+              value={'10:00 AM - 6:00 PM'}
+              vColor={colors.B323232}
+            />
+          </ShimmerPlaceholder>
+          <ShimmerPlaceholder
+            style={styles.contactInformation}
+            visible={loading}>
+            <LabelValue
+              label={'Thursday'}
+              value={'10:00 AM - 6:00 PM'}
+              vColor={colors.B323232}
+            />
+          </ShimmerPlaceholder>
+          <ShimmerPlaceholder
+            style={styles.contactInformation}
+            visible={loading}>
+            <LabelValue
+              label={'Friday'}
+              value={'10:00 AM - 6:00 PM'}
+              vColor={colors.B323232}
+            />
+          </ShimmerPlaceholder>
+          <ShimmerPlaceholder
+            style={styles.contactInformation}
+            visible={loading}>
+            <LabelValue
+              bw={0}
+              label={'Satureday'}
+              value={'10:00 AM - 6:00 PM'}
+              vColor={colors.B323232}
+            />
+          </ShimmerPlaceholder>
           <HeadingTitle title="Rating & Reviews" />
           <View style={{paddingHorizontal: mvs(18)}}>
             <Row justifyContent={'space-between'}>
-              <Bold
-                color={colors.black}
-                style={{transform: [{translateY: -mvs(10)}]}}
-                size={mvs(42)}
-                label={'4.7'}
-              />
-              <Row>
-                <View>
-                  <RatingStar
-                    rate={5}
-                    size={mvs(7)}
-                    list={[1, 2, 3, 4, 5]}
-                    width={mvs(40)}
-                    style={{alignSelf: 'flex-end'}}
-                  />
-                  <RatingStar
-                    rate={5}
-                    size={mvs(7)}
-                    list={[1, 2, 3, 4]}
-                    width={mvs(32)}
-                    style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
-                  />
-                  <RatingStar
-                    rate={5}
-                    size={mvs(7)}
-                    list={[1, 2, 3]}
-                    width={mvs(24)}
-                    style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
-                  />
-                  <RatingStar
-                    rate={5}
-                    size={mvs(7)}
-                    list={[1, 2]}
-                    width={mvs(16)}
-                    style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
-                  />
-                  <RatingStar
-                    rate={5}
-                    size={mvs(7)}
-                    list={[1]}
-                    width={mvs(8)}
-                    style={{
-                      alignSelf: 'flex-end',
-                      justifyContent: 'flex-end',
-                      marginTop: mvs(2.4),
-                    }}
-                  />
-                </View>
-                <View style={{paddingLeft: mvs(10)}}>
-                  <View
-                    style={{
-                      height: mvs(4),
-                      borderRadius: mvs(5),
-                      backgroundColor: colors.primary,
-                      width: mvs(183),
-                    }}
-                  />
-                  <View
-                    style={{
-                      height: mvs(4),
-                      borderRadius: mvs(5),
-                      marginTop: mvs(5),
-                      backgroundColor: colors.primary,
-                      width: mvs(36),
-                    }}
-                  />
-                  <View
-                    style={{
-                      height: mvs(4),
-                      borderRadius: mvs(5),
-                      marginTop: mvs(5),
-                      backgroundColor: colors.primary,
-                      width: mvs(16),
-                    }}
-                  />
-                  <View
-                    style={{
-                      height: mvs(4),
-                      borderRadius: mvs(5),
-                      marginTop: mvs(5),
-                      backgroundColor: colors.primary,
-                      width: mvs(2),
-                    }}
-                  />
-                  <View
-                    style={{
-                      height: mvs(4),
-                      borderRadius: mvs(5),
-                      marginTop: mvs(5),
-                      backgroundColor: colors.primary,
-                      width: mvs(2),
-                    }}
-                  />
-                </View>
-              </Row>
+              <ShimmerPlaceholder
+                style={{width: mvs(100), height: mvs(50)}}
+                visible={loading}>
+                <Bold
+                  color={colors.black}
+                  style={{transform: [{translateY: -mvs(10)}]}}
+                  size={mvs(42)}
+                  label={'4.7'}
+                />
+              </ShimmerPlaceholder>
+              <ShimmerPlaceholder
+                style={{width: '50%', height: mvs(50)}}
+                visible={loading}>
+                <Row>
+                  <View>
+                    <RatingStar
+                      rate={5}
+                      size={mvs(7)}
+                      list={[1, 2, 3, 4, 5]}
+                      width={mvs(40)}
+                      style={{alignSelf: 'flex-end'}}
+                    />
+                    <RatingStar
+                      rate={5}
+                      size={mvs(7)}
+                      list={[1, 2, 3, 4]}
+                      width={mvs(32)}
+                      style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
+                    />
+                    <RatingStar
+                      rate={5}
+                      size={mvs(7)}
+                      list={[1, 2, 3]}
+                      width={mvs(24)}
+                      style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
+                    />
+                    <RatingStar
+                      rate={5}
+                      size={mvs(7)}
+                      list={[1, 2]}
+                      width={mvs(16)}
+                      style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
+                    />
+                    <RatingStar
+                      rate={5}
+                      size={mvs(7)}
+                      list={[1]}
+                      width={mvs(8)}
+                      style={{
+                        alignSelf: 'flex-end',
+                        justifyContent: 'flex-end',
+                        marginTop: mvs(2.4),
+                      }}
+                    />
+                  </View>
+                  <View style={{paddingLeft: mvs(10)}}>
+                    <View
+                      style={{
+                        height: mvs(4),
+                        borderRadius: mvs(5),
+                        backgroundColor: colors.primary,
+                        width: mvs(183),
+                      }}
+                    />
+                    <View
+                      style={{
+                        height: mvs(4),
+                        borderRadius: mvs(5),
+                        marginTop: mvs(5),
+                        backgroundColor: colors.primary,
+                        width: mvs(36),
+                      }}
+                    />
+                    <View
+                      style={{
+                        height: mvs(4),
+                        borderRadius: mvs(5),
+                        marginTop: mvs(5),
+                        backgroundColor: colors.primary,
+                        width: mvs(16),
+                      }}
+                    />
+                    <View
+                      style={{
+                        height: mvs(4),
+                        borderRadius: mvs(5),
+                        marginTop: mvs(5),
+                        backgroundColor: colors.primary,
+                        width: mvs(2),
+                      }}
+                    />
+                    <View
+                      style={{
+                        height: mvs(4),
+                        borderRadius: mvs(5),
+                        marginTop: mvs(5),
+                        backgroundColor: colors.primary,
+                        width: mvs(2),
+                      }}
+                    />
+                  </View>
+                </Row>
+              </ShimmerPlaceholder>
             </Row>
             <Row>
               <Bold color={colors.black} size={mvs(12)} label={'out of 5'} />
@@ -382,7 +503,7 @@ const BusinessProfile = props => {
               />
             </Row>
           </View>
-          <ReviewsRaing />
+          <ReviewsRaing loading={loading} />
           {/* <HeadingTitle title='Services' />
           <View style={{ paddingHorizontal: mvs(18) }}>
             <ServiceButton icon='CarWash' title='Car Wash' />
@@ -400,7 +521,10 @@ const BusinessProfile = props => {
               marginTop: mvs(20),
             }}>
             <HeadingTitle title="Service offering" />
-            <ServiceOffering moveTo="ServiceOfferingDetails" />
+            <ServiceOffering
+              loading={loading}
+              moveTo="ServiceOfferingDetails"
+            />
             {/* <CouponPromo /> */}
           </View>
         </ScrollView>
