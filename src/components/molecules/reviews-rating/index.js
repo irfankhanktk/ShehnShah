@@ -13,15 +13,16 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
-const ReviewsRaing = ({bg = '#ffedce', data, loading}) => {
+const ReviewsRaing = ({bg = '#ffedce', picsArray, data, loading}) => {
   return (
     <View style={{marginTop: mvs(30)}}>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: mvs(18)}}>
-        {[0, 1, 2, 3, 4].map((ele, index) => (
+        {data?.map((ele, index) => (
           <View
+            key={index}
             style={{
               paddingHorizontal: mvs(12),
               marginRight: mvs(16),
@@ -55,14 +56,20 @@ const ReviewsRaing = ({bg = '#ffedce', data, loading}) => {
                     color={colors.B1B1B1B}
                     label={'Garnet Bins '}
                   />
-                  <RatingStar fill={colors.B323232} width={mvs(90)} />
+                  <RatingStar
+                    fill={colors.B323232}
+                    rate={ele[index]?.rate}
+                    width={mvs(90)}
+                  />
                 </ShimmerPlaceholder>
               </View>
               <ShimmerPlaceholder
                 style={{
-                  height: mvs(33),
+                  //height: mvs(33),
                   width: mvs(100),
-                  marginLeft: mvs(80),
+                  //borderWidth: 1,
+                  alignSelf: 'center',
+                  marginLeft: mvs(90),
                 }}
                 visible={loading}>
                 <View style={{flex: 1}}>
@@ -79,14 +86,16 @@ const ReviewsRaing = ({bg = '#ffedce', data, loading}) => {
             </Row>
             <ShimmerPlaceholder
               style={{
-                height: mvs(33),
-                width: '90%',
+                height: mvs(50),
+                //paddingVertical: mvs(2),
+                // /width: '90%',
+                //borderWidth: 1,
                 alignSelf: 'center',
                 marginVertical: mvs(15),
               }}
               visible={loading}>
               <Regular
-                style={{marginVertical: mvs(15)}}
+                style={{marginVertical: mvs(15), height: mvs(50)}}
                 size={mvs(12)}
                 numberOfLines={2}
                 label={
@@ -95,7 +104,7 @@ const ReviewsRaing = ({bg = '#ffedce', data, loading}) => {
               />
             </ShimmerPlaceholder>
             <Row justifyContent={'space-between'}>
-              {[0, 1, 2, 3, 4].map((ele, index) => (
+              {picsArray?.map((ele, index) => (
                 <View key={index} style={{height: mvs(52), width: mvs(52)}}>
                   <ShimmerPlaceholder
                     style={{
@@ -110,7 +119,7 @@ const ReviewsRaing = ({bg = '#ffedce', data, loading}) => {
                         width: '100%',
                         borderRadius: mvs(16),
                       }}
-                      uri={Bg}
+                      uri={ele}
                     />
                   </ShimmerPlaceholder>
                 </View>

@@ -24,6 +24,12 @@ import PaymentSheet from '../../components/payment-method/payments';
 import SemiBold from '../../presentation/typography/semibold-text';
 import ScheduleModal from './../../components/molecules/modals/schedule-modal';
 import CouponModal from './../../components/molecules/modals/coupon-modal';
+
+import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
+import LinearGradient from 'react-native-linear-gradient';
+
+const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
+
 const WalkIn = props => {
   const refRBSheet = useRef(null);
   const refRBNewPaymentSheet = useRef(null);
@@ -56,6 +62,7 @@ const WalkIn = props => {
       Selected: false,
     },
   ]);
+  const [loading, setLoading] = React.useState(true);
   const [coupon, setCoupon] = React.useState(null);
   return (
     <View style={{...styles.conntainer, backgroundColor: colors.background}}>
@@ -70,68 +77,90 @@ const WalkIn = props => {
           contentContainerStyle={{flexGrow: 1, paddingBottom: mvs(30)}}>
           <View />
           <Row style={{paddingHorizontal: mvs(18)}}>
-            <ImagePlaceholder
-              borderRadius={mvs(8)}
-              uri={Bg}
-              containerStyle={{width: mvs(110), height: mvs(110)}}
-            />
-            <View style={{marginLeft: mvs(10), flex: 1}}>
-              <Bold
-                numberOfLines={2}
-                size={mvs(16)}
-                label={'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet'}
+            <ShimmerPlaceholder
+              style={{width: mvs(110), height: mvs(110)}}
+              visible={loading}>
+              <ImagePlaceholder
+                borderRadius={mvs(8)}
+                uri={Bg}
+                containerStyle={{width: mvs(110), height: mvs(110)}}
               />
-              <Row justifyContent="flex-start" alignItems="center">
-                <Regular color={colors.B606060} label={'Lead Time:'} />
-                <Medium color={colors.G3CB971} label={' 45 Minutes'} />
-              </Row>
-              <Row
-                style={{marginTop: mvs(2)}}
-                justifyContent="flex-start"
-                alignItems="center">
-                <Regular color={colors.B606060} label={'Price:'} />
-                <Medium color={colors.primary} label={' AED 45'} />
-              </Row>
-              <Row style={{}} alignItems="center">
-                <Regular
-                  size={mvs(14)}
-                  color={colors.B606060}
-                  label={'Tag: '}
+            </ShimmerPlaceholder>
+            <View style={{marginLeft: mvs(10), flex: 1}}>
+              <ShimmerPlaceholder
+                //style={{width: mvs(110), height: mvs(110)}}
+                visible={loading}>
+                <Bold
+                  numberOfLines={2}
+                  size={mvs(16)}
+                  label={
+                    'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet'
+                  }
                 />
-                <Buttons.ButtonPrimary
-                  title="4Litters"
-                  textStyle={{fontSize: mvs(10), color: colors.G3CB971}}
-                  style={{
-                    backgroundColor: `${colors.G3CB971}70`,
-                    width: mvs(60),
-                    height: mvs(18),
-                    borderRadius: mvs(5),
-                  }}
-                />
-                <Buttons.ButtonPrimary
-                  title="4Litters"
-                  textStyle={{fontSize: mvs(10), color: colors.primary}}
-                  style={{
-                    backgroundColor: `${colors.primary}70`,
-                    width: mvs(60),
-                    height: mvs(18),
-                    borderRadius: mvs(5),
-                  }}
-                />
-                <Buttons.ButtonPrimary
-                  title="4Litters"
-                  textStyle={{fontSize: mvs(10), color: colors.B2181F2}}
-                  style={{
-                    backgroundColor: `${colors.B2181F2}70`,
-                    width: mvs(60),
-                    height: mvs(18),
-                    borderRadius: mvs(5),
-                  }}
-                />
-              </Row>
+              </ShimmerPlaceholder>
+              <ShimmerPlaceholder
+                //style={{width: mvs(110), height: mvs(110)}}
+                visible={loading}>
+                <Row justifyContent="flex-start" alignItems="center">
+                  <Regular color={colors.B606060} label={'Lead Time:'} />
+                  <Medium color={colors.G3CB971} label={' 45 Minutes'} />
+                </Row>
+              </ShimmerPlaceholder>
+              <ShimmerPlaceholder
+                //style={{width: mvs(110), height: mvs(110)}}
+                visible={loading}>
+                <Row
+                  style={{marginTop: mvs(2)}}
+                  justifyContent="flex-start"
+                  alignItems="center">
+                  <Regular color={colors.B606060} label={'Price:'} />
+                  <Medium color={colors.primary} label={' AED 45'} />
+                </Row>
+              </ShimmerPlaceholder>
+              <ShimmerPlaceholder
+                //style={{width: mvs(110), height: mvs(110)}}
+                visible={loading}>
+                <Row style={{}} alignItems="center">
+                  <Regular
+                    size={mvs(14)}
+                    color={colors.B606060}
+                    label={'Tag: '}
+                  />
+                  <Buttons.ButtonPrimary
+                    title="4Litters"
+                    textStyle={{fontSize: mvs(10), color: colors.G3CB971}}
+                    style={{
+                      backgroundColor: `${colors.G3CB971}70`,
+                      width: mvs(60),
+                      height: mvs(18),
+                      borderRadius: mvs(5),
+                    }}
+                  />
+                  <Buttons.ButtonPrimary
+                    title="4Litters"
+                    textStyle={{fontSize: mvs(10), color: colors.primary}}
+                    style={{
+                      backgroundColor: `${colors.primary}70`,
+                      width: mvs(60),
+                      height: mvs(18),
+                      borderRadius: mvs(5),
+                    }}
+                  />
+                  <Buttons.ButtonPrimary
+                    title="4Litters"
+                    textStyle={{fontSize: mvs(10), color: colors.B2181F2}}
+                    style={{
+                      backgroundColor: `${colors.B2181F2}70`,
+                      width: mvs(60),
+                      height: mvs(18),
+                      borderRadius: mvs(5),
+                    }}
+                  />
+                </Row>
+              </ShimmerPlaceholder>
             </View>
           </Row>
-          <TotalRateMap />
+          <TotalRateMap loading={loading} />
           <Row style={styles.rowView}>
             <View>
               <Bold label={'Date & time'} size={15} />

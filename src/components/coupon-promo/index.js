@@ -9,6 +9,9 @@ import colors from '../../services/colors';
 import {mvs} from '../../services/metrices';
 import ImagePlaceholder from '../atoms/Placeholder';
 import HeadingTitle from '../molecules/heading-title';
+import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
+import LinearGradient from 'react-native-linear-gradient';
+const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 const CouponPromo = ({...props}) => {
   return (
     <View>
@@ -28,47 +31,67 @@ const CouponPromo = ({...props}) => {
                 borderRadius: mvs(8),
                 overflow: 'hidden',
               }}>
-              <ImagePlaceholder
-                containerStyle={{height: mvs(91), width: '100%'}}
-                uri={Bg}
-              />
+              <ShimmerPlaceholder
+                style={{height: mvs(91), width: '100%'}}
+                visible={props.loading}>
+                <ImagePlaceholder
+                  containerStyle={{height: mvs(91), width: '100%'}}
+                  uri={Bg}
+                />
+              </ShimmerPlaceholder>
               <View style={{padding: mvs(5), backgroundColor: colors.white}}>
-                <Regular
-                  size={mvs(12)}
-                  color={colors.primary}
-                  label={'Business Name'}
-                />
-                <SemiBold
-                  color={colors.black}
-                  numberOfLines={2}
-                  label={'50% OFF Car Wash'}
-                />
-                <Regular
-                  size={mvs(11)}
-                  color={colors.G5E5E5E}
-                  label={'Description...'}
-                />
-                <TouchableOpacity
-                  style={{
-                    width: mvs(83),
-                    backgroundColor: colors.primary,
-                    height: mvs(15),
-                    borderRadius: mvs(3),
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Cross />
+                <ShimmerPlaceholder
+                  // style={{height: mvs(91), width: '100%'}}
+                  visible={props.loading}>
                   <Regular
-                    label={' Cash Voucher'}
-                    style={{
-                      textTransform: 'uppercase',
-                      fontSize: mvs(8),
-                      color: colors.white,
-                    }}
+                    size={mvs(12)}
+                    color={colors.primary}
+                    label={'Business Name'}
                   />
-                </TouchableOpacity>
-                <Bold size={mvs(12)} color={colors.black} label={'3.00 AED'} />
+                </ShimmerPlaceholder>
+                <ShimmerPlaceholder
+                  // style={{height: mvs(91), width: '100%'}}
+                  visible={props.loading}>
+                  <SemiBold
+                    color={colors.black}
+                    numberOfLines={2}
+                    label={'50% OFF Car Wash'}
+                  />
+                </ShimmerPlaceholder>
+                <ShimmerPlaceholder
+                  // style={{height: mvs(91), width: '100%'}}
+                  visible={props.loading}>
+                  <Regular
+                    size={mvs(11)}
+                    color={colors.G5E5E5E}
+                    label={'Description...'}
+                  />
+                  <TouchableOpacity
+                    style={{
+                      width: mvs(83),
+                      backgroundColor: colors.primary,
+                      height: mvs(15),
+                      borderRadius: mvs(3),
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Cross />
+                    <Regular
+                      label={' Cash Voucher'}
+                      style={{
+                        textTransform: 'uppercase',
+                        fontSize: mvs(8),
+                        color: colors.white,
+                      }}
+                    />
+                  </TouchableOpacity>
+                  <Bold
+                    size={mvs(12)}
+                    color={colors.black}
+                    label={'3.00 AED'}
+                  />
+                </ShimmerPlaceholder>
               </View>
             </TouchableOpacity>
           ))}

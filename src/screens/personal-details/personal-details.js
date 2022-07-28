@@ -1,6 +1,11 @@
 import {useNavigation, useTheme} from '@react-navigation/native';
 import React, {useState, useRef} from 'react';
-import {ScrollView, View, TouchableOpacity} from 'react-native';
+import {
+  ScrollView,
+  ActivityIndicator,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import {connect} from 'react-redux';
 import {CustomHeader} from '../../components/molecules/header/header-1x';
 import Buttons from '../../components/atoms/Button';
@@ -41,92 +46,106 @@ const PersonalDetails = props => {
         allowBackBtn
         spacebetween
       />
-
-      <ScrollView
-        contentContainerStyle={{flexGrow: 1, paddingHorizontal: mvs(16)}}>
-        <View style={styles.body}>
-          <Row>
-            <View style={styles.imageView}>
-              <ImagePlaceholder
-                uri={payload?.image?.uri ? {uri: payload?.image?.uri} : null}
-                isUser={true}
-                containerStyle={styles.profileImage}
-              />
-              <TouchableOpacity
-                style={styles.cameraStyle}
-                onPress={async () => {
-                  try {
-                    const res = await SERVICES._returnImageGallery();
-                    setPayload({...payload, image: res});
-                  } catch (error) {
-                    console.log('error:', error);
-                  }
-                }}>
-                <BlackCamera />
-              </TouchableOpacity>
-            </View>
-            <View style={{flex: 1, paddingLeft: mvs(16)}}>
-              <Bold label={'Change profile image'} style={styles.welcomeText} />
-              <Regular
-                label={'Please upload an image to be'}
-                style={styles.welcomeSubText}
-              />
-              <Regular
-                label={'recognizable by others'}
-                style={styles.welcomeSubText}
-              />
-            </View>
-          </Row>
-          <View style={styles.input_container}>
-            <INPUT_FIELD.InputSecondary
-              rightIcon={false}
-              leftIcon="User"
-              value={payload.name}
-              onChangeText={t => setPayload({...payload, name: t})}
-              label="FULL NAME"
-              placeholder="John Doe"
-            />
-
-            <INPUT_FIELD.InputSecondary
-              value={payload.email}
-              leftIcon="User"
-              rightIcon="Tick"
-              onChangeText={t => setPayload({...payload, email: t})}
-              label="EMAIL"
-              placeholder="lehieuds@gmail.com"
-            />
-          </View>
-          <Bold label={'MOBILE'} style={{marginTop: mvs(5)}}>
-            <Regular label={' NUMBER'} />
-          </Bold>
-          <View style={{...styles.phoneNumberView, marginTop: mvs(10)}}>
-            <PhoneInput
-              ref={phoneInput}
-              defaultValue="(201) 555-0123"
-              defaultCode="US"
-              layout="first"
-              containerStyle={styles.phoneContainer}
-              textContainerStyle={styles.textInput}
-              onChangeFormattedText={text => {
-                // setFormattedValue(text);
-                console.log('Formated Value ' + text);
-              }}
-              onChangeText={text => {
-                setphoneNumber(text);
-              }}
-            />
-            <Tick style={{}} />
-          </View>
-          <Buttons.ButtonPrimary
-            disabled={loading}
-            loading={loading}
-            onClick={onSigin}
-            textStyle={{...styles.buttonText, color: colors.white}}
-            style={{...styles.button}}
-            title={'Save Changes'}
-          />
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'transparent',
+          }}>
+          <ActivityIndicator size={'large'} />
         </View>
-      </ScrollView>
+      ) : (
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1, paddingHorizontal: mvs(16)}}>
+          <View style={styles.body}>
+            <Row>
+              <View style={styles.imageView}>
+                <ImagePlaceholder
+                  uri={payload?.image?.uri ? {uri: payload?.image?.uri} : null}
+                  isUser={true}
+                  containerStyle={styles.profileImage}
+                />
+                <TouchableOpacity
+                  style={styles.cameraStyle}
+                  onPress={async () => {
+                    try {
+                      const res = await SERVICES._returnImageGallery();
+                      setPayload({...payload, image: res});
+                    } catch (error) {
+                      console.log('error:', error);
+                    }
+                  }}>
+                  <BlackCamera />
+                </TouchableOpacity>
+              </View>
+              <View style={{flex: 1, paddingLeft: mvs(16)}}>
+                <Bold
+                  label={'Change profile image'}
+                  style={styles.welcomeText}
+                />
+                <Regular
+                  label={'Please upload an image to be'}
+                  style={styles.welcomeSubText}
+                />
+                <Regular
+                  label={'recognizable by others'}
+                  style={styles.welcomeSubText}
+                />
+              </View>
+            </Row>
+            <View style={styles.input_container}>
+              <INPUT_FIELD.InputSecondary
+                rightIcon={false}
+                leftIcon="User"
+                value={payload.name}
+                onChangeText={t => setPayload({...payload, name: t})}
+                label="FULL NAME"
+                placeholder="John Doe"
+              />
+
+              <INPUT_FIELD.InputSecondary
+                value={payload.email}
+                leftIcon="User"
+                rightIcon="Tick"
+                onChangeText={t => setPayload({...payload, email: t})}
+                label="EMAIL"
+                placeholder="lehieuds@gmail.com"
+              />
+            </View>
+            <Bold label={'MOBILE'} style={{marginTop: mvs(5)}}>
+              <Regular label={' NUMBER'} />
+            </Bold>
+            <View style={{...styles.phoneNumberView, marginTop: mvs(10)}}>
+              <PhoneInput
+                ref={phoneInput}
+                defaultValue="(201) 555-0123"
+                defaultCode="US"
+                layout="first"
+                containerStyle={styles.phoneContainer}
+                textContainerStyle={styles.textInput}
+                onChangeFormattedText={text => {
+                  // setFormattedValue(text);
+                  console.log('Formated Value ' + text);
+                }}
+                onChangeText={text => {
+                  setphoneNumber(text);
+                }}
+              />
+              <Tick style={{}} />
+            </View>
+            <Buttons.ButtonPrimary
+              disabled={loading}
+              loading={loading}
+              onClick={onSigin}
+              textStyle={{...styles.buttonText, color: colors.white}}
+              style={{...styles.button}}
+              title={'Save Changes'}
+            />
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 };

@@ -7,7 +7,10 @@ import Row from '../../atoms/row';
 import colors from '../../../services/colors';
 import Regular from '../../../presentation/typography/regular-text';
 import RatingStar from '../rating-star';
-const TotalRateMap = () => {
+import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
+import LinearGradient from 'react-native-linear-gradient';
+const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
+const TotalRateMap = ({loading}) => {
   return (
     <Row
       alignItems="center"
@@ -19,23 +22,33 @@ const TotalRateMap = () => {
         marginTop: mvs(17),
         borderColor: colors.GD8D8D8,
       }}>
-      <Total />
+      <ShimmerPlaceholder
+        style={{width: mvs(100), height: mvs(70)}}
+        visible={loading}>
+        <Total />
+      </ShimmerPlaceholder>
       <View
         style={{marginLeft: mvs(15), flex: 1, justifyContent: 'space-between'}}>
-        <Bold
-          label={'Total Al Safeer Car Wash'}
-          size={mvs(16)}
-          color={colors.black}
-        />
-        <Row justifyContent="flex-start">
-          <Map />
-          <Regular
-            style={{transform: [{translateY: mvs(-3)}]}}
-            color={colors.G9B9B9B}
-            label={'  Sharjah Al nahada road'}
+        <ShimmerPlaceholder visible={loading}>
+          <Bold
+            label={'Total Al Safeer Car Wash'}
+            size={mvs(16)}
+            color={colors.black}
           />
-        </Row>
-        <RatingStar width={mvs(84)} rate={5} />
+        </ShimmerPlaceholder>
+        <ShimmerPlaceholder visible={loading}>
+          <Row justifyContent="flex-start">
+            <Map />
+            <Regular
+              style={{transform: [{translateY: mvs(-3)}]}}
+              color={colors.G9B9B9B}
+              label={'  Sharjah Al nahada road'}
+            />
+          </Row>
+        </ShimmerPlaceholder>
+        <ShimmerPlaceholder visible={loading}>
+          <RatingStar width={mvs(84)} rate={5} />
+        </ShimmerPlaceholder>
       </View>
       {/* <TouchableOpacity>
                 <RightArrow />
