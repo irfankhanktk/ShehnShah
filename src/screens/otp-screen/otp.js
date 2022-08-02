@@ -24,6 +24,7 @@ import {Active} from '../../assets/tabbar-icons';
 import Buttons from '../../components/atoms/Button';
 import Toast from 'react-native-toast-message';
 import {BaseURL} from '../../ApiServices';
+import {storeData} from '../../localStorage';
 const Otp = ({navigation, route}, props) => {
   // const navigation = useNavigation();
   const {phone} = route.params;
@@ -42,9 +43,9 @@ const Otp = ({navigation, route}, props) => {
       visibilityTime: 3000,
     });
   };
-  const delayAPI = () => {
+  const delayAPI = (user, id) => {
     setTimeout(() => {
-      navigation.navigate('About', {phone});
+      navigation.navigate(user ? 'BottomTab' : 'About', {id, phone});
     }, 4000);
   };
   const verifyOTP = async () => {
@@ -78,8 +79,8 @@ const Otp = ({navigation, route}, props) => {
             }
             setLoading(false);
             showToast('success', result.message.message);
-            delayAPI();
-            console.log('otp=======', result);
+            delayAPI(result.data.user, result.data.id);
+            //console.log('otp=======', result);
           }
         })
         .catch(error => {

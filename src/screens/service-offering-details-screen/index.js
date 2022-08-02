@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, View, TouchableOpacity} from 'react-native';
-import {connect} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {Bg} from '../../assets/images';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
 import Row from '../../components/atoms/row';
@@ -35,6 +35,9 @@ import TotalRateMap from './../../components/molecules/total-rate-map/index';
 import ReviewsRaing from '../../components/molecules/reviews-rating';
 import ScheduleModal from './../../components/molecules/modals/schedule-modal';
 import moment from 'moment';
+
+import Toast from 'react-native-toast-message';
+import {addBookingID, addOfferingID} from '../../Redux/Reducers';
 const about =
   'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
 const services = [
@@ -45,23 +48,107 @@ const services = [
 const ServiceOfferingDetails = props => {
   const {route, navigation} = props;
   const {id} = route.params;
+  const dispatch = useDispatch();
+  const state = useSelector(state => state.businessReviews);
+  const bookingState = useSelector(state => state.common);
+
+  //console.log('satte=====', bookingState);
+
   const [isMoreBtn, setIsMoreBtn] = React.useState(true);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const ref = React.useRef(null);
-  const [userToken, setuserToken] = useState('');
-  // const getToken = async () => {
-  //   const res = await getData('token');
-  //   if (res != null) {
-  //     setuserToken(res);
-  //     console.log('Profile Token=====', userToken);
-  //   }
-  // };
+  const [payload, setpayload] = useState({
+    bookNowStart: false,
+  });
+
+  const [serviceDetails, setserviceDetails] = useState([]);
+  const showToast = (type, text1, text2) => {
+    Toast.show({
+      type: type,
+      text1: text1,
+      text2: text2,
+      position: 'top',
+      autoHide: true,
+      visibilityTime: 3000,
+    });
+  };
+  const delayAPI = (responseID, businessID) => {
+    setTimeout(() => {
+      navigation.navigate('WalkIn', {
+        responseID,
+        businessID,
+      });
+    }, 4000);
+  };
+  const BookNow = async () => {
+    const customerID = await getData('customer_id');
+    const token = await getData('token');
+
+    //console.log('Booking=======', token, customerID, id);
+    var requestOptions = {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        customerId: customerID,
+        offeringId: id,
+        byCustomer: 0,
+      }),
+      redirect: 'follow',
+    };
+
+    setpayload({...payload, bookNowStart: true});
+    await fetch(`${BaseURL}p/public/bookings`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        if (result != null) {
+          setpayload({...payload, bookNowStart: false});
+          showToast('success', 'Booking confirmed');
+          dispatch(addBookingID(result));
+          dispatch(addOfferingID(id));
+          delayAPI(result, id);
+
+          console.log('booking Confirmed=====', result);
+        }
+      })
+      .catch(error => {
+        setpayload({...payload, bookNowStart: false});
+        console.log('error', error);
+      });
+  };
 
   const getServiceDetails = async () => {
     const token = await getData('token');
-    console.log('token in service offerings======', token, id);
+    if (token != null) {
+      var requestOptions = {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
+        redirect: 'follow',
+      };
+    }
+
+    await fetch(`${BaseURL}p/public/offerings/${id}`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        if (result != null) {
+          setserviceDetails(result);
+          setLoading(true);
+        }
+        console.log('service details========', serviceDetails);
+      })
+      .catch(error => {
+        setLoading(true);
+        console.log('error', error);
+      });
   };
+
   useEffect(() => {
+    // getToken();
     getServiceDetails();
   }, [loading]);
   return (
@@ -84,7 +171,7 @@ const ServiceOfferingDetails = props => {
               visible={loading}>
               <ImagePlaceholder
                 borderRadius={mvs(8)}
-                uri={Bg}
+                uri={serviceDetails?.cover}
                 containerStyle={{width: mvs(110), height: mvs(110)}}
               />
             </ShimmerPlaceholder>
@@ -103,9 +190,7 @@ const ServiceOfferingDetails = props => {
                 <Bold
                   numberOfLines={2}
                   size={mvs(16)}
-                  label={
-                    'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet'
-                  }
+                  label={serviceDetails?.title}
                 />
               </ShimmerPlaceholder>
               <ShimmerPlaceholder
@@ -120,7 +205,10 @@ const ServiceOfferingDetails = props => {
                 visible={loading}>
                 <Row justifyContent="flex-start" alignItems="center">
                   <Regular color={colors.B606060} label={'Lead Time:'} />
-                  <Medium color={colors.G3CB971} label={' 45 Minutes'} />
+                  <Medium
+                    color={colors.G3CB971}
+                    label={` ${serviceDetails?.processTime} Minutes`}
+                  />
                 </Row>
               </ShimmerPlaceholder>
               <ShimmerPlaceholder
@@ -138,7 +226,10 @@ const ServiceOfferingDetails = props => {
                   justifyContent="flex-start"
                   alignItems="center">
                   <Regular color={colors.B606060} label={'Price:'} />
-                  <Medium color={colors.primary} label={' AED 45'} />
+                  <Medium
+                    color={colors.primary}
+                    label={`AED ${serviceDetails?.price}`}
+                  />
                 </Row>
               </ShimmerPlaceholder>
               <ShimmerPlaceholder
@@ -191,7 +282,7 @@ const ServiceOfferingDetails = props => {
               </ShimmerPlaceholder>
             </View>
           </Row>
-          <TotalRateMap loading={loading} />
+          <TotalRateMap loading={loading} data={state} />
           <Row style={{marginTop: mvs(17)}}>
             <ScrollView
               horizontal
@@ -210,7 +301,11 @@ const ServiceOfferingDetails = props => {
                     }
                     ref?.current?.scrollTo({x: 0, y: y, animated: true});
                   }}
-                  middleText={index === 0 ? '4.7' : null}
+                  middleText={
+                    index === 0
+                      ? `${JSON.parse(state?.businessReviews?.rating)[7]}`
+                      : null
+                  }
                   value={index === 0 ? null : item.value}
                   title={item.title}
                   icon={item.icon}
@@ -227,14 +322,14 @@ const ServiceOfferingDetails = props => {
               <Regular
                 numberOfLines={null}
                 label={
-                  about?.length > 185 && isMoreBtn
-                    ? `${about?.slice(0, 183)} ...`
-                    : about
+                  serviceDetails?.about?.length > 185 && isMoreBtn
+                    ? `${serviceDetails?.about?.slice(0, 183)} ...`
+                    : serviceDetails?.about
                 }
                 size={mvs(16)}
                 color={colors.B1E1E1E}
               />
-              {isMoreBtn && about?.length > 185 && (
+              {isMoreBtn && serviceDetails?.about?.length > 185 && (
                 <TouchableOpacity onPress={() => setIsMoreBtn(false)}>
                   <Regular color={colors.primary} label={'Read More'} />
                 </TouchableOpacity>
@@ -251,7 +346,7 @@ const ServiceOfferingDetails = props => {
                   color={colors.black}
                   style={{transform: [{translateY: -mvs(10)}]}}
                   size={mvs(42)}
-                  label={'4.7'}
+                  label={`${JSON.parse(state?.businessReviews?.rating)[7]}`}
                 />
               </ShimmerPlaceholder>
               <Ratings width={mvs(230)} />
@@ -283,12 +378,23 @@ const ServiceOfferingDetails = props => {
           </View>
           <View style={{paddingHorizontal: mvs(18)}}>
             <Buttons.ButtonPrimary
-              onClick={() => props?.navigation?.navigate('WalkIn')}
-              title="Book Now"
+              onClick={
+                bookingState.serviceBooking.bookingID != null
+                  ? navigation.navigate('WalkIn', {})
+                  : BookNow
+              }
+              loading={payload.bookNowStart}
+              // onClick={() => props?.navigation?.navigate('WalkIn')}
+              title={
+                bookingState.serviceBooking.bookingID != null
+                  ? 'Resume User'
+                  : 'Book Now'
+              }
             />
           </View>
         </ScrollView>
       </View>
+      <Toast />
     </View>
   );
 };

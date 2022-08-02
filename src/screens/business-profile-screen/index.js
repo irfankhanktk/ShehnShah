@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {connect} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {
   HeartOutline,
   Map,
@@ -32,6 +32,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import {getData} from '../../localStorage';
 import {BaseURL} from '../../ApiServices';
+import {addReviews} from '../../Redux/Reducers/ReviewsReducer';
 
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
@@ -46,6 +47,7 @@ const services = [
 //   'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
 const BusinessProfile = props => {
   const {user_info} = props;
+  const dispatch = useDispatch();
   const [images, setImages] = React.useState([]);
   const [visible, setVisible] = React.useState(false);
   const [payload, setPayload] = React.useState({
@@ -55,7 +57,7 @@ const BusinessProfile = props => {
     rating: [],
     picsArrayReviews: [],
   });
-  const [userToken, setuserToken] = React.useState('');
+
   const {showAlert} = React.useContext(ThemeContext);
   const [loading, setLoading] = React.useState(false);
   const [isMoreBtn, setIsMoreBtn] = React.useState(true);
@@ -66,19 +68,16 @@ const BusinessProfile = props => {
   const [contactInfo, setcontactInfo] = useState([]);
   const [businessHourse, setbusinessHourse] = useState([]);
 
-  const getToken = async () => {
+  const getBusinessProfile = async () => {
     const res = await getData('token');
     if (res != null) {
-      setuserToken(res);
-      console.log('Profile Token=====', userToken);
+      // setuserToken(res);
+      console.log('Profile Token=====', res);
     }
-  };
-
-  const getBusinessProfile = async () => {
     var requestOptions = {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${userToken}`,
+        Authorization: `Bearer ${res}`,
       },
       redirect: 'follow',
     };
@@ -88,14 +87,14 @@ const BusinessProfile = props => {
       .then(result => {
         if (result != null) {
           setbusinessProfile(result);
+
+          dispatch(addReviews(result));
           setcontactInfo(JSON.parse(result.contact));
           setbusinessHourse(JSON.parse(result.hours));
           setPayload({
             ...payload,
-
             rating: JSON.parse(result.rating),
           });
-
           console.log('Business profile=======', result);
         }
       })
@@ -111,9 +110,10 @@ const BusinessProfile = props => {
       .then(result => {
         if (result != null) {
           setbusinessReviews(result);
+
           const myArra = [];
           for (let i = 0; i < result.length; i++) {
-            myArra.push(result[i]?.pics);
+            myArra?.push(result[i]?.pics);
             //console.log('Business reviews length=======', myArra[i]);
           }
           setPayload({...payload, picsArrayReviews: myArra});
@@ -123,7 +123,11 @@ const BusinessProfile = props => {
       .catch(error => {
         console.log('error', error);
       });
-    await fetch(`${BaseURL}b/om/businesses/1/services`, requestOptions)
+
+    await fetch(
+      `${BaseURL}b/om/businesses/20/services/7/offerings`,
+      requestOptions,
+    )
       .then(response => response.json())
       .then(result => {
         if (result != null) {
@@ -134,11 +138,11 @@ const BusinessProfile = props => {
       })
       .catch(error => {
         setLoading(true);
+        navigation.goBack();
         console.log('error', error);
       });
   };
   React.useEffect(() => {
-    getToken();
     getBusinessProfile();
   }, [loading]);
   // if (loading) {
@@ -593,8 +597,8 @@ const BusinessProfile = props => {
             </Row>
           </View>
           <ReviewsRaing
-            picsArray={payload.picsArrayReviews}
-            data={businessReviews}
+            picsArray={payload?.picsArrayReviews}
+            data={businessReviews?.map(item => item)}
             loading={loading}
           />
           {/* <HeadingTitle title='Services' />

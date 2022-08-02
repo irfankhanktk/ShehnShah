@@ -1,6 +1,6 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {ScrollView, TouchableOpacity, View} from 'react-native';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import Buttons from '../../components/atoms/Button';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
 import Row from '../../components/atoms/row';
@@ -27,11 +27,18 @@ import CouponModal from './../../components/molecules/modals/coupon-modal';
 
 import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
+import {BaseURL} from '../../ApiServices';
+import {getData} from '../../localStorage';
+import alertService from '../../services/alert.service';
 
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
 const WalkIn = props => {
   const refRBSheet = useRef(null);
+  const {route, navigation} = props;
+  const {responseID, businessID} = route.params;
+  // console.log('ids=======', responseID, businessID);
+  const state = useSelector(state => state.businessReviews);
   const refRBNewPaymentSheet = useRef(null);
   function newPayment() {
     refRBNewPaymentSheet.current.open();
@@ -43,9 +50,11 @@ const WalkIn = props => {
     '9:30 AM - 11:00 AM',
     '9:20 AM - 10:00 AM',
   ]);
-  const [selectedValue, setSelectedValue] =
-    React.useState('9:30 AM - 10:00 AM');
+  const [selectedValue, setSelectedValue] = React.useState('');
   const [date, setDate] = React.useState(moment());
+  const [payload, setpayload] = useState({
+    offerings: [],
+  });
   const [paymentModal, setPaymentModal] = React.useState(false);
   const [couponModal, setCouponModal] = React.useState(false);
   const [paymentMethods, setPaymentMethods] = useState([
@@ -62,8 +71,47 @@ const WalkIn = props => {
       Selected: false,
     },
   ]);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setloading] = React.useState(false);
   const [coupon, setCoupon] = React.useState(null);
+  const [bookingDetails, setbookingDetails] = useState([]);
+  const getBookingDetails = async () => {
+    const token = await getData('token');
+    var requestOptions = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      redirect: 'follow',
+    };
+
+    await fetch(
+      `${BaseURL}b/om/businesses/${businessID}/bookings/${responseID}`,
+      requestOptions,
+    )
+      .then(response => response.json())
+      .then(result => {
+        if (result != null) {
+          setbookingDetails(result);
+          const offering = JSON.parse(result.offering);
+          setpayload({
+            ...payload,
+            offerings: offering,
+          });
+          setloading(true);
+          console.log('get Booking Details======', payload.offerings);
+        }
+      })
+      .catch(error => {
+        //setloading(true);
+        // navigation?.goBack();
+        console.log('error', error);
+      });
+  };
+
+  useEffect(() => {
+    getBookingDetails();
+  }, [loading]);
+
   return (
     <View style={{...styles.conntainer, backgroundColor: colors.background}}>
       <CustomHeader
@@ -82,7 +130,7 @@ const WalkIn = props => {
               visible={loading}>
               <ImagePlaceholder
                 borderRadius={mvs(8)}
-                uri={Bg}
+                uri={payload?.offerings?.cover}
                 containerStyle={{width: mvs(110), height: mvs(110)}}
               />
             </ShimmerPlaceholder>
@@ -93,9 +141,7 @@ const WalkIn = props => {
                 <Bold
                   numberOfLines={2}
                   size={mvs(16)}
-                  label={
-                    'Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet'
-                  }
+                  label={payload?.offerings?.title}
                 />
               </ShimmerPlaceholder>
               <ShimmerPlaceholder
@@ -114,7 +160,10 @@ const WalkIn = props => {
                   justifyContent="flex-start"
                   alignItems="center">
                   <Regular color={colors.B606060} label={'Price:'} />
-                  <Medium color={colors.primary} label={' AED 45'} />
+                  <Medium
+                    color={colors.primary}
+                    label={` AED ${payload.offerings.price}`}
+                  />
                 </Row>
               </ShimmerPlaceholder>
               <ShimmerPlaceholder
@@ -160,7 +209,7 @@ const WalkIn = props => {
               </ShimmerPlaceholder>
             </View>
           </Row>
-          <TotalRateMap loading={loading} />
+          <TotalRateMap loading={loading} data={state} />
           <Row style={styles.rowView}>
             <View>
               <Bold label={'Date & time'} size={15} />
@@ -264,6 +313,7 @@ const WalkIn = props => {
         setDate={setDate}
         value={selectedValue}
         setValue={setSelectedValue}
+        //setVisible={() => alert('hi')}
         setVisible={() => setScheduleModal(false)}
         items={items}
         setItems={setItems}

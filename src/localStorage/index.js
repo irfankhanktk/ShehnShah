@@ -8,10 +8,14 @@ export const storeData = async (key, value) => {
     console.log('saving Error=====', e);
   }
 };
+
 export const getData = async key => {
   try {
-    return (jsonValue = await AsyncStorage.getItem(key));
-    //return (jsonValue = await JSON.parse(jsonValue));
+    const value = await AsyncStorage.getItem(key);
+    if (value !== null) {
+      // console.log('getting token=====', value);
+      return value;
+    }
   } catch (e) {
     console.log('getting Error=====', e);
   }

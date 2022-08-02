@@ -13,7 +13,9 @@ const Home = props => {
     <View style={{...styles.conntainer}}>
       <View style={styles.body}>
         <Buttons.ButtonPrimary
-          onClick={() => props?.navigation?.navigate('BusinessProfile')}
+          onClick={() =>
+            props?.navigation?.navigate('BusinessProfile', {id: 1})
+          }
           title="Business Profile"
         />
       </View>

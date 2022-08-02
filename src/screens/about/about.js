@@ -21,7 +21,7 @@ import {BaseURL} from '../../ApiServices';
 import {storeData} from '../../localStorage';
 
 const About = ({route}, props) => {
-  const {phone} = route.params;
+  const {phone, id} = route.params;
   const navigation = useNavigation();
   const [loading, setLoading] = React.useState(false);
 
@@ -74,16 +74,17 @@ const About = ({route}, props) => {
         redirect: 'follow',
       };
       setLoading(true);
-      await fetch(BaseURL + 'auth/signup', requestOptions)
+      await fetch(`${BaseURL}auth/signup`, requestOptions)
         .then(response => response.json())
         .then(result => {
           if (result != null) {
             setLoading(false);
             storeData('token', result.data.token);
+            storeData('customer_id', result.data.customer_id.toString());
 
             showToast('success', result.message.message);
             delayAPI();
-            console.log('result=======', result);
+            console.log('signup result=======', result);
           }
         })
         .catch(error => {
