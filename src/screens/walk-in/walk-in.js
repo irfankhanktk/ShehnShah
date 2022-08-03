@@ -36,8 +36,8 @@ const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 const WalkIn = props => {
   const refRBSheet = useRef(null);
   const {route, navigation} = props;
-  const {responseID, businessID} = route.params;
-  // console.log('ids=======', responseID, businessID);
+  const {bookingID, businessID} = route.params;
+  console.log('ids=======', bookingID, businessID);
   const state = useSelector(state => state.businessReviews);
   const refRBNewPaymentSheet = useRef(null);
   function newPayment() {
@@ -85,7 +85,7 @@ const WalkIn = props => {
     };
 
     await fetch(
-      `${BaseURL}b/om/businesses/${businessID}/bookings/${responseID}`,
+      `${BaseURL}b/om/businesses/${businessID}/bookings/${bookingID}`,
       requestOptions,
     )
       .then(response => response.json())

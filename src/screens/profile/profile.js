@@ -9,7 +9,7 @@ import {
   StatusBar,
   SafeAreaView,
 } from 'react-native';
-import {connect} from 'react-redux';
+import {connect, useSelector} from 'react-redux';
 import {useNavigation, CommonActions, useTheme} from '@react-navigation/native';
 import User from '../../assets/images/user.png';
 import {CustomHeader} from '../../components/molecules/header/header-1x';
@@ -24,12 +24,16 @@ import Bold from '../../presentation/typography/bold-text';
 import Regular from '../../presentation/typography/regular-text';
 import {Edit} from '../../assets/common-icons';
 import ProfileAction from '../../components/atoms/profile-action';
-import {removeData} from '../../localStorage';
+import {getData, removeData} from '../../localStorage';
+import {BaseURL} from '../../ApiServices';
+
 // create a component
 const Profile = props => {
   const navigation = useNavigation();
   const [value, setValue] = React.useState(true);
   const [value2, setValue2] = React.useState(true);
+  const state = useSelector(state => state.common);
+  console.log('state======', state.customerData);
 
   const logOut = () => {
     return Alert.alert('Warning', 'Are you sure you want to Logout?', [
@@ -70,11 +74,21 @@ const Profile = props => {
             </View>
             <View
               style={{flex: 1, paddingLeft: mvs(10), justifyContent: 'center'}}>
-              <Bold label={'Victoria Cunningham'} style={styles.welcomeText} />
-              <Regular label={'mail@site.com'} style={styles.welcomeSubText} />
+              <Bold
+                label={state?.customerData?.name}
+                style={styles.welcomeText}
+              />
+              <Regular
+                label={state?.customerData?.email}
+                style={styles.welcomeSubText}
+              />
             </View>
             <TouchableOpacity
-              onPress={() => navigation.navigate('PersonalDetails')}>
+              onPress={() =>
+                navigation.navigate('PersonalDetails', {
+                  mobile: state?.customerData?.phone,
+                })
+              }>
               <Text>
                 <Edit />
               </Text>

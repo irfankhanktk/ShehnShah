@@ -15,6 +15,7 @@ const CELL_COUNT = 5;
 export const OtpInput = ({value, setValue, isMatch = false}) => {
   // const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  ref?.current?.focus();
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,

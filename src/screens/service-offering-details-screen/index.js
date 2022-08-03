@@ -52,7 +52,7 @@ const ServiceOfferingDetails = props => {
   const state = useSelector(state => state.businessReviews);
   const bookingState = useSelector(state => state.common);
 
-  //console.log('satte=====', bookingState);
+  //console.log('satte=====', bookingState.serviceBooking.bookingID);
 
   const [isMoreBtn, setIsMoreBtn] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
@@ -75,8 +75,8 @@ const ServiceOfferingDetails = props => {
   const delayAPI = (responseID, businessID) => {
     setTimeout(() => {
       navigation.navigate('WalkIn', {
-        responseID,
-        businessID,
+        bookingID: responseID,
+        businessID: businessID,
       });
     }, 4000);
   };
@@ -109,7 +109,6 @@ const ServiceOfferingDetails = props => {
           dispatch(addBookingID(result));
           dispatch(addOfferingID(id));
           delayAPI(result, id);
-
           console.log('booking Confirmed=====', result);
         }
       })
@@ -379,14 +378,17 @@ const ServiceOfferingDetails = props => {
           <View style={{paddingHorizontal: mvs(18)}}>
             <Buttons.ButtonPrimary
               onClick={
-                bookingState.serviceBooking.bookingID != null
-                  ? navigation.navigate('WalkIn', {})
+                bookingState?.serviceBooking?.bookingID != null
+                  ? navigation.navigate('WalkIn', {
+                      bookingID: bookingState?.serviceBooking?.bookingID,
+                      businessID: bookingState?.serviceBooking?.offeringID,
+                    })
                   : BookNow
               }
               loading={payload.bookNowStart}
               // onClick={() => props?.navigation?.navigate('WalkIn')}
               title={
-                bookingState.serviceBooking.bookingID != null
+                bookingState?.serviceBooking?.bookingID != null
                   ? 'Resume User'
                   : 'Book Now'
               }

@@ -24,7 +24,7 @@ const Signin = props => {
   const [isSignUpWithPhone, setPhoneSignUp] = React.useState(true);
   const [phoneNumber, setphoneNumber] = useState('12015550123');
   const phoneInput = useRef(null);
-  const [formattedValue, setFormattedValue] = useState('3130971390');
+  const [formattedValue, setFormattedValue] = useState('923130971390');
   const [payload, setPayload] = React.useState({
     email: '',
     password: '',

@@ -1,5 +1,5 @@
 import {useNavigation, useTheme} from '@react-navigation/native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   ScrollView,
   ActivityIndicator,
@@ -23,21 +23,93 @@ import {Tick} from '../../assets/common-icons';
 import Row from '../../components/atoms/row';
 import colors from '../../services/colors';
 import SERVICES from './../../services/common-services';
+import {BaseURL} from '../../ApiServices';
+import {getData} from '../../localStorage';
+import Toast from 'react-native-toast-message';
 const PersonalDetails = props => {
+  const {route} = props;
+  const {mobile} = route.params;
+  // console.log('mobile=======', mobile);
   const navigation = useNavigation();
-  const [loading, setLoading] = React.useState(false);
-  const [phoneNumber, setphoneNumber] = useState('12015550123');
+  const [loading, setLoading] = React.useState(true);
+  const [phoneNumber, setphoneNumber] = useState('');
   const phoneInput = useRef(null);
   const [payload, setPayload] = React.useState({
     email: '',
     password: '',
     name: '',
+    mobile: '',
     confirmPassword: '',
     image: '',
   });
+  const showToast = (type, text1, text2) => {
+    Toast.show({
+      type: type,
+      text1: text1,
+      text2: text2,
+      position: 'top',
+      autoHide: true,
+      visibilityTime: 3000,
+    });
+  };
+
+  const UpdateProfile = async () => {
+    if (payload.name === '') {
+      showToast('error', 'Name is required');
+      return;
+    } else if (payload.email === '') {
+      showToast('error', 'Email is required');
+      return;
+    } else if (
+      !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(payload.email)
+    ) {
+      showToast('error', 'Email formate is not valid');
+      return;
+    } else if (phoneNumber === '') {
+      showToast('error', 'Mobile Number is required');
+      return;
+    } else {
+      alert('good to go');
+    }
+  };
 
   const onSigin = async () => {};
+  const getCustomerProfile = async () => {
+    const token = await getData('token');
+    console.log('Profile token======', token);
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
 
+    await fetch(
+      `${BaseURL}b/om/businesses/1/customers/find?mobile=${mobile}`,
+      requestOptions,
+    )
+      .then(response => response.json())
+      .then(result => {
+        if (result != null) {
+          setLoading(false);
+          //setphoneNumber(result[0]?.mobile);
+          setPayload({
+            ...payload,
+            image: result[0]?.image,
+            name: result[0]?.name,
+            email: result[0]?.email,
+            mobile: result[0]?.mobile,
+          });
+
+          console.log('customer Account Find=======', payload.mobile);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log('error', error);
+      });
+  };
+  useEffect(() => {
+    getCustomerProfile();
+  }, [loading]);
   return (
     <View style={{...styles.container, backgroundColor: colors.background}}>
       <CustomHeader
@@ -63,7 +135,7 @@ const PersonalDetails = props => {
             <Row>
               <View style={styles.imageView}>
                 <ImagePlaceholder
-                  uri={payload?.image?.uri ? {uri: payload?.image?.uri} : null}
+                  uri={payload?.image != null ? {uri: payload?.image} : null}
                   isUser={true}
                   containerStyle={styles.profileImage}
                 />
@@ -99,14 +171,14 @@ const PersonalDetails = props => {
               <INPUT_FIELD.InputSecondary
                 rightIcon={false}
                 leftIcon="User"
-                value={payload.name}
+                value={payload?.name}
                 onChangeText={t => setPayload({...payload, name: t})}
                 label="FULL NAME"
                 placeholder="John Doe"
               />
 
               <INPUT_FIELD.InputSecondary
-                value={payload.email}
+                value={payload?.email}
                 leftIcon="User"
                 rightIcon="Tick"
                 onChangeText={t => setPayload({...payload, email: t})}
@@ -120,8 +192,9 @@ const PersonalDetails = props => {
             <View style={{...styles.phoneNumberView, marginTop: mvs(10)}}>
               <PhoneInput
                 ref={phoneInput}
-                defaultValue="(201) 555-0123"
-                defaultCode="US"
+                // value={phoneNumber}
+                defaultValue={payload?.mobile}
+                defaultCode="PK"
                 layout="first"
                 containerStyle={styles.phoneContainer}
                 textContainerStyle={styles.textInput}
@@ -138,7 +211,8 @@ const PersonalDetails = props => {
             <Buttons.ButtonPrimary
               disabled={loading}
               loading={loading}
-              onClick={onSigin}
+              onClick={UpdateProfile}
+              //onClick={onSigin}
               textStyle={{...styles.buttonText, color: colors.white}}
               style={{...styles.button}}
               title={'Save Changes'}
@@ -146,6 +220,7 @@ const PersonalDetails = props => {
           </View>
         </ScrollView>
       )}
+      <Toast />
     </View>
   );
 };

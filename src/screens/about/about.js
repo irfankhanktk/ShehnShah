@@ -1,7 +1,7 @@
 import {useNavigation, useTheme} from '@react-navigation/native';
 import React, {useState, useRef} from 'react';
 import {ScrollView, View, TouchableOpacity} from 'react-native';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {CustomHeader} from '../../components/molecules/header/header-1x';
 import Buttons from '../../components/atoms/Button';
 import {INPUT_FIELD} from '../../components/atoms/Input';
@@ -19,10 +19,12 @@ import SERVICES from './../../services/common-services';
 import Toast from 'react-native-toast-message';
 import {BaseURL} from '../../ApiServices';
 import {storeData} from '../../localStorage';
+import {customerData} from '../../Redux/Reducers';
 
 const About = ({route}, props) => {
   const {phone, id} = route.params;
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
 
   const [payload, setPayload] = React.useState({
@@ -79,6 +81,7 @@ const About = ({route}, props) => {
         .then(result => {
           if (result != null) {
             setLoading(false);
+            dispatch(customerData(result.data));
             storeData('token', result.data.token);
             storeData('customer_id', result.data.customer_id.toString());
 

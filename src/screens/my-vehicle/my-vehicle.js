@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import {connect} from 'react-redux';
+import {connect, useSelector, useDispatch} from 'react-redux';
 import {CustomHeader} from '../../components/molecules/header/header-1x';
 import Buttons from '../../components/atoms/Button';
 import allColors from '../../services/colors';
@@ -25,7 +25,8 @@ import {getData} from '../../localStorage';
 const MyVehicle = props => {
   const navigation = useNavigation();
   const [loading, setLoading] = React.useState(false);
-
+  const state = useSelector(state => state.common);
+  //console.log('state in vehicle======', state.customerData.customer_id);
   const [items, setItems] = React.useState([
     '9:30 AM - 10:00 AM',
     '9:30 AM - 11:00 AM',
@@ -132,6 +133,7 @@ const MyVehicle = props => {
     } else if (payload.color === '') {
       return showToast('error', 'Please select color');
     } else {
+      setLoading(true);
       var raw = JSON.stringify({
         type: payload.type,
         registration: payload.registration,
@@ -150,9 +152,9 @@ const MyVehicle = props => {
         body: raw,
         redirect: 'follow',
       };
-      setLoading(true);
+
       await fetch(
-        `${BaseURL}b/om/businesses/1/customers/13/vehicles`,
+        `${BaseURL}b/om/businesses/1/customers/${state.customerData.customer_id}/vehicles`,
         requestOptions,
       )
         .then(response => response.json())

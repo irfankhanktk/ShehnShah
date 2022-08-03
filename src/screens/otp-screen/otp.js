@@ -1,5 +1,5 @@
 //import liraries
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   FlatList,
   TouchableOpacity,
@@ -43,6 +43,7 @@ const Otp = ({navigation, route}, props) => {
       visibilityTime: 3000,
     });
   };
+
   const delayAPI = (user, id) => {
     setTimeout(() => {
       navigation.navigate(user ? 'BottomTab' : 'About', {id, phone});
@@ -76,11 +77,17 @@ const Otp = ({navigation, route}, props) => {
               setIsMatch(false);
               showToast('error', result.message);
               return;
+            } else {
+              setLoading(false);
+              showToast('success', result.message.message);
+              console.log('otp=======', result);
+              if (result.data.user) {
+                storeData('token', result.data.token);
+                delayAPI(result.data.user, result.data.id);
+              } else {
+                delayAPI(result.data.user, result.data.id);
+              }
             }
-            setLoading(false);
-            showToast('success', result.message.message);
-            delayAPI(result.data.user, result.data.id);
-            //console.log('otp=======', result);
           }
         })
         .catch(error => {

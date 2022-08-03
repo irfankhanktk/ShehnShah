@@ -4,9 +4,10 @@ const commonSlice = createSlice({
   name: 'commonReducer',
   initialState: {
     firstTimeUSer: false,
+    customerData: [],
     serviceBooking: {
-      bookingID: '',
-      offeringID: '',
+      bookingID: 0,
+      offeringID: 0,
     },
   },
   reducers: {
@@ -19,8 +20,12 @@ const commonSlice = createSlice({
     addOfferingID: (state, action) => {
       state.serviceBooking.offeringID = action.payload;
     },
+    customerData: (state, action) => {
+      state.customerData = action.payload;
+    },
   },
 });
 
-export const {addUser, addBookingID, addOfferingID} = commonSlice.actions;
+export const {addUser, customerData, addBookingID, addOfferingID} =
+  commonSlice.actions;
 export default commonSlice.reducer;

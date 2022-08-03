@@ -64,6 +64,7 @@ type IProps = {
 const InputSecondary: FC<IProps> = ({
   label = '',
   value = '',
+ 
   onChangeText,
   placeholder = 'placeholder',
   containerStyle,
@@ -101,7 +102,8 @@ const InputSecondary: FC<IProps> = ({
           keyboardType={keyboardType}
           maxLength={maxLength}
           secureTextEntry={secureTextEntry ? eye : false}
-          value={value}
+          // value={value}
+          defaultValue={value}
           placeholder={placeholder}
           placeholderTextColor={colors.black}
           onChangeText={onChangeText}
