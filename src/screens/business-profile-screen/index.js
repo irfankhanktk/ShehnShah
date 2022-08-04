@@ -33,6 +33,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {getData} from '../../localStorage';
 import {BaseURL} from '../../ApiServices';
 import {addReviews} from '../../Redux/Reducers/ReviewsReducer';
+import {useNavigation} from '@react-navigation/native';
 
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
@@ -47,6 +48,7 @@ const services = [
 //   'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
 const BusinessProfile = props => {
   const {user_info} = props;
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [images, setImages] = React.useState([]);
   const [visible, setVisible] = React.useState(false);

@@ -38,6 +38,7 @@ import moment from 'moment';
 
 import Toast from 'react-native-toast-message';
 import {addBookingID, addOfferingID} from '../../Redux/Reducers';
+import {useNavigation} from '@react-navigation/native';
 const about =
   'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
 const services = [
@@ -46,7 +47,8 @@ const services = [
   {icon: 'Discount', title: 'Discounts', value: 'View Promos'},
 ];
 const ServiceOfferingDetails = props => {
-  const {route, navigation} = props;
+  const {route} = props;
+  const navigation = useNavigation();
   const {id} = route.params;
   const dispatch = useDispatch();
   const state = useSelector(state => state.businessReviews);
@@ -377,18 +379,20 @@ const ServiceOfferingDetails = props => {
           </View>
           <View style={{paddingHorizontal: mvs(18)}}>
             <Buttons.ButtonPrimary
-              onClick={
-                bookingState?.serviceBooking?.bookingID != null
-                  ? navigation.navigate('WalkIn', {
-                      bookingID: bookingState?.serviceBooking?.bookingID,
-                      businessID: bookingState?.serviceBooking?.offeringID,
-                    })
-                  : BookNow
-              }
+              onClick={() => navigation.navigate('WalkIn')}
+              // onClick={
+              //   bookingState?.serviceBooking?.bookingID > 0
+              //     ? navigation.navigate('WalkIn', {
+              //         bookingID: bookingState?.serviceBooking?.bookingID,
+              //         businessID: bookingState?.serviceBooking?.offeringID,
+              //       })
+              //     : BookNow
+              // }
+              disabled={payload.bookNowStart}
               loading={payload.bookNowStart}
               // onClick={() => props?.navigation?.navigate('WalkIn')}
               title={
-                bookingState?.serviceBooking?.bookingID != null
+                bookingState?.serviceBooking?.bookingID > 0
                   ? 'Resume User'
                   : 'Book Now'
               }

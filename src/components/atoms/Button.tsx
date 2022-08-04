@@ -52,7 +52,7 @@ const ButtonSecondary: FC<BProps> = ({
   style,
   textStyle,
   loading,
-  disabled = false,
+  disabled ,
   ...props
 }) => {
   return (

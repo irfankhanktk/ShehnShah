@@ -36,8 +36,8 @@ const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 const WalkIn = props => {
   const refRBSheet = useRef(null);
   const {route, navigation} = props;
-  const {bookingID, businessID} = route.params;
-  console.log('ids=======', bookingID, businessID);
+  // const {bookingID, businessID} = route.params;
+  // console.log('ids=======', bookingID, businessID);
   const state = useSelector(state => state.businessReviews);
   const refRBNewPaymentSheet = useRef(null);
   function newPayment() {
@@ -46,6 +46,9 @@ const WalkIn = props => {
   const [scheduleModal, setScheduleModal] = React.useState(false);
   const [couponValue, setCouponValue] = React.useState(false);
   const [items, setItems] = React.useState([
+    '9:30 AM - 10:00 AM',
+    '9:30 AM - 11:00 AM',
+    '9:20 AM - 10:00 AM',
     '9:30 AM - 10:00 AM',
     '9:30 AM - 11:00 AM',
     '9:20 AM - 10:00 AM',
@@ -59,20 +62,17 @@ const WalkIn = props => {
   const [couponModal, setCouponModal] = React.useState(false);
   const [paymentMethods, setPaymentMethods] = useState([
     {
-      Card: 'MasterCard',
-      Number: '**** **** **** 8748',
-      Icon: 'Caret',
-      Selected: true,
+      Number: 'Cash on delivery',
+      // Selected: true,
     },
     {
-      Card: 'VisaCard',
-      Number: '**** **** **** 8748',
-      Icon: 'Caret',
-      Selected: false,
+      Number: 'Online Payment',
+      //Selected: false,
     },
   ]);
   const [loading, setloading] = React.useState(false);
   const [coupon, setCoupon] = React.useState(null);
+  const [paymentMode, setpaymentMode] = useState(0);
   const [bookingDetails, setbookingDetails] = useState([]);
   const getBookingDetails = async () => {
     const token = await getData('token');
@@ -108,8 +108,13 @@ const WalkIn = props => {
       });
   };
 
+  const selectPaymentMode = mode => {
+    setpaymentMode(mode);
+    console.log(mode.Number);
+  };
+
   useEffect(() => {
-    getBookingDetails();
+    // getBookingDetails();
   }, [loading]);
 
   return (
@@ -296,9 +301,10 @@ const WalkIn = props => {
           setVisible={() => setPaymentModal(false)}
           paymentMethods={paymentMethods}
           visible={paymentModal}
-          onAddClick={() => newPayment()}
+          paymentMode={selectPaymentMode}
+          // onAddClick={() => newPayment()}
         />
-        <NewPaymentSheet
+        {/* <NewPaymentSheet
           paymentMethods={paymentMethods}
           setPaymentMethods={methods => {
             console.log('new methods:::', methods);
@@ -306,7 +312,7 @@ const WalkIn = props => {
             refRBNewPaymentSheet?.current?.close(false);
           }}
           ref={refRBNewPaymentSheet}
-        />
+        /> */}
       </View>
       <ScheduleModal
         date={date}

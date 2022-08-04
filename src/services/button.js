@@ -1,30 +1,29 @@
 /**
-* @providesModule ButtonStyles
-*/
-import { StyleSheet } from 'react-native';
+ * @providesModule ButtonStyles
+ */
+import {StyleSheet} from 'react-native';
 import colors from './colors';
-import { mvs } from './metrices';
-
+import {mvs} from './metrices';
 
 export const buttonStyles = StyleSheet.create({
   buttonPrimary: {
     height: mvs(60),
-    alignItems:'center',
-    justifyContent:'center',
-    backgroundColor:colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.primary,
     borderRadius: mvs(10),
-    width:'100%'
+    width: '100%',
   },
   buttonSecondary: {
     height: mvs(60),
-    alignItems:'center',
-    justifyContent:'center',
-    backgroundColor:colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.white,
     borderRadius: mvs(10),
-    borderWidth:0.5,
+    borderWidth: 0.5,
     // ...colors.shadow,
-    borderColor:colors.border,
-    width:'100%'
+    borderColor: colors.border,
+    width: '100%',
   },
   plus_button: {
     position: 'absolute',
@@ -37,7 +36,6 @@ export const buttonStyles = StyleSheet.create({
     borderRadius: mvs(25),
     backgroundColor: colors.primary,
   },
- 
 });
 
-export default buttonStyles
+export default buttonStyles;
