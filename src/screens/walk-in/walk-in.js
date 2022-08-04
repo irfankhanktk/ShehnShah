@@ -60,6 +60,7 @@ const WalkIn = props => {
   });
   const [paymentModal, setPaymentModal] = React.useState(false);
   const [couponModal, setCouponModal] = React.useState(false);
+  const [selectedPayment, setselectedPayment] = useState(null);
   const [paymentMethods, setPaymentMethods] = useState([
     {
       Number: 'Cash on delivery',
@@ -106,11 +107,6 @@ const WalkIn = props => {
         // navigation?.goBack();
         console.log('error', error);
       });
-  };
-
-  const selectPaymentMode = mode => {
-    setpaymentMode(mode);
-    console.log(mode.Number);
   };
 
   useEffect(() => {
@@ -257,26 +253,32 @@ const WalkIn = props => {
                 />
               </TouchableOpacity>
             </Row>
-            <Row
-              style={{...styles.rowView, borderBottomWidth: 0, paddingTop: 0}}>
-              <ImagePlaceholder
-                borderRadius={mvs(8)}
-                uri={Bg}
-                containerStyle={{width: mvs(69), height: mvs(70)}}
-              />
-              <View style={{flex: 1, marginHorizontal: mvs(9)}}>
-                <SemiBold label={'50% OFF Car Wash'} size={15} />
-                <Regular label={'30.00 AED'} size={13} />
-                <Row style={styles.voucherView}>
-                  <WhitePercentage />
-                  <Regular
-                    label={'CASH VOUCHER'}
-                    size={14}
-                    color={colors.white}
-                  />
-                </Row>
-              </View>
-            </Row>
+            {couponValue && (
+              <Row
+                style={{
+                  ...styles.rowView,
+                  borderBottomWidth: 0,
+                  paddingTop: 0,
+                }}>
+                <ImagePlaceholder
+                  borderRadius={mvs(8)}
+                  uri={Bg}
+                  containerStyle={{width: mvs(69), height: mvs(70)}}
+                />
+                <View style={{flex: 1, marginHorizontal: mvs(9)}}>
+                  <SemiBold label={'50% OFF Car Wash'} size={15} />
+                  <Regular label={'30.00 AED'} size={13} />
+                  <Row style={styles.voucherView}>
+                    <WhitePercentage />
+                    <Regular
+                      label={'CASH VOUCHER'}
+                      size={14}
+                      color={colors.white}
+                    />
+                  </Row>
+                </View>
+              </Row>
+            )}
           </View>
           <View style={styles.paymentView}>
             <Regular label={'Payment Method'} size={16} />
@@ -297,11 +299,15 @@ const WalkIn = props => {
           </View>
         </ScrollView>
         <PaymentSheet
-          onChange={setPaymentMethods}
+          onChange={(mode, m) => {
+            setPaymentMethods(mode);
+            console.log('m', m.Number);
+            setselectedPayment(m);
+          }}
           setVisible={() => setPaymentModal(false)}
           paymentMethods={paymentMethods}
           visible={paymentModal}
-          paymentMode={selectPaymentMode}
+
           // onAddClick={() => newPayment()}
         />
         {/* <NewPaymentSheet
@@ -333,6 +339,7 @@ const WalkIn = props => {
         title={'Coupon'}
         visible={couponModal}
       />
+      {console.log('timeSlot======', selectedPayment)}
     </View>
   );
 };

@@ -27,7 +27,7 @@ const ScheduleModal = ({
   visible,
   setVisible = bool => {},
   //items = [],
-  morningShiftsitems = [1, 2, 3, 4, 5, 6, 7, 8],
+  morningShiftsitems = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'],
   afterNoonShiftsitems = [1, 2, 3, 4, 5, 6, 7, 8],
   eveningShiftsitems = [1, 2, 3, 4, 5, 6, 7, 8],
   setItems = items => {},
@@ -80,7 +80,7 @@ const ScheduleModal = ({
                     <Bold
                       size={15}
                       style={{flex: 1, marginHorizontal: mvs(8)}}
-                      label={morning}
+                      label={morning?.slice(1)}
                     />
                     <View>
                       {morning === value ? (

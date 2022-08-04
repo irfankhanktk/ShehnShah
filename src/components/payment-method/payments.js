@@ -11,7 +11,6 @@ const PaymentSheet = ({
   onAddClick,
   setVisible,
   visible = false,
-  paymentMode,
   paymentMethods = [],
   onChange,
 }) => {
@@ -40,12 +39,11 @@ const PaymentSheet = ({
             return (
               <View key={index} style={{marginTop: mvs(12)}}>
                 <PaymentItem
-                  onClick={m => {
-                    paymentMode(m);
+                  onClick={() => {
                     let copy = [...paymentMethods];
                     copy = copy?.map(x => ({...x, Selected: false}));
                     copy[index].Selected = true;
-                    onChange(copy);
+                    onChange(copy, copy[index]);
                   }}
                   value={element.Number}
                   leftIcon={element.Card}
