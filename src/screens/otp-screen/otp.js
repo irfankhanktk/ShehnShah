@@ -86,6 +86,7 @@ const Otp = ({navigation, route}, props) => {
               console.log('otp=======', result);
               if (result.data.user) {
                 storeData('token', result.data.token);
+                storeData('user', JSON.stringify(result.data.user));
                 storeData('customer_id', result.data.id.toString());
                 dispatch(customerData(result.data.user));
                 delayAPI(result.data.user, result.data.id);

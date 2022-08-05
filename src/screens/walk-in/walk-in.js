@@ -93,7 +93,7 @@ const WalkIn = props => {
             offerings: offering,
           });
 
-          console.log('get Booking Details======', payload.offerings);
+          //console.log('get Booking Details======', payload.offerings);
         }
       })
       .catch(error => {
@@ -124,7 +124,7 @@ const WalkIn = props => {
         if (result != null) {
           setloading(true);
           setItems(result);
-          console.log('Time Slots========', items);
+          //console.log('Time Slots========', items);
         }
       })
       .catch(error => {
@@ -306,10 +306,7 @@ const WalkIn = props => {
           </View>
           <View style={styles.paymentView}>
             <Regular label={'Payment Method'} size={16} />
-            <PaymentItem
-              value={selectedPayment.Number}
-              onClick={() => setPaymentModal(true)}
-            />
+            <PaymentItem value={''} onClick={() => setPaymentModal(true)} />
             <Row style={{...styles.priceView, marginTop: mvs(16.3)}}>
               <Medium label={'Sub Total'} size={14} />
               <Medium label={'$45.00'} size={14} />
@@ -366,7 +363,7 @@ const WalkIn = props => {
         title={'Coupon'}
         visible={couponModal}
       />
-      {console.log('timeSlot======', selectedPayment)}
+      {/* {console.log('timeSlot======', couponValue)} */}
     </View>
   );
 };

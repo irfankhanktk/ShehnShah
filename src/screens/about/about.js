@@ -81,7 +81,8 @@ const About = ({route}, props) => {
         .then(result => {
           if (result != null) {
             setLoading(false);
-            dispatch(customerData(result.data));
+            //dispatch(customerData(result.data));
+            storeData('user', JSON.stringify(result.data));
             storeData('token', result.data.token);
             storeData('customer_id', result.data.customer_id.toString());
 

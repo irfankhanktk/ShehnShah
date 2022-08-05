@@ -27,10 +27,6 @@ const ScheduleModal = ({
   visible,
   items,
   setVisible = bool => {},
-  //items = [],
-  // morningShiftsitems = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'],
-  // afterNoonShiftsitems = [1, 2, 3, 4, 5, 6, 7, 8],
-  // eveningShiftsitems = [1, 2, 3, 4, 5, 6, 7, 8],
   setItems = items => {},
 }) => {
   return (
@@ -143,9 +139,9 @@ const ScheduleModal = ({
           )}
         </View>
 
-        <View style={{...styles.priceView}}>
+        <View style={{...styles.priceView, marginBottom: 5}}>
           <Bold label={'Evening'} size={20} />
-          <Bold label={items?.Evening?.timing} size={14} />
+          <Bold label={items?.Evening?.timing} size={15} />
         </View>
         <View style={styles.timingView}>
           {items?.Evening?.slots?.length > 0 ? (

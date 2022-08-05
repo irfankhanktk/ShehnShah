@@ -68,7 +68,7 @@ const BusinessProfile = props => {
   const [businessServices, setbusinessServices] = useState([]);
   const [businessReviews, setbusinessReviews] = useState([]);
   const [contactInfo, setcontactInfo] = useState([]);
-  const [businessHourse, setbusinessHourse] = useState([]);
+  const [businessHourse, setbusinessHourse] = useState(null);
 
   const getBusinessProfile = async () => {
     const res = await getData('token');
@@ -85,19 +85,18 @@ const BusinessProfile = props => {
       .then(result => {
         if (result != null) {
           setbusinessProfile(result);
-
           dispatch(addReviews(result));
-          setcontactInfo(JSON.parse(result.contact));
-          setbusinessHourse(JSON.parse(result.hours));
+          setcontactInfo(result.contact);
+          setbusinessHourse(result.hours);
           setPayload({
             ...payload,
-            rating: JSON.parse(result.rating),
+            rating: result.rating,
           });
           console.log('Business profile=======', result);
         }
       })
       .catch(error => {
-        console.log('error', error);
+        console.log('Business profile error', error);
       });
 
     await fetch(
@@ -108,22 +107,20 @@ const BusinessProfile = props => {
       .then(result => {
         if (result != null) {
           setbusinessReviews(result);
-
           const myArra = [];
           for (let i = 0; i < result.length; i++) {
             myArra?.push(result[i]?.pics);
-            //console.log('Business reviews length=======', myArra[i]);
           }
           setPayload({...payload, picsArrayReviews: myArra});
           console.log('Business reviews=======', result);
         }
       })
       .catch(error => {
-        console.log('error', error);
+        console.log('Business reviews error', error);
       });
 
     await fetch(
-      `${BaseURL}b/om/businesses/20/services/7/offerings`,
+      `${BaseURL}b/om/businesses/1/services/1/offerings`,
       requestOptions,
     )
       .then(response => response.json())
@@ -137,7 +134,7 @@ const BusinessProfile = props => {
       .catch(error => {
         setLoading(true);
         navigation.goBack();
-        console.log('error', error);
+        console.log('Business services error', error);
       });
   };
   React.useEffect(() => {
@@ -327,7 +324,7 @@ const BusinessProfile = props => {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{paddingHorizontal: mvs(18)}}
               horizontal>
-              {businessProfile?.gallery?.split('').map((ele, index) => (
+              {businessProfile?.gallery?.map((ele, index) => (
                 <ShimmerPlaceholder
                   style={{
                     marginRight: mvs(10),
@@ -365,7 +362,7 @@ const BusinessProfile = props => {
             <ShimmerPlaceholder
               style={styles.contactInformation}
               visible={loading}>
-              <LabelValue label={'Website'} value={contactInfo?.webiste} />
+              <LabelValue label={'Website'} value={contactInfo?.web} />
             </ShimmerPlaceholder>
             <ShimmerPlaceholder
               style={styles.contactInformation}
@@ -388,11 +385,7 @@ const BusinessProfile = props => {
             visible={loading}>
             <LabelValue
               label={'Sunday'}
-              value={`${businessHourse[0]?.toString()?.split(',')[0]}:${
-                businessHourse[0]?.toString()?.split(',')[1]
-              } AM-${businessHourse[0]?.toString()?.split(',')[2]}:${
-                businessHourse[0]?.toString()?.split(',')[3]
-              } PM`}
+              value={`${businessHourse[0][0]}:${businessHourse[0][1]} AM-${businessHourse[1][2]}:${businessHourse[1][3]} PM`}
               // vColor={colors.RFA3E3E}
             />
           </ShimmerPlaceholder>
@@ -401,11 +394,7 @@ const BusinessProfile = props => {
             visible={loading}>
             <LabelValue
               label={'Monday'}
-              value={`${businessHourse[1]?.toString()?.split(',')[0]}:${
-                businessHourse[0]?.toString()?.split(',')[1]
-              } AM-${businessHourse[0]?.toString()?.split(',')[2]}:${
-                businessHourse[0]?.toString()?.split(',')[3]
-              } PM`}
+              value={`${businessHourse[1][0]}:${businessHourse[1][1]} AM-${businessHourse[1][2]}:${businessHourse[1][3]} PM`}
               vColor={colors.B323232}
             />
           </ShimmerPlaceholder>
@@ -414,11 +403,7 @@ const BusinessProfile = props => {
             visible={loading}>
             <LabelValue
               label={'Tuesday'}
-              value={`${businessHourse[2]?.toString()?.split(',')[0]}:${
-                businessHourse[0]?.toString()?.split(',')[1]
-              } AM-${businessHourse[0]?.toString()?.split(',')[2]}:${
-                businessHourse[0]?.toString()?.split(',')[3]
-              } PM`}
+              value={`${businessHourse[2][0]}:${businessHourse[2][1]} AM-${businessHourse[2][2]}:${businessHourse[2][3]} PM`}
               vColor={colors.B323232}
             />
           </ShimmerPlaceholder>
@@ -427,11 +412,7 @@ const BusinessProfile = props => {
             visible={loading}>
             <LabelValue
               label={'Wednesday'}
-              value={`${businessHourse[3]?.toString()?.split(',')[0]}:${
-                businessHourse[0]?.toString()?.split(',')[1]
-              } AM-${businessHourse[0]?.toString()?.split(',')[2]}:${
-                businessHourse[0]?.toString()?.split(',')[3]
-              } PM`}
+              value={`${businessHourse[3][0]}:${businessHourse[3][1]} AM-${businessHourse[3][2]}:${businessHourse[3][3]} PM`}
               vColor={colors.B323232}
             />
           </ShimmerPlaceholder>
@@ -440,11 +421,7 @@ const BusinessProfile = props => {
             visible={loading}>
             <LabelValue
               label={'Thursday'}
-              value={`${businessHourse[4]?.toString()?.split(',')[0]}:${
-                businessHourse[0]?.toString()?.split(',')[1]
-              } AM-${businessHourse[0]?.toString()?.split(',')[2]}:${
-                businessHourse[0]?.toString()?.split(',')[3]
-              } PM`}
+              value={`${businessHourse[4][0]}:${businessHourse[4][1]} AM-${businessHourse[4][2]}:${businessHourse[4][3]} PM`}
               vColor={colors.B323232}
             />
           </ShimmerPlaceholder>
@@ -453,11 +430,7 @@ const BusinessProfile = props => {
             visible={loading}>
             <LabelValue
               label={'Friday'}
-              value={`${businessHourse[5]?.toString()?.split(',')[0]}:${
-                businessHourse[0]?.toString()?.split(',')[1]
-              } AM-${businessHourse[0]?.toString()?.split(',')[2]}:${
-                businessHourse[0]?.toString()?.split(',')[3]
-              } PM`}
+              value={`${businessHourse[5][0]}:${businessHourse[5][1]} AM-${businessHourse[5][2]}:${businessHourse[5][3]} PM`}
               vColor={colors.B323232}
             />
           </ShimmerPlaceholder>
@@ -467,11 +440,7 @@ const BusinessProfile = props => {
             <LabelValue
               bw={0}
               label={'Satureday'}
-              value={`${businessHourse[6]?.toString()?.split(',')[0]}:${
-                businessHourse[0]?.toString()?.split(',')[1]
-              } AM-${businessHourse[0]?.toString()?.split(',')[2]}:${
-                businessHourse[0]?.toString()?.split(',')[3]
-              } PM`}
+              value={`${businessHourse[6][0]}:${businessHourse[6][1]} AM-${businessHourse[6][2]}:${businessHourse[6][3]} PM`}
               vColor={colors.B323232}
             />
           </ShimmerPlaceholder>

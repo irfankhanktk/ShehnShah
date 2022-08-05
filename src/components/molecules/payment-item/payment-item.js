@@ -19,7 +19,7 @@ const PaymentItem = ({
     <TouchableOpacity onPress={onClick}>
       <Row style={{...styles.PAYMENTDROPDOWN, ...style}}>
         {/* <LeftSvg /> */}
-        <Text>{value}</Text>
+        <Text style={{fontSize: mvs(20)}}>{value}</Text>
         <Regular
           size={13}
           style={{flex: 1, marginHorizontal: mvs(8)}}
