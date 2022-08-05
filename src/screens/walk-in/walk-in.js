@@ -36,7 +36,7 @@ const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 const WalkIn = props => {
   const refRBSheet = useRef(null);
   const {route, navigation} = props;
-  // const {bookingID, businessID} = route.params;
+  const {bookingID, businessID} = route.params;
   // console.log('ids=======', bookingID, businessID);
   const state = useSelector(state => state.businessReviews);
   const refRBNewPaymentSheet = useRef(null);
@@ -103,14 +103,14 @@ const WalkIn = props => {
         }
       })
       .catch(error => {
-        //setloading(true);
+        setloading(true);
         // navigation?.goBack();
         console.log('error', error);
       });
   };
 
   useEffect(() => {
-    // getBookingDetails();
+    getBookingDetails();
   }, [loading]);
 
   return (

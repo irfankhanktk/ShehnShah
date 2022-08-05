@@ -379,15 +379,15 @@ const ServiceOfferingDetails = props => {
           </View>
           <View style={{paddingHorizontal: mvs(18)}}>
             <Buttons.ButtonPrimary
-              onClick={() => navigation.navigate('WalkIn')}
-              // onClick={
-              //   bookingState?.serviceBooking?.bookingID > 0
-              //     ? navigation.navigate('WalkIn', {
-              //         bookingID: bookingState?.serviceBooking?.bookingID,
-              //         businessID: bookingState?.serviceBooking?.offeringID,
-              //       })
-              //     : BookNow
-              // }
+              //onClick={() => navigation.navigate('WalkIn')}
+              onClick={
+                bookingState?.serviceBooking?.bookingID > 0
+                  ? navigation.navigate('WalkIn', {
+                      bookingID: bookingState?.serviceBooking?.bookingID,
+                      businessID: bookingState?.serviceBooking?.offeringID,
+                    })
+                  : BookNow
+              }
               disabled={payload.bookNowStart}
               loading={payload.bookNowStart}
               // onClick={() => props?.navigation?.navigate('WalkIn')}

@@ -72,10 +72,6 @@ const BusinessProfile = props => {
 
   const getBusinessProfile = async () => {
     const res = await getData('token');
-    if (res != null) {
-      // setuserToken(res);
-      console.log('Profile Token=====', res);
-    }
     var requestOptions = {
       method: 'GET',
       headers: {
