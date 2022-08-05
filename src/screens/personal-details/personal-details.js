@@ -29,7 +29,7 @@ import Toast from 'react-native-toast-message';
 const PersonalDetails = props => {
   const {route} = props;
   const {mobile} = route.params;
-  // console.log('mobile=======', mobile);
+  console.log('mobile=======', mobile);
   const navigation = useNavigation();
   const [loading, setLoading] = React.useState(true);
   const [phoneNumber, setphoneNumber] = useState('');

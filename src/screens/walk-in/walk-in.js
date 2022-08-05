@@ -45,14 +45,7 @@ const WalkIn = props => {
   }
   const [scheduleModal, setScheduleModal] = React.useState(false);
   const [couponValue, setCouponValue] = React.useState(false);
-  const [items, setItems] = React.useState([
-    '9:30 AM - 10:00 AM',
-    '9:30 AM - 11:00 AM',
-    '9:20 AM - 10:00 AM',
-    '9:30 AM - 10:00 AM',
-    '9:30 AM - 11:00 AM',
-    '9:20 AM - 10:00 AM',
-  ]);
+  const [items, setItems] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('');
   const [date, setDate] = React.useState(moment());
   const [payload, setpayload] = useState({
@@ -75,6 +68,7 @@ const WalkIn = props => {
   const [coupon, setCoupon] = React.useState(null);
   const [paymentMode, setpaymentMode] = useState(0);
   const [bookingDetails, setbookingDetails] = useState([]);
+
   const getBookingDetails = async () => {
     const token = await getData('token');
     var requestOptions = {
@@ -98,13 +92,43 @@ const WalkIn = props => {
             ...payload,
             offerings: offering,
           });
-          setloading(true);
+
           console.log('get Booking Details======', payload.offerings);
         }
       })
       .catch(error => {
-        setloading(true);
         // navigation?.goBack();
+        console.log('error', error);
+      });
+
+    var raw = JSON.stringify({
+      walkinOnly: 0,
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: raw,
+      redirect: 'follow',
+    };
+
+    await fetch(
+      `${BaseURL}p/public/bookings/${bookingID}/slots`,
+      requestOptions,
+    )
+      .then(response => response.json())
+      .then(result => {
+        if (result != null) {
+          setloading(true);
+          setItems(result);
+          console.log('Time Slots========', items);
+        }
+      })
+      .catch(error => {
+        setloading(true);
         console.log('error', error);
       });
   };
@@ -282,7 +306,10 @@ const WalkIn = props => {
           </View>
           <View style={styles.paymentView}>
             <Regular label={'Payment Method'} size={16} />
-            <PaymentItem onClick={() => setPaymentModal(true)} />
+            <PaymentItem
+              value={selectedPayment.Number}
+              onClick={() => setPaymentModal(true)}
+            />
             <Row style={{...styles.priceView, marginTop: mvs(16.3)}}>
               <Medium label={'Sub Total'} size={14} />
               <Medium label={'$45.00'} size={14} />

@@ -8,7 +8,7 @@ import {
   StatusBar,
   ScrollView,
 } from 'react-native';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
 import Regular from '../../presentation/typography/regular-text';
 import {mvs} from '../../services/metrices';
@@ -25,10 +25,12 @@ import Buttons from '../../components/atoms/Button';
 import Toast from 'react-native-toast-message';
 import {BaseURL} from '../../ApiServices';
 import {storeData} from '../../localStorage';
+import {customerData} from '../../Redux/Reducers';
+
 const Otp = ({navigation, route}, props) => {
   // const navigation = useNavigation();
   const {phone} = route.params;
-
+  const dispatch = useDispatch();
   const [value, setValue] = React.useState('');
   const [isMatch, setIsMatch] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
@@ -79,10 +81,13 @@ const Otp = ({navigation, route}, props) => {
               return;
             } else {
               setLoading(false);
+              dispatch(customerData(result.data));
               showToast('success', result.message.message);
               console.log('otp=======', result);
               if (result.data.user) {
                 storeData('token', result.data.token);
+                storeData('customer_id', result.data.id.toString());
+                dispatch(customerData(result.data.user));
                 delayAPI(result.data.user, result.data.id);
               } else {
                 delayAPI(result.data.user, result.data.id);

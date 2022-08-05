@@ -25,11 +25,12 @@ const ScheduleModal = ({
   value,
   setValue,
   visible,
+  items,
   setVisible = bool => {},
   //items = [],
-  morningShiftsitems = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'],
-  afterNoonShiftsitems = [1, 2, 3, 4, 5, 6, 7, 8],
-  eveningShiftsitems = [1, 2, 3, 4, 5, 6, 7, 8],
+  // morningShiftsitems = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8'],
+  // afterNoonShiftsitems = [1, 2, 3, 4, 5, 6, 7, 8],
+  // eveningShiftsitems = [1, 2, 3, 4, 5, 6, 7, 8],
   setItems = items => {},
 }) => {
   return (
@@ -61,11 +62,11 @@ const ScheduleModal = ({
         </Row>
         <View style={{...styles.priceView}}>
           <Bold label={'Morning'} size={20} />
-          <Bold label={'$47.00'} size={14} />
+          <Bold label={items?.Morning?.timing} size={14} />
         </View>
         <View style={styles.timingView}>
-          {morningShiftsitems?.length > 0 ? (
-            morningShiftsitems?.map((morning, index) => (
+          {items?.Morning?.slots?.length > 0 ? (
+            items?.Morning?.slots?.map((morning, index) => (
               <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{flexGrow: 1}}>
@@ -103,11 +104,11 @@ const ScheduleModal = ({
 
         <View style={{...styles.priceView}}>
           <Bold label={'Afternoon'} size={20} />
-          <Bold label={'$47.00'} size={14} />
+          <Bold label={items?.Afternoon?.timing} size={14} />
         </View>
         <View style={styles.timingView}>
-          {afterNoonShiftsitems?.length > 0 ? (
-            afterNoonShiftsitems?.map((afternoon, index) => (
+          {items?.Afternoon?.slots?.length > 0 ? (
+            items?.Afternoon?.slots?.map((afternoon, index) => (
               <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{flexGrow: 1}}>
@@ -144,11 +145,11 @@ const ScheduleModal = ({
 
         <View style={{...styles.priceView}}>
           <Bold label={'Evening'} size={20} />
-          <Bold label={'$47.00'} size={14} />
+          <Bold label={items?.Evening?.timing} size={14} />
         </View>
         <View style={styles.timingView}>
-          {eveningShiftsitems?.length > 0 ? (
-            eveningShiftsitems?.map((evening, index) => (
+          {items?.Evening?.slots?.length > 0 ? (
+            items?.Evening?.slots?.map((evening, index) => (
               <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{flexGrow: 1}}>

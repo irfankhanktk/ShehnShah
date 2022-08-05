@@ -54,7 +54,7 @@ const ServiceOfferingDetails = props => {
   const state = useSelector(state => state.businessReviews);
   const bookingState = useSelector(state => state.common);
 
-  //console.log('satte=====', bookingState.serviceBooking.bookingID);
+  // console.log('satte=====', bookingState.serviceBooking.bookingID);
 
   const [isMoreBtn, setIsMoreBtn] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
@@ -83,10 +83,11 @@ const ServiceOfferingDetails = props => {
     }, 4000);
   };
   const BookNow = async () => {
+    setpayload({...payload, bookNowStart: true});
     const customerID = await getData('customer_id');
     const token = await getData('token');
 
-    //console.log('Booking=======', token, customerID, id);
+    console.log('Booking=======', token, customerID, id);
     var requestOptions = {
       method: 'POST',
       headers: {
@@ -101,7 +102,6 @@ const ServiceOfferingDetails = props => {
       redirect: 'follow',
     };
 
-    setpayload({...payload, bookNowStart: true});
     await fetch(`${BaseURL}p/public/bookings`, requestOptions)
       .then(response => response.json())
       .then(result => {
@@ -149,7 +149,6 @@ const ServiceOfferingDetails = props => {
   };
 
   useEffect(() => {
-    // getToken();
     getServiceDetails();
   }, [loading]);
   return (

@@ -8,7 +8,7 @@ import {mvs} from '../../../services/metrices';
 import Row from '../../atoms/row';
 const PaymentItem = ({
   onClick,
-  value = 'Select Payment',
+  value,
   style,
   leftIcon = 'MasterCard',
   rightIcon = 'Caret',
