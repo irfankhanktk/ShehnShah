@@ -1,9 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import axios from 'axios';
-
 import {URLS} from '../store/api-urls';
-import DIVIY_API from '../store/api-calls';
 
 const CancelToken = axios.CancelToken;
 source = CancelToken.source();
@@ -14,20 +11,18 @@ client = axios.create({
 //Axios Interceptors
 client.interceptors.request.use(
   async config => {
-    const token = await AsyncStorage.getItem('@token');
+    const token = await AsyncStorage.getItem('token');
+    console.log("Token is ",token)
     config.headers = {
       Accept: 'application/json',
       'Cache-Control': 'no-cache',
       'Content-Type':
-        'multipart/form-data, application/json,application/x-www-form-urlencoded',
+      'application/json',
     };
 
     config.params = config.params || {};
     config.cancelToken = source.token || {};
-    if (JSON.parse(token)) {
-      config.headers['Authorization'] =
-        `Bearer ` + JSON.parse(token)?.access_token;
-    }
+    config.headers['Authorization'] = `Bearer ${token}`;
     return config;
   },
   error => {
@@ -44,7 +39,7 @@ client.interceptors.response.use(
     return response;
   },
   async function (error) {
-    console.log('INTERCEPTOR ERROR RESPONSE : ', error?.response?.status);
+    console.log('INTERCEPTOR ERROR RESPONSE : ', error);
     console.log('INTERCEPTOR ERROR RESPONSE CONFIG: ', error?.config);
     const token = await AsyncStorage.getItem('@token');
     const originalRequest = error.config;
@@ -52,21 +47,8 @@ client.interceptors.response.use(
       return Promise.reject('Hi Dude');
     } else if (error?.response?.status === 401) {
       originalRequest._retry = true;
-      await DIVIY_API.refreshToken(JSON.parse(token)?.refresh_token);
-      // console.log("Token info: ",tokenInfo)
-      // if (tokenInfo) {
-      //   await AsyncStorage.setItem('@token', JSON.stringify({token:tokenInfo}));
-      //   axios.defaults.headers.common['Authorization'] =
-      //     'Bearer ' + tokenInfo?.access_token;
-      //   return client(originalRequest);
-      // } else {
-      // AsyncStorage.multiRemove(['user_data', 'token']).then(res => {
-      //   // props.navigation.navigate('signIn');
-      //   global.navigation.navigate('getStarted');
-      //   global.navigation.dispatch(StackActions.replace('getStarted'));
-      // });
-      //   return Promise.reject(error);
-      // }
+      //await DIVIY_API.refreshToken(JSON.parse(token)?.refresh_token);
+      
     }
     return Promise.reject(error);
   },

@@ -128,7 +128,7 @@ const ReviewsRaing = ({bg = '#ffedce', picsArray, data, loading}) => {
                             width: '100%',
                             borderRadius: mvs(16),
                           }}
-                          uri={ele}
+                          uri={Bg}
                         />
                       </ShimmerPlaceholder>
                     </View>

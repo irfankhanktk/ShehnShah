@@ -1,5 +1,4 @@
 import * as Actions from './action-types';
-import images from './../services/images';
 
 const INITIAL_STATE = {
   user_info: {

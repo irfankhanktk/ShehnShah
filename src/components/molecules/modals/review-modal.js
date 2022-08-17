@@ -16,6 +16,8 @@ const ReviewModal = ({
     setVisible = (bool) => { },
     items = [],
     setItems = (items) => { },
+    setRating = (rating) => { },
+    onTextChange
 }) => {
     const [rate,setRate]=React.useState(4);
     const onGallery= async()=>{
@@ -37,8 +39,8 @@ const ReviewModal = ({
         <ReactNativeModal
             propagateSwipe
             isVisible={visible}
-            onBackdropPress={() => setVisible(false)}
-            onSwipeComplete={() => setVisible(false)}
+            //onBackdropPress={() => setVisible(false)}
+            //onSwipeComplete={() => setVisible(false)}
             swipeDirection='up'
             style={{ margin: 0 }}>
             <View style={styles.container}>
@@ -52,7 +54,7 @@ const ReviewModal = ({
                     </TouchableOpacity>
                 </Row>
                 <View style={{ alignItems: 'center', marginBottom: mvs(22) }}>
-                    <RatingStar disabled={false} onPress={setRate} width={mvs(192)} size={mvs(30)} rate={rate} />
+                    <RatingStar disabled={false} onPress={setRating} width={mvs(192)} size={mvs(30)} rate={rate} />
                 </View>
                 {items?.length > 0 ? <Row justifyContent={'flex-start'}>
                     {
@@ -75,7 +77,9 @@ const ReviewModal = ({
                         </Row>
                     </TouchableOpacity>
                 }
-                <TextInput multiline style={{height:mvs(231),backgroundColor:colors.F9F9F9,textAlignVertical:'top',borderRadius: mvs(15),padding:mvs(10),marginTop:mvs(5),}} placeholder={`Don't be shy, tell us more !`}/>
+                <TextInput multiline 
+                style={{height:mvs(231),backgroundColor:colors.F9F9F9,textAlignVertical:'top',borderRadius: mvs(15),padding:mvs(10),marginTop:mvs(5),}} 
+                placeholder={`Don't be shy, tell us more !`} onChangeText={onTextChange}/>
             </View>
         </ReactNativeModal>
     );

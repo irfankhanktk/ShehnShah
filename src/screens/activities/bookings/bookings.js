@@ -9,7 +9,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {useNavigation, CommonActions, useTheme} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import Bold from '../../../presentation/typography/bold-text';
 import styles from './booking-styles';
 import {mvs} from '../../../services/metrices';
@@ -18,13 +18,13 @@ import Regular from '../../../presentation/typography/regular-text';
 import ActivityItem from '../../../components/atoms/activity-item';
 import allColors from '../../../services/colors';
 import Medium from '../../../presentation/typography/medium-text';
-import ReviewModal from '../../../components/molecules/modals/review-modal';
+import DIVIY_API from '../../../store/api-calls';
+import { getData } from '../../../localStorage';
 // createa component
 const Bookings = props => {
-  const {colors} = useTheme();
+  const{get_bookings}=props;
   const navigation = useNavigation();
-  const [images, setImages] = React.useState([]);
-  const [visible, setVisible] = React.useState(true);
+ 
   const [schedule, setScheduleData] = useState([
     {
       bussinessName: 'Total Al Safeer Car Wash…',
@@ -115,6 +115,33 @@ const Bookings = props => {
       isLiked: false,
     },
   ]);
+  useEffect(()=>{
+     getBookings();
+  },[])
+ 
+  const getBookings=async()=>{
+    const customerId=await getData("customer_id");
+    console.log(customerId)
+    const response=await get_bookings(1)
+    var booked=[];
+    var draft=[];
+    var complet=[];
+    for(var i=0;i<response?.data.length;i++){
+       if(response?.data[i]?.status=="Draft"){
+        draft.push(response?.data[i])
+       }else if(response?.data[i]?.status=="Booked"){
+        booked.push(response?.data[i])
+       }else{
+        complet.push(response?.data[i])
+       }
+    }
+    console.log("Length of  Draft  ",draft.length)
+    console.log("complet of  Draft  ",complet.length)
+    console.log("booked of  Draft  ",booked.length)
+    setCancelledData(draft)
+    setCompletedData(complet)
+    setScheduleData(booked)
+  }
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={'white'} barStyle="dark-content" />
@@ -142,16 +169,16 @@ const Bookings = props => {
                   data={schedule}
                   renderItem={({item}) => (
                     <ActivityItem
-                      address={item.address}
-                      bussinessName={item.bussinessName}
-                      bookingTime={item.bookingTime}
-                      details={item.details}
+                      address={item?.business?.street+","+item?.business?.area+","+item?.business?.city}
+                      bussinessName={item?.business?.title}
+                      bookingTime={item?.slot?.date+" "+item?.slot?.from[0]+":"+item?.slot?.from[1]+"-"+item?.slot?.to[0]+":"+item?.slot?.to[1]}
+                      details={item?.offering?.title}
                       status="schedule"
-                      subDetails={item.subDetails}
+                      subDetails={item?.offering?.subTitle}
                       onPress={() => alert('Schedule')}
-                      progress={item.progress}
-                      isLiked={item.isLiked}
-                      price={item.price}
+                      progress={0.3}
+                      isLiked={false}
+                      price={item?.offering?.price}
                     />
                   )}
                 />
@@ -164,16 +191,16 @@ const Bookings = props => {
                   data={completed}
                   renderItem={({item}) => (
                     <ActivityItem
-                      address={item.address}
-                      bussinessName={item.bussinessName}
-                      bookingTime={item.bookingTime}
-                      details={item.details}
-                      status="complete"
-                      subDetails={item.subDetails}
-                      onPress={() => alert('Complete')}
-                      progress={item.progress}
-                      isLiked={item.isLiked}
-                      price={item.price}
+                    address={item?.business?.street+","+item?.business?.area+","+item?.business?.city}
+                    bussinessName={item?.business?.title}
+                    bookingTime={item?.slot?.date+" "+item?.slot?.from[0]+":"+item?.slot?.from[1]+"-"+item?.slot?.to[0]+":"+item?.slot?.to[1]}
+                    details={item?.offering?.title}
+                    status="complete"
+                    subDetails={item?.offering?.subTitle}
+                    onPress={() => alert('Complete')}
+                    progress={0.3}
+                    isLiked={false}
+                    price={item?.offering?.price}
                     />
                   )}
                 />
@@ -189,16 +216,16 @@ const Bookings = props => {
                   data={cancelled}
                   renderItem={({item}) => (
                     <ActivityItem
-                      address={item.address}
-                      bussinessName={item.bussinessName}
-                      bookingTime={item.bookingTime}
-                      details={item.details}
-                      status="cancel"
-                      subDetails={item.subDetails}
-                      onPress={() => alert('cancel')}
-                      progress={item.progress}
-                      isLiked={item.isLiked}
-                      price={item.price}
+                    address={item?.business?.street+","+item?.business?.area+","+item?.business?.city}
+                    bussinessName={item?.business?.title}
+                    bookingTime={item?.slot?.date+" "+item?.slot?.from[0]+":"+item?.slot?.from[1]+"-"+item?.slot?.to[0]+":"+item?.slot?.to[1]}
+                    details={item?.offering?.title}
+                    status="cancel"
+                    subDetails={item?.offering?.subTitle}
+                    onPress={() => alert('cancel')}
+                    progress={0.3}
+                    isLiked={true}
+                    price={item?.offering?.price}
                     />
                   )}
                 />
@@ -220,5 +247,10 @@ const Bookings = props => {
     </SafeAreaView>
   );
 };
-
-export default Bookings;
+const mapStateToProps = store => ({
+  // user_info: store.state.user_info,
+ });
+ const mapDispatchToProps = {
+   get_bookings:(id)=>DIVIY_API.get_customer_bookings(id)
+ };
+ export default connect(mapStateToProps, mapDispatchToProps)(Bookings);

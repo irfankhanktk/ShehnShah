@@ -14,21 +14,40 @@ import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
 
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
-
 import {getData} from '../../localStorage';
-import {BaseURL} from '../../ApiServices';
+import DIVIY_API from '../../store/api-calls';
+import Buttons from '../../components/atoms/Button';
 
-const about =
-  'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
-const services = [
-  {icon: 'Services', title: '2.5K Reviews', value: '5 Services'},
-  {icon: 'Schedule', title: 'Book Service', value: 'Availability'},
-  {icon: 'Discount', title: 'Discounts', value: 'View Promos'},
-];
 const CouponDetails = props => {
-  const {route, navigation} = props;
+  const {route, navigation,get_details,avail_coupon,update_coupon_payment,complete_coupon_purchase} = props;
   const [isMoreBtn, setIsMoreBtn] = React.useState(true);
   const [loading, setLoading] = React.useState(true);
+  const [coupon,setCoupon]=useState({})
+  useEffect(()=>{
+     getCouponDetails();
+  },[])
+  const getCouponDetails=async()=>{
+    const response=await get_details(route.params?.id,route.params.bId);
+    console.log("Coupon Data ")
+    if(response?.data){
+      console.log(response?.data)
+      setCoupon(response?.data)
+    }
+}
+  function getString(list){
+    console.log(list.tos)
+  }
+  const availCoupon=async()=>{
+    const id=await getData("customer_id");
+    console.log("Customer id is ",id)
+    console.log("Coupon id is ",coupon?.id)
+    const availResponse=await avail_coupon(id,coupon?.id)
+    console.log("Avail Response",availResponse?.data)
+    const paymentResponse=await update_coupon_payment(id,coupon?.id)
+    console.log("payment Response",paymentResponse?.data)
+    const completeResponse=await complete_coupon_purchase(id,coupon?.id)
+    console.log("payment Response",completeResponse?.data)
+  }
   return (
     <View style={styles.conntainer}>
       <CustomHeader allowBackBtn title={'Coupon Details'} colors={colors} />
@@ -36,7 +55,7 @@ const CouponDetails = props => {
         <ScrollView contentContainerStyle={{flexGrow: 1}}>
           <View />
           <View style={{paddingHorizontal: mvs(18)}}>
-            <CouponCard loading={loading} />
+            <CouponCard loading={loading} coupon={coupon}/>
           </View>
           <TotalRateMap loading={loading} />
           <HeadingTitle title="About Coupon" />
@@ -45,14 +64,14 @@ const CouponDetails = props => {
               <Regular
                 numberOfLines={null}
                 label={
-                  about?.length > 185 && isMoreBtn
-                    ? `${about?.slice(0, 183)} ...`
-                    : about
+                 coupon?.about?.length > 185 && isMoreBtn
+                    ? `${coupon?.about?.slice(0, 183)} ...`
+                    : coupon?.about
                 }
                 size={mvs(16)}
                 color={colors.B1E1E1E}
               />
-              {isMoreBtn && about?.length > 185 && (
+              {isMoreBtn && coupon?.about?.length > 185 && (
                 <TouchableOpacity onPress={() => setIsMoreBtn(false)}>
                   <Regular color={colors.primary} label={'Read More'} />
                 </TouchableOpacity>
@@ -64,12 +83,12 @@ const CouponDetails = props => {
             <ShimmerPlaceholder
               style={{width: '95%', alignSelf: 'center'}}
               visible={loading}>
-              <LabelValue value={'AED 1039.00'} label={'Total Value'} />
+              <LabelValue value={'AED '+coupon?.price} label={'Total Value'} />
             </ShimmerPlaceholder>
             <ShimmerPlaceholder
               style={{width: '95%', alignSelf: 'center'}}
               visible={loading}>
-              <LabelValue value={'Total Discount'} label={'AED 340.00'} />
+              {coupon?.discountValue!=null &&(<LabelValue value={'Total Discount'} label={'AED '+coupon?.discountValue} />)}
             </ShimmerPlaceholder>
             <ShimmerPlaceholder
               style={{width: '95%', alignSelf: 'center'}}
@@ -81,12 +100,12 @@ const CouponDetails = props => {
           <ShimmerPlaceholder
             style={{width: '95%', alignSelf: 'center'}}
             visible={loading}>
-            <LabelValue value={'May 10 2020'} label={'Valid From'} />
+            <LabelValue value={coupon?.saleConditions?.from} label={'Valid From'} />
           </ShimmerPlaceholder>
           <ShimmerPlaceholder
             style={{width: '95%', alignSelf: 'center'}}
             visible={loading}>
-            <LabelValue value={'May 09 2021'} label={'Expires On'} />
+            <LabelValue value={coupon?.saleConditions?.to} label={'Expires On'} />
           </ShimmerPlaceholder>
           <ShimmerPlaceholder
             style={{width: '95%', alignSelf: 'center'}}
@@ -107,29 +126,29 @@ const CouponDetails = props => {
           <ShimmerPlaceholder
             style={{width: '95%', alignSelf: 'center'}}
             visible={loading}>
-            <LabelValue label={'Maximum Services Limit'} value={'10'} />
+            <LabelValue label={'Maximum Services Limit'} value={coupon?.saleConditions?.totalLimit} />
           </ShimmerPlaceholder>
           <ShimmerPlaceholder
             style={{width: '95%', alignSelf: 'center'}}
             visible={loading}>
-            <LabelValue label={'Daily Services Limit'} value={'1'} />
+            <LabelValue label={'Daily Services Limit'} value={coupon?.saleConditions?.dailyLimit} />
           </ShimmerPlaceholder>
           <ShimmerPlaceholder
             style={{width: '95%', alignSelf: 'center'}}
             visible={loading}>
-            <LabelValue label={'Weekly Services Limit '} value={'7'} />
+            <LabelValue label={'Weekly Services Limit '} value={coupon?.saleConditions?.weeklyLimit} />
           </ShimmerPlaceholder>
           <ShimmerPlaceholder
             style={{width: '95%', alignSelf: 'center'}}
             visible={loading}>
-            <LabelValue label={'Monthly Services Limit '} value={'35'} />
+            <LabelValue label={'Monthly Services Limit '} value={coupon?.saleConditions?.monthlyLimit} />
           </ShimmerPlaceholder>
           <ShimmerPlaceholder
             style={{width: '95%', alignSelf: 'center'}}
             visible={loading}>
             <LabelValue
               label={'Validity Days'}
-              value={'Sun, Mon, Tue,  days of the week only'}
+              value={coupon?.useConditions?.days?.toString()}
             />
           </ShimmerPlaceholder>
           <ShimmerPlaceholder
@@ -137,7 +156,7 @@ const CouponDetails = props => {
             visible={loading}>
             <LabelValue
               label={'Validity Time'}
-              value={'Morning 09-12, Afternoon 12-06 only'}
+              value={coupon?.useConditions?.shifts?.toString()}
             />
           </ShimmerPlaceholder>
           <ShimmerPlaceholder
@@ -151,15 +170,26 @@ const CouponDetails = props => {
           <ShimmerPlaceholder
             style={{width: '95%', alignSelf: 'center'}}
             visible={loading}>
-            <LabelValue
-              label={'Can Be Redeem From The SHEHNSHAH App Only'}
-              value={''}
-            />
+
+                 <LabelValue
+                  label={coupon?.otherConditions}
+                  value={''}
+                  lines={5}
+                />
           </ShimmerPlaceholder>
+          <Buttons.ButtonPrimary title='Avail Coupon' style={{marginHorizontal:mvs(22),width:'90%'}} onClick={()=>availCoupon()}/>
         </ScrollView>
       </View>
     </View>
   );
 };
-
-export default CouponDetails;
+const mapStateToProps = store => ({
+  // user_info: store.state.user_info,
+ });
+ const mapDispatchToProps = {
+   get_details:(id,bid)=>DIVIY_API.get_coupons_details(id,bid),
+   avail_coupon:(id,cid)=>DIVIY_API.avail_coupon(id,cid),
+   update_coupon_payment:(id,cid)=>DIVIY_API.update_coupon_payment(id,cid),
+   complete_coupon_purchase:(id,cid)=>DIVIY_API.complete_coupon_purchase(id,cid)
+ };
+ export default connect(mapStateToProps, mapDispatchToProps)(CouponDetails);

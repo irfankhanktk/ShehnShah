@@ -9,7 +9,7 @@ const RatingStar = ({
   size = 16,
   fill = colors.primary,
   stroke = colors.border,
-  rate,
+  rate=2,
   width = '100%',
   disabled = true,
   list = [1, 2, 3, 4, 5],

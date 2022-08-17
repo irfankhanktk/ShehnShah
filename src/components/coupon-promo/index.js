@@ -12,7 +12,7 @@ import HeadingTitle from '../molecules/heading-title';
 import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
-const CouponPromo = ({...props}) => {
+const CouponPromo = ({coupons=[],business={},...props}) => {
   return (
     <View>
       <HeadingTitle title="Coupons & Promos" />
@@ -21,9 +21,9 @@ const CouponPromo = ({...props}) => {
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{paddingHorizontal: mvs(18)}}>
-          {[0, 1, 2, 3, 4].map((ele, index) => (
+          {coupons.map((ele, index) => (
             <TouchableOpacity
-              onPress={() => props?.navigation?.navigate('CouponDetails')}
+              onPress={() => props?.navigation?.navigate('CouponDetails',{id:ele?.id,bId:business?.id})}
               style={{
                 width: mvs(134),
                 marginRight: mvs(7),
@@ -46,7 +46,7 @@ const CouponPromo = ({...props}) => {
                   <Regular
                     size={mvs(12)}
                     color={colors.primary}
-                    label={'Business Name'}
+                    label={business?.title}
                   />
                 </ShimmerPlaceholder>
                 <ShimmerPlaceholder
@@ -55,7 +55,7 @@ const CouponPromo = ({...props}) => {
                   <SemiBold
                     color={colors.black}
                     numberOfLines={2}
-                    label={'50% OFF Car Wash'}
+                    label={ele?.title}
                   />
                 </ShimmerPlaceholder>
                 <ShimmerPlaceholder
@@ -64,7 +64,7 @@ const CouponPromo = ({...props}) => {
                   <Regular
                     size={mvs(11)}
                     color={colors.G5E5E5E}
-                    label={'Description...'}
+                    label={ele?.subTitle}
                   />
                   <TouchableOpacity
                     style={{
@@ -78,7 +78,7 @@ const CouponPromo = ({...props}) => {
                     }}>
                     <Cross />
                     <Regular
-                      label={' Cash Voucher'}
+                      label={' '+ele?.highlight}
                       style={{
                         textTransform: 'uppercase',
                         fontSize: mvs(8),
@@ -89,7 +89,7 @@ const CouponPromo = ({...props}) => {
                   <Bold
                     size={mvs(12)}
                     color={colors.black}
-                    label={'3.00 AED'}
+                    label={ele?.price+' AED'}
                   />
                 </ShimmerPlaceholder>
               </View>

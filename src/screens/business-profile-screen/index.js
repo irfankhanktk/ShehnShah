@@ -34,6 +34,7 @@ import {getData} from '../../localStorage';
 import {BaseURL} from '../../ApiServices';
 import {addReviews} from '../../Redux/Reducers/ReviewsReducer';
 import {useNavigation} from '@react-navigation/native';
+import ServiceButton from '../../components/molecules/services-button';
 
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
@@ -88,6 +89,8 @@ const BusinessProfile = props => {
           dispatch(addReviews(result));
           setcontactInfo(result.contact);
           setbusinessHourse(result.hours);
+          console.log("Hourse  ")
+          console.log(result.hours)
           setPayload({
             ...payload,
             rating: result.rating,
@@ -138,7 +141,7 @@ const BusinessProfile = props => {
       });
   };
   React.useEffect(() => {
-    getBusinessProfile();
+      getBusinessProfile();
   }, [loading]);
   // if (loading) {
   //   return <View style={{ flex: 1 }}>
@@ -161,7 +164,7 @@ const BusinessProfile = props => {
               style={{width: '100%', height: '100%'}}
               visible={loading}>
               <ImagePlaceholder
-                uri={businessProfile?.cover}
+                uri={{uri:businessProfile?.cover}}
                 containerStyle={{width: '100%', height: '100%'}}
               />
             </ShimmerPlaceholder>
@@ -188,7 +191,7 @@ const BusinessProfile = props => {
                 visible={loading}>
                 <ImagePlaceholder
                   borderRadius={mvs(12)}
-                  uri={businessProfile?.logo}
+                  uri={{uri:businessProfile?.logo}}
                   containerStyle={{width: mvs(55), height: mvs(55)}}
                 />
               </ShimmerPlaceholder>
@@ -272,7 +275,7 @@ const BusinessProfile = props => {
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{paddingHorizontal: mvs(18)}}>
-              {services.map((item, index) => (
+              {/* {services.map((item, index) => (
                 <ServiceCard
                   onPress={() => {
                     let y = 421;
@@ -293,7 +296,7 @@ const BusinessProfile = props => {
                   icon={item.icon}
                   div={services.length - 1 !== index}
                 />
-              ))}
+              ))} */}
             </ScrollView>
           </Row>
           <HeadingTitle title="About" />
@@ -345,7 +348,7 @@ const BusinessProfile = props => {
                         width: '100%',
                         borderRadius: mvs(16),
                       }}
-                      uri={ele}
+                      uri={{uri:ele}}
                     />
                   </View>
                 </ShimmerPlaceholder>
@@ -379,7 +382,10 @@ const BusinessProfile = props => {
               />
             </ShimmerPlaceholder>
           </View>
-          <HeadingTitle title="Business Hours" />
+          {(
+            businessHourse &&
+          <>
+           <HeadingTitle title="Business Hours" />
           <ShimmerPlaceholder
             style={styles.contactInformation}
             visible={loading}>
@@ -444,6 +450,10 @@ const BusinessProfile = props => {
               vColor={colors.B323232}
             />
           </ShimmerPlaceholder>
+
+          </>
+         )}
+
           <HeadingTitle title="Rating & Reviews" />
           <View style={{paddingHorizontal: mvs(18)}}>
             <Row justifyContent={'space-between'}>
@@ -568,7 +578,7 @@ const BusinessProfile = props => {
             data={businessReviews?.map(item => item)}
             loading={loading}
           />
-          {/* <HeadingTitle title='Services' />
+          <HeadingTitle title='Services' />
           <View style={{ paddingHorizontal: mvs(18) }}>
             <ServiceButton icon='CarWash' title='Car Wash' />
             <ServiceButton icon='Maintenance' title='Maintenance Schedule' />
@@ -576,7 +586,7 @@ const BusinessProfile = props => {
             <ServiceButton icon='Brake' title='Brake Service' />
             <ServiceButton icon='Brake' title='Brake Service' />
             <ServiceButton icon='Engine' title='Engine' />
-          </View> */}
+          </View>
           <View
             style={{
               backgroundColor: colors.FBF8F8,

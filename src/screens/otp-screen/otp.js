@@ -29,7 +29,7 @@ import {customerData} from '../../Redux/Reducers';
 
 const Otp = ({navigation, route}, props) => {
   // const navigation = useNavigation();
-  const {phone} = route.params;
+  const {phone} = route.params.phone;
   const dispatch = useDispatch();
   const [value, setValue] = React.useState('');
   const [isMatch, setIsMatch] = React.useState(true);
@@ -57,12 +57,12 @@ const Otp = ({navigation, route}, props) => {
     } else {
       var myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
-
+      console.log(route.params)
       var raw = JSON.stringify({
-        phone: phone,
+        phone:route.params?.phone,
         code: value,
       });
-
+      console.log(raw)
       var requestOptions = {
         method: 'POST',
         headers: myHeaders,

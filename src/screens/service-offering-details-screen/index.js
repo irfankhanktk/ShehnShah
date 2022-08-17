@@ -49,7 +49,7 @@ const services = [
 const ServiceOfferingDetails = props => {
   const {route} = props;
   const navigation = useNavigation();
-  const {id} = route.params;
+  const {id} = route.params.id;
   const dispatch = useDispatch();
   const state = useSelector(state => state.businessReviews);
   const bookingState = useSelector(state => state.common);
@@ -87,7 +87,7 @@ const ServiceOfferingDetails = props => {
     const customerID = await getData('customer_id');
     const token = await getData('token');
 
-    console.log('Booking=======', token, customerID, id);
+    console.log('Booking=======', token, customerID, route.params.id);
     var requestOptions = {
       method: 'POST',
       headers: {
@@ -95,8 +95,8 @@ const ServiceOfferingDetails = props => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        customerId: customerID,
-        offeringId: id,
+        customerId: 1,
+        offeringId: route.params.id,
         byCustomer: 0,
       }),
       redirect: 'follow',
@@ -132,8 +132,8 @@ const ServiceOfferingDetails = props => {
         redirect: 'follow',
       };
     }
-
-    await fetch(`${BaseURL}p/public/offerings/${id}`, requestOptions)
+   
+    await fetch(`${BaseURL}p/public/offerings/${route.params.id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
         if (result != null) {
@@ -149,6 +149,7 @@ const ServiceOfferingDetails = props => {
   };
 
   useEffect(() => {
+    console.log("Id is  "+route.params.id)
     getServiceDetails();
   }, [loading]);
   return (
@@ -171,7 +172,7 @@ const ServiceOfferingDetails = props => {
               visible={loading}>
               <ImagePlaceholder
                 borderRadius={mvs(8)}
-                uri={serviceDetails?.cover}
+                uri={{uri:serviceDetails?.cover}}
                 containerStyle={{width: mvs(110), height: mvs(110)}}
               />
             </ShimmerPlaceholder>
@@ -207,7 +208,7 @@ const ServiceOfferingDetails = props => {
                   <Regular color={colors.B606060} label={'Lead Time:'} />
                   <Medium
                     color={colors.G3CB971}
-                    label={` ${serviceDetails?.processTime} Minutes`}
+                    label={`${serviceDetails?.processTime} Minutes`}
                   />
                 </Row>
               </ShimmerPlaceholder>
@@ -303,7 +304,7 @@ const ServiceOfferingDetails = props => {
                   }}
                   middleText={
                     index === 0
-                      ? `${JSON.parse(state?.businessReviews?.rating)[7]}`
+                      ? `${state?.businessReviews?.rating[7]}`
                       : null
                   }
                   value={index === 0 ? null : item.value}
@@ -346,7 +347,7 @@ const ServiceOfferingDetails = props => {
                   color={colors.black}
                   style={{transform: [{translateY: -mvs(10)}]}}
                   size={mvs(42)}
-                  label={`${JSON.parse(state?.businessReviews?.rating)[7]}`}
+                  label={`${state?.businessReviews?.rating[7]}`}
                 />
               </ShimmerPlaceholder>
               <Ratings width={mvs(230)} />
@@ -367,7 +368,8 @@ const ServiceOfferingDetails = props => {
               flexGrow: 1,
               paddingBottom: mvs(30),
             }}>
-            <CouponPromo {...props} loading={loading} />
+           { serviceDetails?.coupons &&( <CouponPromo {...props} loading={loading} 
+           coupons={serviceDetails?.coupons} business={serviceDetails?.business}/>)}
             {/* <Row style={{ paddingHorizontal: mvs(18), marginTop: mvs(20),marginBottom:mvs(10) }}>
                             <Bold label={'People also search for'} size={mvs(20)} color={colors.black} />
                             <TouchableOpacity>

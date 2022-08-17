@@ -45,18 +45,20 @@ const Signin = props => {
   };
   const delayAPI = () => {
     setTimeout(() => {
-      navigation.navigate('Otp', {phone: formattedValue});
+      navigation.navigate('Otp', {phone: formattedValue.substring(1,formattedValue.length)});
     }, 4000);
   };
   const getMobile = async () => {
     if (formattedValue.length <= 0) {
       return showToast('error', 'Please Enter mobile number');
     } else {
+     var phone=formattedValue.substring(1,formattedValue.length);
+      console.log("Phone Number "+phone)
       var myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
 
       var raw = JSON.stringify({
-        phone: formattedValue,
+        phone: phone,
       });
 
       var requestOptions = {
@@ -275,9 +277,10 @@ const Signin = props => {
                   textContainerStyle={styles.textInput}
                   onChangeFormattedText={text => {
                     setFormattedValue(text);
-                    console.log('Formated Value ' + text);
+                   // console.log('Formated Value ' + text);
                   }}
                   onChangeText={text => {
+                    console.log('Formated Value ' + text);
                     setphoneNumber(text);
                   }}
                 />

@@ -47,7 +47,7 @@ const ServiceOffering = ({
                     visible={loading}>
                     <ImagePlaceholder
                       containerStyle={{height: mvs(120), width: '100%'}}
-                      uri={ele?.icon}
+                      uri={Bg}
                     />
                   </ShimmerPlaceholder>
                   <View
@@ -63,7 +63,7 @@ const ServiceOffering = ({
                             </Row> */}
                     <ShimmerPlaceholder
                       style={{
-                        height: mvs(20),
+                        height: mvs(24),
                         width: mvs(220),
                       }}
                       visible={loading}>

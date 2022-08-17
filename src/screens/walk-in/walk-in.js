@@ -35,10 +35,12 @@ const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
 const WalkIn = props => {
   const refRBSheet = useRef(null);
-  const {route, navigation} = props;
+  const {route, navigation,book_slot,update_payment_method,complete_booking} = props;
   const {bookingID, businessID} = route.params;
   // console.log('ids=======', bookingID, businessID);
   const state = useSelector(state => state.businessReviews);
+  const bookingState = useSelector(state => state.common);
+  console.log("User info  ", bookingState.user_info)
   const refRBNewPaymentSheet = useRef(null);
   function newPayment() {
     refRBNewPaymentSheet.current.open();
@@ -46,14 +48,14 @@ const WalkIn = props => {
   const [scheduleModal, setScheduleModal] = React.useState(false);
   const [couponValue, setCouponValue] = React.useState(false);
   const [items, setItems] = React.useState([]);
-  const [selectedValue, setSelectedValue] = React.useState('');
+  const [selectedValue, setSelectedValue] = React.useState();
   const [date, setDate] = React.useState(moment());
   const [payload, setpayload] = useState({
     offerings: [],
   });
   const [paymentModal, setPaymentModal] = React.useState(false);
   const [couponModal, setCouponModal] = React.useState(false);
-  const [selectedPayment, setselectedPayment] = useState(null);
+  const [selectedPayment, setselectedPayment] = useState(" ");
   const [paymentMethods, setPaymentMethods] = useState([
     {
       Number: 'Cash on delivery',
@@ -68,7 +70,7 @@ const WalkIn = props => {
   const [coupon, setCoupon] = React.useState(null);
   const [paymentMode, setpaymentMode] = useState(0);
   const [bookingDetails, setbookingDetails] = useState([]);
-
+  
   const getBookingDetails = async () => {
     const token = await getData('token');
     var requestOptions = {
@@ -124,7 +126,8 @@ const WalkIn = props => {
         if (result != null) {
           setloading(true);
           setItems(result);
-          //console.log('Time Slots========', items);
+          console.log('Time Slots========');
+          console.log(items?.Afternoon?.slots)
         }
       })
       .catch(error => {
@@ -132,11 +135,27 @@ const WalkIn = props => {
         console.log('error', error);
       });
   };
-
+  const bookSlot=async()=>{
+     var payload={
+      "slotId": selectedValue?.id
+     };
+     console.log(payload)
+     await book_slot(bookingID,payload);
+  }
+  const updatePayment=async()=>{
+    var payload={
+      "method": selectedPayment,
+      "reference": " "
+    };
+    console.log(payload)
+    await update_payment_method(bookingID,payload);
+ }
   useEffect(() => {
     getBookingDetails();
   }, [loading]);
-
+  const completeBooking=async()=>{
+    await complete_booking(bookingID)
+  }
   return (
     <View style={{...styles.conntainer, backgroundColor: colors.background}}>
       <CustomHeader
@@ -238,10 +257,15 @@ const WalkIn = props => {
           <Row style={styles.rowView}>
             <View>
               <Bold label={'Date & time'} size={15} />
-              <Regular
-                label={`${date?.format('DD MMMM YYYY')} ${selectedValue}`}
+              {selectedValue!=undefined?
+                <Regular
+                label={`${date?.format('DD MMMM YYYY')} ${selectedValue?.from[0]+":"+selectedValue?.from[1]+"-"+selectedValue?.to[0]+":"+selectedValue?.to[1]}`}
                 size={16}
-              />
+              />:
+              <Regular
+                label={`${date?.format('DD MMMM YYYY')}`}
+                size={16}/>
+              }
             </View>
             <TouchableOpacity onPress={() => setScheduleModal(true)}>
               <Regular label={'Change'} size={15} color={colors.primary} />
@@ -306,7 +330,7 @@ const WalkIn = props => {
           </View>
           <View style={styles.paymentView}>
             <Regular label={'Payment Method'} size={16} />
-            <PaymentItem value={''} onClick={() => setPaymentModal(true)} />
+            <PaymentItem value={selectedPayment+' '} onClick={() => setPaymentModal(true)} />
             <Row style={{...styles.priceView, marginTop: mvs(16.3)}}>
               <Medium label={'Sub Total'} size={14} />
               <Medium label={'$45.00'} size={14} />
@@ -319,14 +343,15 @@ const WalkIn = props => {
               <Bold label={'Grand Total'} size={14} />
               <Bold label={'$47.00'} size={14} />
             </Row>
-            <Buttons.ButtonPrimary title="Confirm" style={styles.button} />
+            <Buttons.ButtonPrimary title="Confirm" onClick={()=>completeBooking()} style={styles.button} />
           </View>
         </ScrollView>
         <PaymentSheet
           onChange={(mode, m) => {
             setPaymentMethods(mode);
             console.log('m', m.Number);
-            setselectedPayment(m);
+            setselectedPayment(m.Number);
+            updatePayment();
           }}
           setVisible={() => setPaymentModal(false)}
           paymentMethods={paymentMethods}
@@ -354,6 +379,10 @@ const WalkIn = props => {
         items={items}
         setItems={setItems}
         visible={scheduleModal}
+        onContinue={()=>{
+          setScheduleModal(false);
+          bookSlot()
+        }}
       />
       <CouponModal
         items={[1, 2, 3]}
@@ -367,5 +396,12 @@ const WalkIn = props => {
     </View>
   );
 };
-
-export default WalkIn;
+const mapStateToProps = store => ({
+ // user_info: store.state.user_info,
+});
+const mapDispatchToProps = {
+  book_slot:(id,params)=>DIVIY_API.book_slot(id,params),
+  update_payment_method:(id,params)=>DIVIY_API.update_payment(id,params),
+  complete_booking:(id)=>DIVIY_API.complete_booking(id)
+};
+export default connect(mapStateToProps, mapDispatchToProps)(WalkIn);

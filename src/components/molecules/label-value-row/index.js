@@ -12,10 +12,11 @@ const LabelValue = ({
     vColor=colors.B323232,
     lcolor=colors.B323232,
     bw=StyleSheet.hairlineWidth,
+    lines=1
 }) => {
     return (
         <Row style={{justifyContent:'space-between',marginHorizontal:mvs(18),paddingVertical: mvs(6),marginBottom:mb,borderBottomWidth: bw,borderColor: colors.GE1E1E1,}}>
-             <Regular size={mvs(14)} label={label} color={colors.B323232}/>
+             <Regular size={mvs(14)} numberOfLines={lines} label={label} color={colors.B323232}/>
              <SemiBold size={mvs(14)} label={value} color={vColor}/>
         </Row>
     );

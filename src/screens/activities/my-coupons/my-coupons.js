@@ -1,15 +1,7 @@
 //import liraries
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  ScrollView,
-  Text,
-  FlatList,
-  StatusBar,
-  SafeAreaView,
-} from 'react-native';
+import { View,ScrollView,FlatList,StatusBar,SafeAreaView,} from 'react-native';
 import {connect} from 'react-redux';
-import {useNavigation, CommonActions, useTheme} from '@react-navigation/native';
 import Bold from '../../../presentation/typography/bold-text';
 import Regular from '../../../presentation/typography/regular-text';
 import {MyCoupon} from '../../../assets/common-icons';
@@ -18,10 +10,12 @@ import {mvs} from '../../../services/metrices';
 import allColors from '../../../services/colors';
 import CouponItem from '../../../components/atoms/coupon-item';
 import Medium from '../../../presentation/typography/medium-text';
+import DIVIY_API from '../../../store/api-calls';
+import { getData } from '../../../localStorage';
 // create a component
 const MyCoupons = props => {
-  const {colors} = useTheme();
-  const navigation = useNavigation();
+  
+  const {navigation,get_coupons} = props;
   const [actives, setActivesCoupon] = useState([
     {
       bussinessName: 'Total Al Safeer Car Wash…',
@@ -70,6 +64,14 @@ const MyCoupons = props => {
       expireTime: 'May 09 2021',
     },
   ]);
+  useEffect(()=>{
+     getCouponsHistory();
+  },[])
+  const getCouponsHistory=async()=>{
+    const customerId=await getData("customer_id");
+    const response=await get_coupons(customerId)
+    console.log(response?.data)
+  }
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={'white'} barStyle="dark-content" />
@@ -156,5 +158,10 @@ const MyCoupons = props => {
     </SafeAreaView>
   );
 };
-
-export default MyCoupons;
+const mapStateToProps = store => ({
+  // user_info: store.state.user_info,
+ });
+ const mapDispatchToProps = {
+   get_coupons:(id)=>DIVIY_API.get_customer_coupons_history(id)
+ };
+ export default connect(mapStateToProps, mapDispatchToProps)(MyCoupons);

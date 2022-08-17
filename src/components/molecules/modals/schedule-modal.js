@@ -28,6 +28,7 @@ const ScheduleModal = ({
   items,
   setVisible = bool => {},
   setItems = items => {},
+  onContinue
 }) => {
   return (
     <ReactNativeModal
@@ -77,7 +78,7 @@ const ScheduleModal = ({
                     <Bold
                       size={15}
                       style={{flex: 1, marginHorizontal: mvs(8)}}
-                      label={morning?.slice(1)}
+                      label={morning?.from[0]+":"+morning?.from[1]+"-"+morning?.to[0]+":"+morning?.to[1]}
                     />
                     <View>
                       {morning === value ? (
@@ -118,7 +119,7 @@ const ScheduleModal = ({
                     <Bold
                       size={15}
                       style={{flex: 1, marginHorizontal: mvs(8)}}
-                      label={afternoon}
+                      label={afternoon?.from[0]+":"+afternoon?.from[1]+"-"+afternoon?.to[0]+":"+afternoon?.to[1]}
                     />
                     <View>
                       {afternoon === value ? (
@@ -159,7 +160,7 @@ const ScheduleModal = ({
                     <Bold
                       size={15}
                       style={{flex: 1, marginHorizontal: mvs(8)}}
-                      label={evening}
+                      label={evening?.from[0]+":"+evening?.from[1]+"-"+evening?.to[0]+":"+evening?.to[1]}
                     />
                     <View>
                       {evening === value ? (
@@ -181,7 +182,7 @@ const ScheduleModal = ({
         </View>
         <View style={{width: '95%', alignSelf: 'center'}}>
           <Buttons.ButtonPrimary
-            onClick={() => setVisible(false)}
+            onClick={onContinue}
             style={{
               marginVertical: mvs(30),
             }}
