@@ -1,7 +1,6 @@
 import {useNavigation, useTheme} from '@react-navigation/native';
 import React, {useState, useRef} from 'react';
 import {ScrollView, View} from 'react-native';
-import {connect} from 'react-redux';
 import {Apple, Facebook, Google, SLogo, Tick} from '../../assets/common-icons';
 import Buttons from '../../components/atoms/Button';
 import {INPUT_FIELD} from '../../components/atoms/Input';
@@ -9,11 +8,8 @@ import Bold from '../../presentation/typography/bold-text';
 import Regular from '../../presentation/typography/regular-text';
 import allColors from '../../services/colors';
 import {mvs} from '../../services/metrices';
-import DIVIY_API from '../../store/api-calls';
 import PhoneInput from 'react-native-phone-number-input';
 import {Signin_Styles as styles} from './signin-styles';
-import alertService from '../../services/alert.service';
-import {intValidation} from '../../services/validation';
 import Toast from 'react-native-toast-message';
 import {BaseURL} from '../../ApiServices';
 
