@@ -37,7 +37,7 @@ const WalkIn = props => {
   const refRBSheet = useRef(null);
   const {route, navigation,book_slot,update_payment_method,complete_booking} = props;
   const {bookingID, businessID} = route.params;
-  // console.log('ids=======', bookingID, businessID);
+  
   const state = useSelector(state => state.businessReviews);
   const bookingState = useSelector(state => state.common);
   console.log("User info  ", bookingState.user_info)
@@ -374,7 +374,7 @@ const WalkIn = props => {
         setDate={setDate}
         value={selectedValue}
         setValue={setSelectedValue}
-        //setVisible={() => alert('hi')}
+      
         setVisible={() => setScheduleModal(false)}
         items={items}
         setItems={setItems}
@@ -384,6 +384,7 @@ const WalkIn = props => {
           bookSlot()
         }}
       />
+      { console.log('setSelectedValue========',selectedValue) }
       <CouponModal
         items={[1, 2, 3]}
         setVisible={setCouponModal}
