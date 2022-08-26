@@ -23,6 +23,7 @@ import {customerData} from '../../Redux/Reducers';
 
 const About = ({route}, props) => {
   const {phone, id} = route.params;
+  console.log(route.params)
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
@@ -64,11 +65,11 @@ const About = ({route}, props) => {
         name: payload.name,
         email: payload.email,
         password: '123456',
-        phone,
+        phone:phone+'',
         role_id: '4',
         user_type: 'customer',
       });
-
+      console.log(raw)
       var requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -82,6 +83,7 @@ const About = ({route}, props) => {
           if (result != null) {
             setLoading(false);
             //dispatch(customerData(result.data));
+            console.log(result?.data)
             storeData('user', JSON.stringify(result.data));
             storeData('token', result.data.token);
             storeData('customer_id', result.data.customer_id.toString());
@@ -92,6 +94,7 @@ const About = ({route}, props) => {
           }
         })
         .catch(error => {
+          console.log(error)
           showToast('error', 'Something went wrong!');
           setLoading(false);
           console.log('error', error);

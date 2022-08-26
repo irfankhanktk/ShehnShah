@@ -73,7 +73,7 @@ const get_customer_coupons_history = (id) => {
   return async (dispatch, getState) => {
     try {
       const response = await API_REQUESTS.getData(
-        URLS.history.get_customer_bookings+id+"/coupons/history",
+        URLS.history.get_customer_bookings+id+"/coupons",
       );
      return response;
     } catch (error) {
@@ -86,42 +86,6 @@ const get_coupons_details = (id,bussinessId) => {
     try {
       const response = await API_REQUESTS.getData(
         URLS.coupon.get_coupon_details+bussinessId+"/coupons/"+id,
-      );
-     return response;
-    } catch (error) {
-      throw new Error(SERVICES._returnError(error));
-    }
-  };
-};
-const avail_coupon = (id,couponId) => {
-  return async (dispatch, getState) => {
-    try {
-      const response = await API_REQUESTS.postData(
-        URLS.coupon.update_coupon+id+"/coupons/"+couponId,
-      );
-     return response;
-    } catch (error) {
-      throw new Error(SERVICES._returnError(error));
-    }
-  };
-};
-const update_coupon_payment = (id,couponId) => {
-  return async (dispatch, getState) => {
-    try {
-      const response = await API_REQUESTS.putData(
-        URLS.coupon.update_coupon+id+"/coupons/"+couponId+"/payment",
-      );
-     return response;
-    } catch (error) {
-      throw new Error(SERVICES._returnError(error));
-    }
-  };
-};
-const complete_coupon_purchase = (id,couponId) => {
-  return async (dispatch, getState) => {
-    try {
-      const response = await API_REQUESTS.putData(
-        URLS.coupon.update_coupon+id+"/coupons/"+couponId+"/complete",
       );
      return response;
     } catch (error) {
@@ -189,6 +153,54 @@ const remove_review_picture = (customerId,reviewId,payload) => {
     }
   };
 };
+const get_available_booking_coupons = (cid,bid) => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await API_REQUESTS.getData(
+        URLS.coupon.get_available_coupons+cid+"/bookings/"+bid+"/coupons",
+      );
+     return response;
+    } catch (error) {
+      throw new Error(SERVICES._returnError(error));
+    }
+  };
+};
+const avail_coupon = (id,couponId) => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await API_REQUESTS.postData(
+        URLS.coupon.update_coupon+id+"/coupons/"+couponId,
+      );
+     return response;
+    } catch (error) {
+      throw new Error(SERVICES._returnError(error));
+    }
+  };
+};
+const update_coupon_payment = (id,couponId) => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await API_REQUESTS.putData(
+        URLS.coupon.update_coupon+id+"/coupons/"+couponId+"/payment",
+      );
+     return response;
+    } catch (error) {
+      throw new Error(SERVICES._returnError(error));
+    }
+  };
+};
+const complete_coupon_purchase = (id,couponId) => {
+  return async (dispatch, getState) => {
+    try {
+      const response = await API_REQUESTS.putData(
+        URLS.coupon.update_coupon+id+"/coupons/"+couponId+"/complete",
+      );
+     return response;
+    } catch (error) {
+      throw new Error(SERVICES._returnError(error));
+    }
+  };
+};
 const DIVIY_API = {
   book_slot,
   update_payment,
@@ -204,7 +216,8 @@ const DIVIY_API = {
   update_review_remarks,
   upload_review_picture,
   remove_review_picture,
-  complete_booking
+  complete_booking,
+  get_available_booking_coupons
 };
 
 export default DIVIY_API;

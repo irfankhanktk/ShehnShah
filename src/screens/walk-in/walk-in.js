@@ -37,6 +37,7 @@ const WalkIn = props => {
   const refRBSheet = useRef(null);
   const {route, navigation,book_slot,update_payment_method,complete_booking} = props;
   const {bookingID, businessID} = route.params;
+  console.log(route.params)
   // console.log('ids=======', bookingID, businessID);
   const state = useSelector(state => state.businessReviews);
   const bookingState = useSelector(state => state.common);
@@ -88,6 +89,7 @@ const WalkIn = props => {
       .then(response => response.json())
       .then(result => {
         if (result != null) {
+          console.log(result)
           setbookingDetails(result);
           const offering = JSON.parse(result.offering);
           setpayload({
@@ -142,9 +144,9 @@ const WalkIn = props => {
      console.log(payload)
      await book_slot(bookingID,payload);
   }
-  const updatePayment=async()=>{
+  const updatePayment=async(method)=>{
     var payload={
-      "method": selectedPayment,
+      "method": method,
       "reference": " "
     };
     console.log(payload)
@@ -206,7 +208,7 @@ const WalkIn = props => {
                   <Regular color={colors.B606060} label={'Price:'} />
                   <Medium
                     color={colors.primary}
-                    label={` AED ${payload.offerings.price}`}
+                    label={` AED ${bookingDetails?.offering?.price}`}
                   />
                 </Row>
               </ShimmerPlaceholder>
@@ -351,7 +353,7 @@ const WalkIn = props => {
             setPaymentMethods(mode);
             console.log('m', m.Number);
             setselectedPayment(m.Number);
-            updatePayment();
+            updatePayment(m.Number);
           }}
           setVisible={() => setPaymentModal(false)}
           paymentMethods={paymentMethods}

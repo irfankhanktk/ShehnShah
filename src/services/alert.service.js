@@ -19,7 +19,7 @@ class AlertsService {
     }
 
     show(message, title) {
-        Alert.alert("Rent a Car", message);
+        Alert.alert(title, message);
     }
 }
 

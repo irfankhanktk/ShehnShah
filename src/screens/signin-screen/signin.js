@@ -69,6 +69,7 @@ const Signin = props => {
         .then(result => {
           if (result != null) {
             setLoading(false);
+            console.log(result.message.message)
             showToast('success', result.message.message);
             delayAPI();
           }

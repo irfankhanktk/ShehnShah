@@ -17,6 +17,7 @@ export const URLS = {
   coupon:{
     get_coupon_details:'p/public/businesses/',
     update_coupon:'c/cus/customers/',
+    get_available_coupons:'c/cus/customers/'
   },
   review:{
     rate_booking:'c/cus/customers/'
