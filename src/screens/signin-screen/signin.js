@@ -39,9 +39,9 @@ const Signin = props => {
   const onSigUpWithPhone = async () => {
     setPhoneSignUp(true);
   };
-  const delayAPI = () => {
+  const delayAPI = (phone) => {
     setTimeout(() => {
-      navigation.navigate('Otp', {phone: formattedValue.substring(1,formattedValue.length)});
+      navigation.navigate('Otp', {phone});
     }, 4000);
   };
   const getMobile = async () => {
@@ -54,7 +54,7 @@ const Signin = props => {
       myHeaders.append('Content-Type', 'application/json');
 
       var raw = JSON.stringify({
-        phone: phone,
+        phone: formattedValue,
       });
 
       var requestOptions = {
@@ -71,7 +71,7 @@ const Signin = props => {
             setLoading(false);
             console.log(result.message.message)
             showToast('success', result.message.message);
-            delayAPI();
+            delayAPI(result.data.phone);
           }
         })
         .catch(error => {

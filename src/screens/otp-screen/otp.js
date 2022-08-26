@@ -29,7 +29,7 @@ import {customerData} from '../../Redux/Reducers';
 
 const Otp = ({navigation, route}, props) => {
   // const navigation = useNavigation();
-  const {phone} = route.params.phone;
+  const {phone} = route.params
   const dispatch = useDispatch();
   const [value, setValue] = React.useState('');
   const [isMatch, setIsMatch] = React.useState(true);

@@ -58,21 +58,21 @@ const About = ({route}, props) => {
     } else if (!payload.email.match(emailRegx)) {
       return showToast('error', 'Invalid email ');
     } else {
-      var myHeaders = new Headers();
-      myHeaders.append('Content-Type', 'application/json');
-
+     
       var raw = JSON.stringify({
         name: payload.name,
         email: payload.email,
         password: '123456',
         phone:phone+'',
         role_id: '4',
-        user_type: 'customer',
+        user_type: 'shahshah_user',
       });
       console.log(raw)
       var requestOptions = {
         method: 'POST',
-        headers: myHeaders,
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: raw,
         redirect: 'follow',
       };
@@ -87,7 +87,6 @@ const About = ({route}, props) => {
             storeData('user', JSON.stringify(result.data));
             storeData('token', result.data.token);
             storeData('customer_id', result.data.customer_id.toString());
-
             showToast('success', result.message.message);
             delayAPI();
             console.log('signup result=======', result);

@@ -376,7 +376,7 @@ const WalkIn = props => {
         setDate={setDate}
         value={selectedValue}
         setValue={setSelectedValue}
-        //setVisible={() => alert('hi')}
+      
         setVisible={() => setScheduleModal(false)}
         items={items}
         setItems={setItems}
@@ -386,6 +386,7 @@ const WalkIn = props => {
           bookSlot()
         }}
       />
+      { console.log('setSelectedValue========',selectedValue) }
       <CouponModal
         items={[1, 2, 3]}
         setVisible={setCouponModal}
