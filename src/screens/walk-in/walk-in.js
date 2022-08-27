@@ -124,7 +124,7 @@ const WalkIn = props => {
       .then(response => response.json())
       .then(result => {
         if (result != null) {
-          setloading(true);
+         
           setItems(result);
           console.log('Time Slots========');
           if(items?.Morning?.slots?.length){
@@ -139,6 +139,7 @@ const WalkIn = props => {
             setSelectedValue(items?.Evening?.slots[0])
             setFirstSlotText("The first available slot")
           }
+          setloading(true);
         }
       })
       .catch(error => {
