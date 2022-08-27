@@ -467,7 +467,7 @@ const BusinessProfile = props => {
                   color={colors.black}
                   style={{transform: [{translateY: -mvs(10)}]}}
                   size={mvs(42)}
-                  label={payload?.rating[7]}
+                  label={payload?.rating[7]?payload?.rating[7]:0}
                 />
               </ShimmerPlaceholder>
               <ShimmerPlaceholder

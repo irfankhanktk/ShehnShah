@@ -12,7 +12,7 @@ const book_slot = (id,payload) => {
         payload,
       );
       console.log('res::', response?.data);
-    
+      
     } catch (error) {
       throw new Error(SERVICES._returnError(error));
     }
@@ -40,6 +40,7 @@ const complete_booking = (id) => {
       );
       console.log('res::', response?.data);
       alertService.show("Booking Confirmed","Booking")
+      return response;
     } catch (error) {
       throw new Error(SERVICES._returnError(error));
     }

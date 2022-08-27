@@ -17,7 +17,7 @@ const LabelValue = ({
     return (
         <Row style={{justifyContent:'space-between',marginHorizontal:mvs(18),paddingVertical: mvs(6),marginBottom:mb,borderBottomWidth: bw,borderColor: colors.GE1E1E1,}}>
              <Regular size={mvs(14)} numberOfLines={lines} label={label} color={colors.B323232}/>
-             <SemiBold size={mvs(14)} label={value} color={vColor}/>
+             <SemiBold size={mvs(14)} label={value} color={vColor} numberOfLines={2}/>
         </Row>
     );
 };

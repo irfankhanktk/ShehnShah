@@ -20,11 +20,15 @@ import allColors from '../../../services/colors';
 import Medium from '../../../presentation/typography/medium-text';
 import DIVIY_API from '../../../store/api-calls';
 import { getData } from '../../../localStorage';
+import ReviewModal from '../../../components/molecules/modals/review-modal';
 // createa component
 const Bookings = props => {
-  const{get_bookings}=props;
+  const{get_bookings,update_review_rating,rate_booking,update_review_remarks}=props;
   const navigation = useNavigation();
- 
+  const[reviewModal,setReviewModal]=useState(false)
+  const[bookingId,setBookingId]=useState(0)
+  const[remarks,setRemarks]=useState(' ')
+  const[ratingValue,setRatingValue]=useState(0)
   const [schedule, setScheduleData] = useState([
     {
       bussinessName: 'Total Al Safeer Car Wash…',
@@ -118,7 +122,17 @@ const Bookings = props => {
   useEffect(()=>{
      getBookings();
   },[])
- 
+  const onLikePress=async()=>{
+    const customerId=await getData("customer_id");
+    const response=await rate_booking(customerId,bookingId)
+    console.log("Review Response ",response?.data)
+    if(response?.data){
+      const reviewRateReponse=await update_review_rating(customerId,response?.data,5)
+      console.log("Review Rate Response ",reviewRateReponse?.data);
+    }
+    setReviewModal(true);
+    setBookingId(id)
+  }
   const getBookings=async()=>{
     const customerId=await getData("customer_id");
     console.log(customerId)
@@ -142,6 +156,17 @@ const Bookings = props => {
     setCompletedData(complet)
     setScheduleData(booked)
   }
+  const submitReview=async()=>{
+    const customerId=await getData("customer_id");
+    const response=await rate_booking(customerId,bookingId)
+    console.log("Review Response ",response?.data)
+    if(response?.data){
+      const reviewRateReponse=await update_review_rating(customerId,response?.data,ratingValue)
+      console.log("Review Rate Response ",reviewRateReponse?.data)
+      const reviewRemarksReponse=await update_review_remarks(customerId,response?.data,{"remark": remarks})
+      console.log("Review Remarks Response ",reviewRemarksReponse?.data)
+    }
+   }
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={'white'} barStyle="dark-content" />
@@ -179,6 +204,7 @@ const Bookings = props => {
                       progress={0.3}
                       isLiked={false}
                       price={item?.offering?.price}
+                      onLikePress={()=>onLikePress(item?.id)}
                     />
                   )}
                 />
@@ -201,6 +227,7 @@ const Bookings = props => {
                     progress={0.3}
                     isLiked={false}
                     price={item?.offering?.price}
+                    onLikePress={()=>onLikePress(item?.id)}
                     />
                   )}
                 />
@@ -244,6 +271,20 @@ const Bookings = props => {
           </View>
         )}
       </ScrollView>
+      <ReviewModal visible={reviewModal}
+       setRating={(rate)=>{
+        console.log(rate)
+        setRatingValue(rate)
+       }}
+       setItems={(items)=>{
+        console.log("Pictures selected......\n")
+        console.log(items)
+       }}
+       onTextChange={(val)=>setRemarks(val)}
+       setVisible={(val)=>{
+        setReviewModal(false)
+        submitReview();
+      }}/>
     </SafeAreaView>
   );
 };
@@ -251,6 +292,10 @@ const mapStateToProps = store => ({
   // user_info: store.state.user_info,
  });
  const mapDispatchToProps = {
-   get_bookings:(id)=>DIVIY_API.get_customer_bookings(id)
+   get_bookings:(id)=>DIVIY_API.get_customer_bookings(id),
+   rate_booking:(cid,bid)=>DIVIY_API.rate_booking(cid,bid),
+   update_review_rating:(cid,rid,rate)=>DIVIY_API.update_review_rating(cid,rid,rate),
+   update_review_remarks:(cid,rid,remarks)=>DIVIY_API.update_review_remarks(cid,rid,remarks),
+   upload_review_picture:(cid,rid,payload)=>DIVIY_API.upload_review_picture(cid,rid,payload),
  };
  export default connect(mapStateToProps, mapDispatchToProps)(Bookings);

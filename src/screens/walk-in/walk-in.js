@@ -19,17 +19,14 @@ import {Walk_In_Styles as styles} from './walk-in-styles';
 import moment from 'moment';
 import {Vehicle, WhitePercentage} from '../../assets/common-icons';
 import PaymentItem from '../../components/molecules/payment-item/payment-item';
-import NewPaymentSheet from '../../components/payment-method/new-pament';
 import PaymentSheet from '../../components/payment-method/payments';
 import SemiBold from '../../presentation/typography/semibold-text';
 import ScheduleModal from './../../components/molecules/modals/schedule-modal';
 import CouponModal from './../../components/molecules/modals/coupon-modal';
-
 import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
 import {BaseURL} from '../../ApiServices';
 import {getData} from '../../localStorage';
-import alertService from '../../services/alert.service';
 
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
@@ -51,6 +48,7 @@ const WalkIn = props => {
   const [items, setItems] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState();
   const [date, setDate] = React.useState(moment());
+  const [firstAvailableSlot,setFirstSlotText]=useState(null)
   const [payload, setpayload] = useState({
     offerings: [],
   });
@@ -69,7 +67,7 @@ const WalkIn = props => {
   ]);
   const [loading, setloading] = React.useState(false);
   const [coupon, setCoupon] = React.useState(null);
-  const [paymentMode, setpaymentMode] = useState(0);
+  const [isBookingConfirmed, setBookingConfirmed] = useState(false);
   const [bookingDetails, setbookingDetails] = useState([]);
   
   const getBookingDetails = async () => {
@@ -129,7 +127,18 @@ const WalkIn = props => {
           setloading(true);
           setItems(result);
           console.log('Time Slots========');
-          console.log(items?.Afternoon?.slots)
+          if(items?.Morning?.slots?.length){
+              setSelectedValue(items?.Morning?.slots[0])
+              setFirstSlotText("Book First Available Slot")
+          }
+          else if(items?.Afternoon?.slots?.length){
+            setSelectedValue(items?.Afternoon?.slots[0])
+            setFirstSlotText("Book First Available Slot")
+          }
+          else if(items?.Evening?.slots?.length){
+            setSelectedValue(items?.Evening?.slots[0])
+            setFirstSlotText("Book First Available Slot")
+          }
         }
       })
       .catch(error => {
@@ -156,7 +165,8 @@ const WalkIn = props => {
     getBookingDetails();
   }, [loading]);
   const completeBooking=async()=>{
-    await complete_booking(bookingID)
+      await complete_booking(bookingID)
+      setBookingConfirmed(true);
   }
   return (
     <View style={{...styles.conntainer, backgroundColor: colors.background}}>
@@ -176,7 +186,7 @@ const WalkIn = props => {
               visible={loading}>
               <ImagePlaceholder
                 borderRadius={mvs(8)}
-                uri={payload?.offerings?.cover}
+                uri={{uri:bookingDetails.offering?.cover}}
                 containerStyle={{width: mvs(110), height: mvs(110)}}
               />
             </ShimmerPlaceholder>
@@ -222,7 +232,7 @@ const WalkIn = props => {
                     label={'Tag: '}
                   />
                   <Buttons.ButtonPrimary
-                    title="4Litters"
+                    title="Option A"
                     textStyle={{fontSize: mvs(10), color: colors.G3CB971}}
                     style={{
                       backgroundColor: `${colors.G3CB971}70`,
@@ -232,20 +242,20 @@ const WalkIn = props => {
                     }}
                   />
                   <Buttons.ButtonPrimary
-                    title="4Litters"
-                    textStyle={{fontSize: mvs(10), color: colors.primary}}
+                    title="Option B"
+                    textStyle={{fontSize: mvs(10), color: colors.G3CB971}}
                     style={{
-                      backgroundColor: `${colors.primary}70`,
+                      backgroundColor: `${colors.G3CB971}70`,
                       width: mvs(60),
                       height: mvs(18),
                       borderRadius: mvs(5),
                     }}
                   />
-                  <Buttons.ButtonPrimary
-                    title="4Litters"
-                    textStyle={{fontSize: mvs(10), color: colors.B2181F2}}
+                 <Buttons.ButtonPrimary
+                    title="Option C"
+                    textStyle={{fontSize: mvs(10), color: colors.G3CB971}}
                     style={{
-                      backgroundColor: `${colors.B2181F2}70`,
+                      backgroundColor: `${colors.G3CB971}70`,
                       width: mvs(60),
                       height: mvs(18),
                       borderRadius: mvs(5),
@@ -268,6 +278,16 @@ const WalkIn = props => {
                 label={`${date?.format('DD MMMM YYYY')}`}
                 size={16}/>
               }
+              {firstAvailableSlot!=null 
+              &&(
+                <TouchableOpacity onPress={()=>bookSlot()}>
+                  <Regular
+                label={`${firstAvailableSlot}`}
+                size={16}
+                color={colors.green}/>
+                </TouchableOpacity>
+                )}
+                
             </View>
             <TouchableOpacity onPress={() => setScheduleModal(true)}>
               <Regular label={'Change'} size={15} color={colors.primary} />
@@ -335,16 +355,21 @@ const WalkIn = props => {
             <PaymentItem value={selectedPayment+' '} onClick={() => setPaymentModal(true)} />
             <Row style={{...styles.priceView, marginTop: mvs(16.3)}}>
               <Medium label={'Sub Total'} size={14} />
-              <Medium label={'$45.00'} size={14} />
+              <Medium label={'AED '+bookingDetails?.invoice?.total} size={14} />
             </Row>
             <Row style={{...styles.priceView}}>
-              <Medium label={'VAT (10%)'} size={14} color={colors.lightgrey1} />
-              <Medium label={'$2.00'} size={14} color={colors.lightgrey1} />
+              <Medium label={bookingDetails?.invoice?.taxTitle} size={14} color={colors.lightgrey1} />
+              <Medium label={'AED '+bookingDetails?.invoice?.tax} size={14} color={colors.lightgrey1} />
             </Row>
             <Row style={{...styles.priceView}}>
               <Bold label={'Grand Total'} size={14} />
-              <Bold label={'$47.00'} size={14} />
+              <Bold label={'AED '+(bookingDetails?.invoice?.total+bookingDetails?.invoice?.tax)} size={14} />
             </Row>
+            {isBookingConfirmed &&
+             (<View style={{marginTop:mvs(10),alignItems:'center'}}>
+               <SemiBold label={'Booking Confimed Successfully'} size={14} color={colors.green}/>
+               <Buttons.ButtonPrimary title="My Bookings" onClick={()=>navigation.navigate("BottomTab")} style={{...styles.button,marginTop:mvs(10)}} />
+            </View>)}
             <Buttons.ButtonPrimary title="Confirm" onClick={()=>completeBooking()} style={styles.button} />
           </View>
         </ScrollView>
@@ -376,12 +401,12 @@ const WalkIn = props => {
         setDate={setDate}
         value={selectedValue}
         setValue={setSelectedValue}
-      
         setVisible={() => setScheduleModal(false)}
         items={items}
         setItems={setItems}
         visible={scheduleModal}
         onContinue={()=>{
+          setFirstSlotText(null)
           setScheduleModal(false);
           bookSlot()
         }}
