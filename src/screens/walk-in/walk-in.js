@@ -374,13 +374,15 @@ const WalkIn = props => {
               <Bold label={'Grand Total'} size={14} />
               <Bold label={'AED '+(bookingDetails?.invoice?.total+bookingDetails?.invoice?.tax)} size={14} />
             </Row>
-            {isBookingConfirmed &&
-             (<View style={{marginTop:mvs(10),alignItems:'center'}}>
+            {isBookingConfirmed ?
+             <View style={{marginTop:mvs(10),alignItems:'center'}}>
                <SemiBold label={'Booking Confimed Successfully'} size={14} color={colors.green}/>
                <Buttons.ButtonPrimary title="My Bookings" onClick={()=>navigation.navigate("BottomTab")} style={{...styles.button,marginTop:mvs(10)}} />
-            </View>)}
+            </View>
+            :
             <Buttons.ButtonPrimary title="Confirm" onClick={()=>completeBooking()} style={styles.button} />
-          </View>
+          }
+            </View>
         </ScrollView>
         <PaymentSheet
           onChange={(mode, m) => {
