@@ -129,15 +129,15 @@ const WalkIn = props => {
           console.log('Time Slots========');
           if(items?.Morning?.slots?.length){
               setSelectedValue(items?.Morning?.slots[0])
-              setFirstSlotText("Book First Available Slot")
+              setFirstSlotText("The first available slot")
           }
           else if(items?.Afternoon?.slots?.length){
             setSelectedValue(items?.Afternoon?.slots[0])
-            setFirstSlotText("Book First Available Slot")
+            setFirstSlotText("The first available slot")
           }
           else if(items?.Evening?.slots?.length){
             setSelectedValue(items?.Evening?.slots[0])
-            setFirstSlotText("Book First Available Slot")
+            setFirstSlotText("The first available slot")
           }
         }
       })
@@ -152,6 +152,7 @@ const WalkIn = props => {
      };
      console.log(payload)
      await book_slot(bookingID,payload);
+     setFirstSlotText(null)
   }
   const updatePayment=async(method)=>{
     var payload={
@@ -266,7 +267,7 @@ const WalkIn = props => {
             </View>
           </Row>
           <TotalRateMap loading={loading} data={state} />
-          <Row style={styles.rowView}>
+          <Row alignItems='center' style={firstAvailableSlot?styles.firstSlotView:styles.rowView}>
             <View>
               <Bold label={'Date & time'} size={15} />
               {selectedValue!=undefined?
@@ -278,21 +279,29 @@ const WalkIn = props => {
                 label={`${date?.format('DD MMMM YYYY')}`}
                 size={16}/>
               }
-              {firstAvailableSlot!=null 
-              &&(
-                <TouchableOpacity onPress={()=>bookSlot()}>
-                  <Regular
-                label={`${firstAvailableSlot}`}
-                size={16}
-                color={colors.green}/>
-                </TouchableOpacity>
-                )}
-                
+              
             </View>
             <TouchableOpacity onPress={() => setScheduleModal(true)}>
               <Regular label={'Change'} size={15} color={colors.primary} />
             </TouchableOpacity>
           </Row>
+             {firstAvailableSlot&&
+              (
+                <Row style={styles.firstView}>
+                <Regular
+                label={`${firstAvailableSlot}`}
+                size={16}
+                color={colors.green}/>
+                <TouchableOpacity onPress={()=>bookSlot()}>
+                  <Regular
+                label={`Accept`}
+                size={16}
+                color={colors.green}/>
+                </TouchableOpacity>
+                </Row>
+                
+                )}
+                
           <Row style={styles.rowView}>
             <Vehicle />
             <View style={{flex: 1, marginHorizontal: mvs(9)}}>

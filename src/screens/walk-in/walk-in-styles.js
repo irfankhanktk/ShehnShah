@@ -29,6 +29,19 @@ export const Walk_In_Styles = StyleSheet.create({
         borderBottomWidth:0.3
 
       },
+      firstSlotView:{
+        justifyContent:'space-between',
+        paddingLeft:mvs(24),
+        paddingRight:mvs(27),
+      },
+      firstView:{
+        justifyContent:'space-between',
+        paddingLeft:mvs(24),
+        paddingBottom:mvs(17),
+        paddingRight:mvs(27),
+        borderBottomColor:colors.lightgrey1,
+        borderBottomWidth:0.3
+      },
       couponView:{
         borderBottomColor:colors.lightgrey1,
         borderBottomWidth:0.3,
