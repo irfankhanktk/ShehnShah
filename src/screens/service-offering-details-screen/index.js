@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, View, TouchableOpacity} from 'react-native';
+import {ScrollView, View, TouchableOpacity, FlatList} from 'react-native';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {Bg} from '../../assets/images';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
@@ -208,7 +208,7 @@ const ServiceOfferingDetails = props => {
                   <Regular color={colors.B606060} label={'Lead Time:'} />
                   <Medium
                     color={colors.G3CB971}
-                    label={`${serviceDetails?.processTime} Minutes`}
+                    label={`${serviceDetails?.postTime+serviceDetails?.preTime+serviceDetails?.postGrace+serviceDetails?.preGrace} Minutes`}
                   />
                 </Row>
               </ShimmerPlaceholder>
@@ -249,36 +249,25 @@ const ServiceOfferingDetails = props => {
                     color={colors.B606060}
                     label={'Tag: '}
                   />
-                  <Buttons.ButtonPrimary
-                    title="4Litters"
-                    textStyle={{fontSize: mvs(10), color: colors.G3CB971}}
-                    style={{
-                      backgroundColor: `${colors.G3CB971}70`,
-                      width: mvs(60),
-                      height: mvs(18),
-                      borderRadius: mvs(5),
-                    }}
-                  />
-                  <Buttons.ButtonPrimary
-                    title="4Litters"
-                    textStyle={{fontSize: mvs(10), color: colors.primary}}
-                    style={{
-                      backgroundColor: `${colors.primary}70`,
-                      width: mvs(60),
-                      height: mvs(18),
-                      borderRadius: mvs(5),
-                    }}
-                  />
-                  <Buttons.ButtonPrimary
-                    title="4Litters"
-                    textStyle={{fontSize: mvs(10), color: colors.B2181F2}}
-                    style={{
-                      backgroundColor: `${colors.B2181F2}70`,
-                      width: mvs(60),
-                      height: mvs(18),
-                      borderRadius: mvs(5),
-                    }}
-                  />
+                  <FlatList
+                    contentContainerStyle={{flex:1}}
+                    data={serviceDetails?.options}
+                    horizontal={true}
+                    renderItem={({ item,index }) => (
+                     <Buttons.ButtonPrimary
+                      title={item}
+                      key={index}
+                      textStyle={{fontSize: mvs(10), color: colors.G3CB971}}
+                      style={{
+                       backgroundColor: `${colors.G3CB971}70`,
+                       width: mvs(60),
+                       height: mvs(20),
+                       marginLeft:mvs(7),
+                       borderRadius: mvs(5),
+                     }}
+                   />
+                    )}
+                   />
                 </Row>
               </ShimmerPlaceholder>
             </View>
@@ -289,7 +278,7 @@ const ServiceOfferingDetails = props => {
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{paddingHorizontal: mvs(18)}}>
-              {services.map((item, index) => (
+              {services?.map((item, index) => (
                 <ServiceCard
                   onPress={() => {
                     let y = 160;
@@ -304,7 +293,7 @@ const ServiceOfferingDetails = props => {
                   }}
                   middleText={
                     index === 0
-                      ? `${state?.businessReviews?.rating[7]}`
+                      ? `${state?.businessReviews?.rating[7]?state?.businessReviews?.rating[7]:0}`
                       : null
                   }
                   value={index === 0 ? null : item.value}
@@ -347,7 +336,7 @@ const ServiceOfferingDetails = props => {
                   color={colors.black}
                   style={{transform: [{translateY: -mvs(10)}]}}
                   size={mvs(42)}
-                  label={`${state?.businessReviews?.rating[7]}`}
+                  label={`${state?.businessReviews?.rating[7]?state?.businessReviews?.rating[7]:0}`}
                 />
               </ShimmerPlaceholder>
               <Ratings width={mvs(230)} />

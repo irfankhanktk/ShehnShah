@@ -32,10 +32,10 @@ const ReviewsRaing = ({bg = '#ffedce', picsArray, data, loading}) => {
                 backgroundColor: bg,
                 borderRadius: mvs(5),
               }}>
-              <Row justifyContent="flex-start" style={{}}>
+              <Row justifyContent="flex-start">
                 <ShimmerPlaceholder
                   style={{
-                    height: mvs(33),
+                    height: mvs(50),
                     width: mvs(33),
                     borderRadius: mvs(17),
                   }}
@@ -52,8 +52,8 @@ const ReviewsRaing = ({bg = '#ffedce', picsArray, data, loading}) => {
                 <View style={{marginLeft: mvs(10)}}>
                   <ShimmerPlaceholder
                     style={{
-                      height: mvs(33),
-                      width: mvs(100),
+                      height: mvs(50),
+                      flex:1,
                     }}
                     visible={loading}>
                     <SemiBold
@@ -70,14 +70,11 @@ const ReviewsRaing = ({bg = '#ffedce', picsArray, data, loading}) => {
                 </View>
                 <ShimmerPlaceholder
                   style={{
-                    //height: mvs(33),
-                    width: mvs(100),
-                    //borderWidth: 1,
                     alignSelf: 'center',
                     marginLeft: mvs(90),
                   }}
                   visible={loading}>
-                  <View style={{flex: 1}}>
+                  <View style={{flex: 1,marginRight:mvs(10)}}>
                     <Regular
                       style={{
                         alignSelf: 'flex-end',

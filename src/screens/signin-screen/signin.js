@@ -69,7 +69,7 @@ const Signin = props => {
         .then(result => {
           if (result != null) {
             setLoading(false);
-            console.log('result======',result)
+            console.log(result.message.message)
             showToast('success', result.message.message);
             delayAPI(result.data.phone);
           }
@@ -267,7 +267,7 @@ const Signin = props => {
               <View style={{...styles.phoneNumberView, marginTop: mvs(10)}}>
                 <PhoneInput
                   ref={phoneInput}
-                  defaultValue="3130971390"
+                  //defaultValue="3130971390"
                   defaultCode="PK"
                   layout="first"
                   containerStyle={styles.phoneContainer}

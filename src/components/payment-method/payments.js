@@ -44,6 +44,7 @@ const PaymentSheet = ({
                     copy = copy?.map(x => ({...x, Selected: false}));
                     copy[index].Selected = true;
                     onChange(copy, copy[index]);
+                    setVisible(false)
                   }}
                   value={element.Number}
                   leftIcon={element.Card}

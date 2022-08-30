@@ -10,6 +10,8 @@ import SERVICES from './../../../services/common-services';
 import ImagePlaceholder from './../../atoms/Placeholder';
 import Row from './../../atoms/row';
 import RatingStar from './../rating-star/index';
+import { Rating } from 'react-native-elements';
+
 const ReviewModal = ({
     setValue = (arg) => { },
     visible,
@@ -54,8 +56,12 @@ const ReviewModal = ({
                     </TouchableOpacity>
                 </Row>
                 <View style={{ alignItems: 'center', marginBottom: mvs(22) }}>
-                    <RatingStar disabled={false} onPress={setRating} width={mvs(192)} size={mvs(30)} rate={rate} />
-                </View>
+                <Rating
+                    style={{alignItems:'flex-start',marginTop:mvs(-13)}}
+                    ratingCount={5}
+                    imageSize={20}
+                    onFinishRating={setRating}/>
+                    </View>
                 {items?.length > 0 ? <Row justifyContent={'flex-start'}>
                     {
                         items?.map((item, index) => (

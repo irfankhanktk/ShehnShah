@@ -25,9 +25,9 @@ const TotalRateMap = ({loading, data}) => {
       <ShimmerPlaceholder
         style={{width: mvs(100), height: mvs(70)}}
         visible={loading}>
-        {data?.cover ? (
+        {data?.businessReviews?.logo ? (
           <Image
-            source={data?.cover}
+            source={{uri:data?.businessReviews?.logo}}
             resizeMode="contain"
             style={{width: mvs(100), height: mvs(100)}}
           />

@@ -17,7 +17,7 @@ const ServiceCard = ({
     const Icon = SVGS[icon];
     return (
         <Row alignItems={'center'}>
-            <TouchableOpacity onPress={onPress} style={{ alignItems: 'center', width: mvs(85), height: mvs(73) }}>
+            <TouchableOpacity onPress={onPress} style={{ alignItems: 'center', width: mvs(85), height: mvs(85) }}>
                 <Medium style={{ textTransform: 'uppercase', fontSize: mvs(12), color: colors.G9B9B9B }} label={title} />
                 {middleText ?
                     <Medium style={{ textTransform: 'uppercase', fontSize: mvs(29), color: colors.G9B9B9B }} label={middleText} /> :

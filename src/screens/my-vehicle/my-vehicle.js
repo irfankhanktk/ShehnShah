@@ -118,6 +118,7 @@ const MyVehicle = props => {
   };
 
   const addVehicle = async () => {
+    var customer_id=await getData("customer_id");
     if (payload.vehical === '') {
       return showToast('error', 'Please select vehicle');
     } else if (payload.registration === '') {
@@ -152,9 +153,9 @@ const MyVehicle = props => {
         body: raw,
         redirect: 'follow',
       };
-
+      console.log(customer_id)
       await fetch(
-        `${BaseURL}b/om/businesses/1/customers/${state.customerData.customer_id}/vehicles`,
+        `${BaseURL}b/om/businesses/1/customers/${customer_id}/vehicles`,
         requestOptions,
       )
         .then(response => response.json())

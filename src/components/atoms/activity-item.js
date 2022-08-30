@@ -1,10 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import { Edit } from '../../assets/common-icons';
+import { StyleSheet, TouchableOpacity, View} from 'react-native';
 import Regular from '../../presentation/typography/regular-text';
-import SemiBold from '../../presentation/typography/semibold-text';
 import colors from '../../services/colors';
-import fonts from '../../services/fonts';
 import { mvs } from '../../services/metrices';
 import Row from './row';
 import * as SVG from '../../assets/common-icons';
@@ -15,7 +12,7 @@ import * as Progress from 'react-native-progress';
 const ActivityItem = ({onPress,image=require('../../assets/images/carwash.png'),subImage=require('../../assets/images/carwash.png'),
                       price='0.0',rating=0,progress=0.5,bussinessName='Total Al Safeer Car Wash…',address='Sharjah Al nahada road',
                       bookingTime='12 February 2021-9:30 AM-10:00 AM',details='Lorem ipsum dolor Lorem ipsum dolor sit amet...',
-                      subDetails='Lorem ipsum dolor sit amet...',isLiked=false, status='cancel',tab="schedule"}) => {
+                      subDetails='Lorem ipsum dolor sit amet...',isLiked=false, status='cancel',tab="schedule",onLikePress}) => {
     return (
 
       <View style={styles.CONTAINER}>
@@ -51,9 +48,16 @@ const ActivityItem = ({onPress,image=require('../../assets/images/carwash.png'),
              <View style={{alignItems:'flex-end'}}>
                  {
                      status=='schedule'?
-                     <TouchableOpacity style={{...styles.BUTTON,backgroundColor:colors.lightPink}} onPress={onPress}>
+                     <Row alignItems='center'>
+                      <TouchableOpacity style={{...styles.BUTTON,backgroundColor:colors.lightPink}} onPress={onPress}>
                         <Regular label={'Cancel'} style={{...styles.BUTTONTEXT,color:colors.red}}/>
-                     </TouchableOpacity>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={{...styles.BUTTON,marginLeft:mvs(4)}} onPress={onLikePress}>
+                        { isLiked==false?<SVG.Like style={{marginRight:mvs(5)}}/>:<SVG.Liked style={{marginRight:mvs(5)}}/>}
+                        <Regular label={'Like'} style={{...styles.BUTTONTEXT}}/>
+                      </TouchableOpacity>
+                     </Row>
+                    
                      :status=="complete"?
                       <TouchableOpacity style={{...styles.BUTTON}} onPress={onPress}>
                         { isLiked==false?<SVG.Like style={{marginRight:mvs(5)}}/>:<SVG.Liked style={{marginRight:mvs(5)}}/>}

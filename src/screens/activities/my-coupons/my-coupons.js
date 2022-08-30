@@ -69,8 +69,21 @@ const MyCoupons = props => {
   },[])
   const getCouponsHistory=async()=>{
     const customerId=await getData("customer_id");
-    const response=await get_coupons(customerId)
+    const response=await get_coupons(1)
     console.log(response?.data)
+    var booked=[];
+    var draft=[];
+    for(var i=0;i<response?.data.length;i++){
+       if(response?.data[i]?.status=="Draft"){
+        draft.push(response?.data[i])
+       }else{
+        booked.push(response?.data[i])
+       }
+    }
+    console.log("Length of  Draft  ",draft.length)
+    console.log("Bought of  Draft  ",booked.length)
+    setActivesCoupon(booked)
+    setExpiresCoupons(draft)
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -99,17 +112,17 @@ const MyCoupons = props => {
                   data={actives}
                   renderItem={({item}) => (
                     <CouponItem
-                      address={item.address}
-                      bussinessName={item.bussinessName}
-                      expireTime={item.expireTime}
-                      discount={item.discount}
+                      address={item?.business?.street+","+item?.business?.area+","+item?.business?.city}
+                      bussinessName={item?.business?.title}
+                      expireTime={item?.conditions?.to}
+                      discount={item?.coupon?.discountValue}
                       status="active"
-                      AED={item.aed}
+                      AED={item?.coupon?.price}
                       onPress={() =>
-                        props?.navigation?.navigate('CouponDetails')
+                        props?.navigation?.navigate('CouponDetails',{id:item?.couponId,bId:item?.businessId})
                       }
-                      progress={item.progress}
-                      price={item.price}
+                      progress={0.4}
+                      price={item?.coupon?.price}
                     />
                   )}
                 />
@@ -126,15 +139,15 @@ const MyCoupons = props => {
                   data={expires}
                   renderItem={({item}) => (
                     <CouponItem
-                      address={item.address}
-                      bussinessName={item.bussinessName}
-                      expireTime={item.expireTime}
-                      discount={item.discount}
+                    address={item?.business?.street+","+item?.business?.area+","+item?.business?.city}
+                    bussinessName={item?.business?.title}
+                      expireTime={item?.conditions?.to}
+                      discount={item?.coupon?.discountValue}
                       status="expire"
-                      AED={item.aed}
-                      onPress={() => alert('Active')}
-                      progress={item.progress}
-                      price={item.price}
+                      AED={item?.coupon?.price}
+                      onPress={() => alert('Expired')}
+                      progress={0.4}
+                      price={item?.coupon?.price}
                     />
                   )}
                 />

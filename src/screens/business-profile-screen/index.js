@@ -136,7 +136,7 @@ const BusinessProfile = props => {
       })
       .catch(error => {
         setLoading(true);
-        navigation.goBack();
+       // navigation.goBack();
         console.log('Business services error', error);
       });
   };
@@ -275,7 +275,7 @@ const BusinessProfile = props => {
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{paddingHorizontal: mvs(18)}}>
-              {/* {services.map((item, index) => (
+              {services.map((item, index) => (
                 <ServiceCard
                   onPress={() => {
                     let y = 421;
@@ -296,7 +296,7 @@ const BusinessProfile = props => {
                   icon={item.icon}
                   div={services.length - 1 !== index}
                 />
-              ))} */}
+              ))}
             </ScrollView>
           </Row>
           <HeadingTitle title="About" />
@@ -467,7 +467,7 @@ const BusinessProfile = props => {
                   color={colors.black}
                   style={{transform: [{translateY: -mvs(10)}]}}
                   size={mvs(42)}
-                  label={payload?.rating[7]}
+                  label={payload?.rating[7]?payload?.rating[7]:0}
                 />
               </ShimmerPlaceholder>
               <ShimmerPlaceholder
@@ -578,7 +578,7 @@ const BusinessProfile = props => {
             data={businessReviews?.map(item => item)}
             loading={loading}
           />
-          <HeadingTitle title='Services' />
+          {/* <HeadingTitle title='Services' />
           <View style={{ paddingHorizontal: mvs(18) }}>
             <ServiceButton icon='CarWash' title='Car Wash' />
             <ServiceButton icon='Maintenance' title='Maintenance Schedule' />
@@ -586,7 +586,7 @@ const BusinessProfile = props => {
             <ServiceButton icon='Brake' title='Brake Service' />
             <ServiceButton icon='Brake' title='Brake Service' />
             <ServiceButton icon='Engine' title='Engine' />
-          </View>
+          </View> */}
           <View
             style={{
               backgroundColor: colors.FBF8F8,
