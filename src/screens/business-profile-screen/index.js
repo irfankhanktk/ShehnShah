@@ -47,8 +47,9 @@ const services = [
 ];
 // const about =
 //   'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
-const BusinessProfile = props => {
+const BusinessProfile = ({route},props) => {
   const {user_info} = props;
+  const {id}=route.params
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [images, setImages] = React.useState([]);
@@ -81,7 +82,7 @@ const BusinessProfile = props => {
       redirect: 'follow',
     };
 
-    await fetch(`${BaseURL}p/public/businesses/1/profile`, requestOptions)
+    await fetch(`${BaseURL}p/public/businesses/${id}/profile`, requestOptions)
       .then(response => response.json())
       .then(result => {
         if (result != null) {
@@ -103,7 +104,7 @@ const BusinessProfile = props => {
       });
 
     await fetch(
-      `${BaseURL}p/public/businesses/1/reviews?page=1`,
+      `${BaseURL}p/public/businesses/${id}/reviews?page=1`,
       requestOptions,
     )
       .then(response => response.json())
@@ -123,7 +124,7 @@ const BusinessProfile = props => {
       });
 
     await fetch(
-      `${BaseURL}b/om/businesses/1/services/1/offerings`,
+      `${BaseURL}b/om/businesses/${id}/services/1/offerings`,
       requestOptions,
     )
       .then(response => response.json())

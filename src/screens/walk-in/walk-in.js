@@ -151,12 +151,13 @@ const WalkIn = props => {
       });
   };
   const bookSlot=async()=>{
+    console.log('payload======',selectedValue?.id)
     setupdateTime(true)
     setacceptFirstSlot(true)
      var payload={
       "slotId": selectedValue?.id
      };
-     console.log(payload)
+    
      await book_slot(bookingID,payload);
      setScheduleModal(false)
      setacceptFirstSlot(false)

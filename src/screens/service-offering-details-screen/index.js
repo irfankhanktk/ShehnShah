@@ -49,13 +49,10 @@ const services = [
 const ServiceOfferingDetails = props => {
   const {route} = props;
   const navigation = useNavigation();
-  const {id} = route.params.id;
+  const {id} = route.params;
   const dispatch = useDispatch();
   const state = useSelector(state => state.businessReviews);
   const bookingState = useSelector(state => state.common);
-
-  // console.log('satte=====', bookingState.serviceBooking.bookingID);
-
   const [isMoreBtn, setIsMoreBtn] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const ref = React.useRef(null);
@@ -87,7 +84,7 @@ const ServiceOfferingDetails = props => {
     const customerID = await getData('customer_id');
     const token = await getData('token');
 
-    console.log('Booking=======', token, customerID, route.params.id);
+   // console.log('Booking=======', token, customerID, route.params.id);
     var requestOptions = {
       method: 'POST',
       headers: {
@@ -96,7 +93,7 @@ const ServiceOfferingDetails = props => {
       },
       body: JSON.stringify({
         customerId: 1,
-        offeringId: route.params.id,
+        offeringId: id,
         byCustomer: 0,
       }),
       redirect: 'follow',
@@ -132,15 +129,15 @@ const ServiceOfferingDetails = props => {
         redirect: 'follow',
       };
     }
-   
-    await fetch(`${BaseURL}p/public/offerings/${route.params.id}`, requestOptions)
+    await fetch(`${BaseURL}p/public/offerings/${id}`, requestOptions)
       .then(response => response.json())
       .then(result => {
         if (result != null) {
           setserviceDetails(result);
           setLoading(true);
+          console.log('service details========', serviceDetails);
         }
-        console.log('service details========', serviceDetails);
+       
       })
       .catch(error => {
         setLoading(true);
@@ -149,7 +146,6 @@ const ServiceOfferingDetails = props => {
   };
 
   useEffect(() => {
-    console.log("Id is  "+route.params.id)
     getServiceDetails();
   }, [loading]);
   return (

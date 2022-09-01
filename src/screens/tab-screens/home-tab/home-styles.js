@@ -6,9 +6,10 @@ export const Home_Styles = StyleSheet.create({
   conntainer: {
     flex: 1,
     backgroundColor: colors.white,
+
   },
   body: {
-    flex: 1,
+    flexGrow: 1,
     paddingHorizontal:mvs(18),
     justifyContent:'center',
   },
