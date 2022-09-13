@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, TouchableOpacity, View, Text, Image} from 'react-native';
+import {ScrollView, TouchableOpacity, View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {
@@ -35,44 +35,16 @@ import {BaseURL} from '../../ApiServices';
 import {addReviews} from '../../Redux/Reducers/ReviewsReducer';
 import {useNavigation} from '@react-navigation/native';
 import ServiceButton from '../../components/molecules/services-button';
-import SelectDropdown from 'react-native-select-dropdown';
-import Dropdown from '../../assets/images/downarrow.png';
-
-const Months = [
-  {
-    name: 'Lisa',
-    id: 'Sky',
-    //sex: female,
-  },
-
-  // {
-  //   name: 'Lisa',
-  //   surname: 'Sky',
-  //   age: 21,
-  //   //sex: female,
-  // },
-  // {
-  //   name: 'Thomas',
-  //   surname: 'Prat',
-  //   age: 33,
-  //   //sex: male,
-  // },
-  // {
-  //   name: 'Paul',
-  //   surname: 'Sing',
-  //   age: 88,
-  //   //sex: male,
-  // },
-  // {
-  //   name: 'Andrew',
-  //   surname: 'Brown',
-  //   age: 23,
-  //   //sex: male,
-  // },
-];
 
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
+const services = [
+  {icon: 'Services', title: 'Services', value: '5 Services'},
+  {icon: 'Photos', title: 'Photos', value: '10+ Photos'},
+  {icon: 'Services', title: '2.5K Reviews', value: '5 Services'},
+  {icon: 'Schedule', title: 'Availability', value: 'See Schedule'},
+  {icon: 'Discount', title: 'Discounts', value: 'View Promos'},
+];
 // const about =
 //   'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
 const BusinessProfile = ({route}, props) => {
@@ -99,7 +71,6 @@ const BusinessProfile = ({route}, props) => {
   const [businessReviews, setbusinessReviews] = useState([]);
   const [contact, setcontact] = useState([]);
   const [businessHourse, setbusinessHourse] = useState(null);
-  const [ratingg, setratingg] = useState([]);
 
   const getBusinessProfile = async () => {
     const res = await getData('token');
@@ -118,16 +89,14 @@ const BusinessProfile = ({route}, props) => {
           setbusinessProfile(result);
           dispatch(addReviews(result));
           setcontact(result.view.contact);
-          setbusinessHourse(result.view.hours);
-          setratingg(result.rating);
-          setbusinessServices(result.services);
-          console.log('businessServices ========> ', businessServices);
-
+          setbusinessHourse(result.hours);
+          console.log('Hourse  ');
+          console.log(result.hours);
           setPayload({
             ...payload,
             rating: result.rating,
           });
-          console.log('Business profile Ratings=======', ratingg);
+          console.log('Business profile=======', result);
         }
       })
       .catch(error => {
@@ -172,30 +141,6 @@ const BusinessProfile = ({route}, props) => {
         console.log('Business services error', error);
       });
   };
-
-  const services = [
-    {
-      icon: 'Services',
-      title: 'Services',
-      value: businessProfile.services
-        ? businessProfile.services.length + ' Services'
-        : '0 Service',
-    },
-    {
-      icon: 'Photos',
-      title: 'Photos',
-      value: businessProfile.gallery
-        ? businessProfile.gallery.length + ' Photos'
-        : '0 Photos',
-    },
-    {
-      icon: 'Services',
-      title: ratingg[5] ? ratingg[5] + ' Reviews' : 0 + ' Reviews',
-      value: '5 Services',
-    },
-    {icon: 'Schedule', title: 'Availability', value: 'See Schedule'},
-    {icon: 'Discount', title: 'Discounts', value: 'View Promos'},
-  ];
   React.useEffect(() => {
     getBusinessProfile();
   }, [loading]);
@@ -207,7 +152,7 @@ const BusinessProfile = ({route}, props) => {
 
   return (
     <View style={styles.container}>
-      <View style={{...styles.body}}>
+      <View style={styles.body}>
         <ScrollView
           // onScroll={e => {
           //   console.log('this scrol Value', e?.nativeEvent?.contentOffset?.y);
@@ -222,39 +167,6 @@ const BusinessProfile = ({route}, props) => {
               <ImagePlaceholder
                 uri={{uri: businessProfile?.cover}}
                 containerStyle={{width: '100%', height: '100%'}}
-              />
-              <SelectDropdown
-                buttonStyle={{
-                  //borderWidth: 1,
-                  borderRadius: 5,
-                  position: 'absolute',
-                  width: '30%',
-                  height: '20%',
-                  left: 250,
-                  top: 20,
-                  // width: '40%',
-                  // height: '110%',
-                  backgroundColor: '#fff',
-                }}
-                defaultButtonText="Services"
-                buttonTextStyle={{fontSize: 16}}
-                renderDropdownIcon={() => (
-                  <Image style={styles.downimg} source={Dropdown} />
-                )}
-                data={Months?.name}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index);
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  // text represented after item is selected
-                  // if data array is an array of objects then return selectedItem.property to render after item is selected
-                  return selectedItem;
-                }}
-                rowTextForSelection={(item, index) => {
-                  // text represented for each item in dropdown
-                  // if data array is an array of objects then return item.property to represent item in dropdown
-                  return item;
-                }}
               />
             </ShimmerPlaceholder>
             <TouchableOpacity
@@ -379,7 +291,7 @@ const BusinessProfile = ({route}, props) => {
                     }
                     ref?.current?.scrollTo({x: 0, y: y, animated: true});
                   }}
-                  middleText={index === 0 ? '' : null}
+                  middleText={index === 0 ? payload?.rating[7] : null}
                   value={index === 2 ? null : item.value}
                   title={item.title}
                   icon={item.icon}
@@ -451,7 +363,7 @@ const BusinessProfile = ({route}, props) => {
               visible={loading}>
               <LabelValue
                 label={'Address'}
-                value={businessProfile?.view?.contact?.Address}
+                value={businessProfile?.view?.Address}
               />
             </ShimmerPlaceholder>
             {/* <ShimmerPlaceholder
@@ -477,30 +389,70 @@ const BusinessProfile = ({route}, props) => {
           {businessHourse && (
             <>
               <HeadingTitle title="Business Hours" />
-              {/* {Object.keys(businessHourse).forEach(function (key, index) {
-               
-              })} */}
-              {Object.keys(businessHourse).map(objectKey => (
-                <ShimmerPlaceholder
-                  style={styles.contactInformationtime}
-                  visible={loading}>
-                  <LabelValue
-                    label={objectKey}
-                    value={
-                      businessHourse[objectKey][0]
-                        ? businessHourse[objectKey][0]
-                        : ''
-                    }
-                  />
-                  <LabelValue
-                    label={''}
-                    value={
-                      businessHourse[objectKey][1]
-                        ? businessHourse[objectKey][1]
-                        : ''
-                    }></LabelValue>
-                </ShimmerPlaceholder>
-              ))}
+              <ShimmerPlaceholder
+                style={styles.contactInformation}
+                visible={loading}>
+                <LabelValue
+                  label={'Sunday'}
+                  value={`${businessHourse[0][0]}:${businessHourse[0][1]} AM-${businessHourse[1][2]}:${businessHourse[1][3]} PM`}
+                  // vColor={colors.RFA3E3E}
+                />
+              </ShimmerPlaceholder>
+              <ShimmerPlaceholder
+                style={styles.contactInformation}
+                visible={loading}>
+                <LabelValue
+                  label={'Monday'}
+                  value={`${businessHourse[1][0]}:${businessHourse[1][1]} AM-${businessHourse[1][2]}:${businessHourse[1][3]} PM`}
+                  vColor={colors.B323232}
+                />
+              </ShimmerPlaceholder>
+              <ShimmerPlaceholder
+                style={styles.contactInformation}
+                visible={loading}>
+                <LabelValue
+                  label={'Tuesday'}
+                  value={`${businessHourse[2][0]}:${businessHourse[2][1]} AM-${businessHourse[2][2]}:${businessHourse[2][3]} PM`}
+                  vColor={colors.B323232}
+                />
+              </ShimmerPlaceholder>
+              <ShimmerPlaceholder
+                style={styles.contactInformation}
+                visible={loading}>
+                <LabelValue
+                  label={'Wednesday'}
+                  value={`${businessHourse[3][0]}:${businessHourse[3][1]} AM-${businessHourse[3][2]}:${businessHourse[3][3]} PM`}
+                  vColor={colors.B323232}
+                />
+              </ShimmerPlaceholder>
+              <ShimmerPlaceholder
+                style={styles.contactInformation}
+                visible={loading}>
+                <LabelValue
+                  label={'Thursday'}
+                  value={`${businessHourse[4][0]}:${businessHourse[4][1]} AM-${businessHourse[4][2]}:${businessHourse[4][3]} PM`}
+                  vColor={colors.B323232}
+                />
+              </ShimmerPlaceholder>
+              <ShimmerPlaceholder
+                style={styles.contactInformation}
+                visible={loading}>
+                <LabelValue
+                  label={'Friday'}
+                  value={`${businessHourse[5][0]}:${businessHourse[5][1]} AM-${businessHourse[5][2]}:${businessHourse[5][3]} PM`}
+                  vColor={colors.B323232}
+                />
+              </ShimmerPlaceholder>
+              <ShimmerPlaceholder
+                style={styles.contactInformation}
+                visible={loading}>
+                <LabelValue
+                  bw={0}
+                  label={'Satureday'}
+                  value={`${businessHourse[6][0]}:${businessHourse[6][1]} AM-${businessHourse[6][2]}:${businessHourse[6][3]} PM`}
+                  vColor={colors.B323232}
+                />
+              </ShimmerPlaceholder>
             </>
           )}
 
@@ -517,14 +469,14 @@ const BusinessProfile = ({route}, props) => {
                   color={colors.black}
                   style={{transform: [{translateY: -mvs(10)}]}}
                   size={mvs(42)}
-                  label={ratingg.length > 0 ? ratingg[7] : 0}
+                  label={payload?.rating[7] ? payload?.rating[7] : 0}
                 />
               </ShimmerPlaceholder>
               <ShimmerPlaceholder
                 style={{width: '50%', height: mvs(50)}}
                 visible={loading}>
-                <Row style={{marginLeft: 50}}>
-                  <View style={{}}>
+                <Row>
+                  <View>
                     <RatingStar
                       rate={5}
                       size={mvs(7)}
@@ -565,18 +517,13 @@ const BusinessProfile = ({route}, props) => {
                       }}
                     />
                   </View>
-                  <View
-                    style={{
-                      paddingLeft: mvs(10),
-                      //borderWidth: 1,
-                      marginRight: 100,
-                    }}>
+                  <View style={{paddingLeft: mvs(10)}}>
                     <View
                       style={{
                         height: mvs(4),
                         borderRadius: mvs(5),
                         backgroundColor: colors.primary,
-                        width: mvs(ratingg[0] ? (ratingg[0] / 5) * 100 : 0),
+                        width: mvs(183),
                       }}
                     />
                     <View
@@ -585,8 +532,7 @@ const BusinessProfile = ({route}, props) => {
                         borderRadius: mvs(5),
                         marginTop: mvs(5),
                         backgroundColor: colors.primary,
-                        width: mvs(ratingg[1] ? (ratingg[1] / 5) * 100 : 0),
-                        // width: mvs(45.3),
+                        width: mvs(36),
                       }}
                     />
                     <View
@@ -595,7 +541,7 @@ const BusinessProfile = ({route}, props) => {
                         borderRadius: mvs(5),
                         marginTop: mvs(5),
                         backgroundColor: colors.primary,
-                        width: mvs(ratingg[2] ? (ratingg[2] / 5) * 100 : 0),
+                        width: mvs(16),
                       }}
                     />
                     <View
@@ -604,7 +550,7 @@ const BusinessProfile = ({route}, props) => {
                         borderRadius: mvs(5),
                         marginTop: mvs(5),
                         backgroundColor: colors.primary,
-                        width: mvs(ratingg[3] ? (ratingg[3] / 5) * 100 : 0),
+                        width: mvs(2),
                       }}
                     />
                     <View
@@ -613,7 +559,7 @@ const BusinessProfile = ({route}, props) => {
                         borderRadius: mvs(5),
                         marginTop: mvs(5),
                         backgroundColor: colors.primary,
-                        width: mvs(ratingg[4] ? (ratingg[4] / 5) * 100 : 0),
+                        width: mvs(2),
                       }}
                     />
                   </View>
@@ -625,7 +571,7 @@ const BusinessProfile = ({route}, props) => {
               <Bold
                 color={colors.black}
                 size={mvs(12)}
-                label={ratingg[5] ? ratingg[5] + '  ratings' : 0 + ' ratings'}
+                label={'9,555 ratings'}
               />
             </Row>
           </View>

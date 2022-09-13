@@ -20,7 +20,7 @@ const Signin = props => {
   const [isSignUpWithPhone, setPhoneSignUp] = React.useState(true);
   const [phoneNumber, setphoneNumber] = useState('12015550123');
   const phoneInput = useRef(null);
-  const [formattedValue, setFormattedValue] = useState('923130971390');
+  const [formattedValue, setFormattedValue] = useState('');
   const [payload, setPayload] = React.useState({
     email: '',
     password: '',
@@ -39,7 +39,7 @@ const Signin = props => {
   const onSigUpWithPhone = async () => {
     setPhoneSignUp(true);
   };
-  const delayAPI = (phone) => {
+  const delayAPI = phone => {
     setTimeout(() => {
       navigation.navigate('Otp', {phone});
     }, 4000);
@@ -48,8 +48,8 @@ const Signin = props => {
     if (formattedValue.length <= 0) {
       return showToast('error', 'Please Enter mobile number');
     } else {
-     var phone=formattedValue.substring(1,formattedValue.length);
-      console.log("Phone Number "+phone)
+      var phone = formattedValue.substring(1, formattedValue.length);
+      console.log('Phone Number ' + phone);
       var myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
 
@@ -69,7 +69,7 @@ const Signin = props => {
         .then(result => {
           if (result != null) {
             setLoading(false);
-            console.log(result.message.message)
+            console.log(result.message.message);
             showToast('success', result.message.message);
             delayAPI(result.data.phone);
           }
@@ -274,7 +274,7 @@ const Signin = props => {
                   textContainerStyle={styles.textInput}
                   onChangeFormattedText={text => {
                     setFormattedValue(text);
-                   // console.log('Formated Value ' + text);
+                    // console.log('Formated Value ' + text);
                   }}
                   onChangeText={text => {
                     console.log('Formated Value ' + text);

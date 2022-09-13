@@ -1,5 +1,10 @@
 import React, {useRef, useEffect, useState} from 'react';
-import {ActivityIndicator, ScrollView, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {connect, useSelector} from 'react-redux';
 import Buttons from '../../components/atoms/Button';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
@@ -15,7 +20,7 @@ import colors from '../../services/colors';
 import {mvs} from '../../services/metrices';
 import DIVIY_API from '../../store/api-calls';
 import {Walk_In_Styles as styles} from './walk-in-styles';
-
+import Toast from 'react-native-toast-message';
 import moment from 'moment';
 import {Vehicle, WhitePercentage} from '../../assets/common-icons';
 import PaymentItem from '../../components/molecules/payment-item/payment-item';
@@ -32,13 +37,19 @@ const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
 const WalkIn = props => {
   const refRBSheet = useRef(null);
-  const {route, navigation,book_slot,update_payment_method,complete_booking} = props;
+  const {
+    route,
+    navigation,
+    book_slot,
+    update_payment_method,
+    complete_booking,
+  } = props;
   const {bookingID, businessID} = route.params;
-  console.log(route.params)
-  // console.log('ids=======', bookingID, businessID);
+
+  console.log('ids=======', bookingID);
   const state = useSelector(state => state.businessReviews);
   const bookingState = useSelector(state => state.common);
-  console.log("User info  ", bookingState.user_info)
+  console.log('User info  ', bookingState.user_info);
   const refRBNewPaymentSheet = useRef(null);
   function newPayment() {
     refRBNewPaymentSheet.current.open();
@@ -48,19 +59,19 @@ const WalkIn = props => {
   const [items, setItems] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState();
   const [date, setDate] = React.useState(moment());
-  const [firstAvailableSlot,setFirstSlotText]=useState(null)
+  const [firstAvailableSlot, setFirstSlotText] = useState(null);
   const [payload, setpayload] = useState({
     offerings: [],
   });
   const [isSlotSet, setSlotSet] = useState(false);
   const [paymentModal, setPaymentModal] = React.useState(false);
   const [couponModal, setCouponModal] = React.useState(false);
-  const [selectedPayment, setselectedPayment] = useState(" ");
+  const [selectedPayment, setselectedPayment] = useState(' ');
   const [updateTime, setupdateTime] = useState(false);
-  const [acceptFirstSlot, setacceptFirstSlot] = useState(false)
+  const [acceptFirstSlot, setacceptFirstSlot] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState([
     {
-      Number: 'Cash on Station',
+      Number: 'Pay at Station',
       // Selected: true,
     },
     {
@@ -72,7 +83,20 @@ const WalkIn = props => {
   const [coupon, setCoupon] = React.useState(null);
   const [isBookingConfirmed, setBookingConfirmed] = useState(false);
   const [bookingDetails, setbookingDetails] = useState([]);
-  
+
+  const [pickSlotConfirm, setpickSlotConfirm] = useState(false);
+
+  const showToast = (type, text1, text2) => {
+    Toast.show({
+      type: type,
+      text1: text1,
+      text2: text2,
+      position: 'top',
+      autoHide: true,
+      visibilityTime: 3000,
+    });
+  };
+
   const getBookingDetails = async () => {
     const token = await getData('token');
     var requestOptions = {
@@ -90,7 +114,7 @@ const WalkIn = props => {
       .then(response => response.json())
       .then(result => {
         if (result != null) {
-          console.log(result)
+          console.log(result);
           setbookingDetails(result);
           const offering = JSON.parse(result.offering);
           setpayload({
@@ -98,7 +122,7 @@ const WalkIn = props => {
             offerings: offering,
           });
 
-          //console.log('get Booking Details======', payload.offerings);
+          console.log('get Booking Details======', payload.offerings);
         }
       })
       .catch(error => {
@@ -127,20 +151,17 @@ const WalkIn = props => {
       .then(response => response.json())
       .then(result => {
         if (result != null) {
-         
           setItems(result);
           console.log('Time Slots========');
-          if(items?.Morning?.slots?.length){
-              setSelectedValue(items?.Morning?.slots[0])
-              setFirstSlotText("The first available slot")
-          }
-          else if(items?.Afternoon?.slots?.length){
-            setSelectedValue(items?.Afternoon?.slots[0])
-            setFirstSlotText("The first available slot")
-          }
-          else if(items?.Evening?.slots?.length){
-            setSelectedValue(items?.Evening?.slots[0])
-            setFirstSlotText("The first available slot")
+          if (items?.Morning?.slots?.length) {
+            setSelectedValue(items?.Morning?.slots[0]);
+            setFirstSlotText('The first available slot');
+          } else if (items?.Afternoon?.slots?.length) {
+            setSelectedValue(items?.Afternoon?.slots[0]);
+            setFirstSlotText('The first available slot');
+          } else if (items?.Evening?.slots?.length) {
+            setSelectedValue(items?.Evening?.slots[0]);
+            setFirstSlotText('The first available slot');
           }
           setloading(true);
         }
@@ -150,35 +171,41 @@ const WalkIn = props => {
         console.log('error', error);
       });
   };
-  const bookSlot=async()=>{
-    console.log('payload======',selectedValue?.id)
-    setupdateTime(true)
-    setacceptFirstSlot(true)
-     var payload={
-      "slotId": selectedValue?.id
-     };
-    
-     await book_slot(bookingID,payload);
-     setScheduleModal(false)
-     setacceptFirstSlot(false)
-     setupdateTime(false)
-     setFirstSlotText(null)
-  }
-  const updatePayment=async(method)=>{
-    var payload={
-      "method": method,
-      "reference": " "
+  const bookSlot = async () => {
+    //console.log('payload======',selectedValue?.id,bookingID)
+    setupdateTime(true);
+    setacceptFirstSlot(true);
+    var payload = {
+      slotId: selectedValue?.id,
     };
-    console.log(payload)
-    await update_payment_method(bookingID,payload);
- }
+
+    await book_slot(bookingID, payload);
+    setScheduleModal(false);
+    setacceptFirstSlot(false);
+    setupdateTime(false);
+    setpickSlotConfirm(true);
+    setFirstSlotText(null);
+  };
+  const updatePayment = async method => {
+    var payload = {
+      method: method,
+      reference: ' ',
+    };
+    console.log(payload);
+    await update_payment_method(bookingID, payload);
+  };
   useEffect(() => {
     getBookingDetails();
   }, [loading]);
-  const completeBooking=async()=>{
-      await complete_booking(bookingID)
+  const completeBooking = async () => {
+    if (!pickSlotConfirm) {
+      showToast('error', 'Pick available slot first');
+      return;
+    } else {
+      await complete_booking(bookingID);
       setBookingConfirmed(true);
-  }
+    }
+  };
   return (
     <View style={{...styles.conntainer, backgroundColor: colors.background}}>
       <CustomHeader
@@ -197,7 +224,7 @@ const WalkIn = props => {
               visible={loading}>
               <ImagePlaceholder
                 borderRadius={mvs(8)}
-                uri={{uri:bookingDetails.offering?.cover}}
+                uri={{uri: bookingDetails.offering?.cover}}
                 containerStyle={{width: mvs(110), height: mvs(110)}}
               />
             </ShimmerPlaceholder>
@@ -262,7 +289,7 @@ const WalkIn = props => {
                       borderRadius: mvs(5),
                     }}
                   />
-                 <Buttons.ButtonPrimary
+                  <Buttons.ButtonPrimary
                     title="Option C"
                     textStyle={{fontSize: mvs(10), color: colors.G3CB971}}
                     style={{
@@ -277,45 +304,49 @@ const WalkIn = props => {
             </View>
           </Row>
           <TotalRateMap loading={loading} data={state} />
-          <Row alignItems='center' style={firstAvailableSlot?styles.firstSlotView:styles.rowView}>
+          <Row
+            alignItems="center"
+            style={firstAvailableSlot ? styles.firstSlotView : styles.rowView}>
             <View>
               <Bold label={'Date & time'} size={15} />
-              {selectedValue!=undefined?
+              {selectedValue != undefined ? (
                 <Regular
-                label={`${date?.format('DD MMMM YYYY')} ${selectedValue?.from[0]+":"+selectedValue?.from[1]+"-"+selectedValue?.to[0]+":"+selectedValue?.to[1]}`}
-                size={16}
-              />:
-              <Regular
-                label={`${date?.format('DD MMMM YYYY')}`}
-                size={16}/>
-              }
-              
+                  label={`${date?.format('DD MMMM YYYY')} ${
+                    selectedValue?.from[0] +
+                    ':' +
+                    selectedValue?.from[1] +
+                    '-' +
+                    selectedValue?.to[0] +
+                    ':' +
+                    selectedValue?.to[1]
+                  }`}
+                  size={16}
+                />
+              ) : (
+                <Regular label={`${date?.format('DD MMMM YYYY')}`} size={16} />
+              )}
             </View>
             <TouchableOpacity onPress={() => setScheduleModal(true)}>
               <Regular label={'Change'} size={15} color={colors.primary} />
             </TouchableOpacity>
           </Row>
-             {firstAvailableSlot&&
-              (
-                <Row style={styles.firstView}>
-                <Regular
+          {firstAvailableSlot && (
+            <Row style={styles.firstView}>
+              <Regular
                 label={`${firstAvailableSlot}`}
                 size={16}
-                color={colors.green}/>
-                <TouchableOpacity onPress={()=>bookSlot()}>
-                 {
-                   acceptFirstSlot?<ActivityIndicator  size="small" color={colors.primary} />
-                 :
-                  <Regular
-                label={`Accept`}
-                size={16}
-                color={colors.green}/>
-                 }
-                </TouchableOpacity>
-                </Row>
-                
+                color={colors.green}
+              />
+              <TouchableOpacity onPress={() => bookSlot()}>
+                {acceptFirstSlot ? (
+                  <ActivityIndicator size="small" color={colors.primary} />
+                ) : (
+                  <Regular label={`Accept`} size={16} color={colors.green} />
                 )}
-                
+              </TouchableOpacity>
+            </Row>
+          )}
+
           <Row style={styles.rowView}>
             <Vehicle />
             <View style={{flex: 1, marginHorizontal: mvs(9)}}>
@@ -375,28 +406,61 @@ const WalkIn = props => {
           </View>
           <View style={styles.paymentView}>
             <Regular label={'Payment Method'} size={16} />
-            <PaymentItem value={selectedPayment+' '} onClick={() => setPaymentModal(true)} />
+            <PaymentItem
+              value={selectedPayment + ' '}
+              onClick={() => setPaymentModal(true)}
+            />
             <Row style={{...styles.priceView, marginTop: mvs(16.3)}}>
               <Medium label={'Sub Total'} size={14} />
-              <Medium label={'AED '+bookingDetails?.invoice?.total} size={14} />
+              <Medium
+                label={'AED ' + bookingDetails?.invoice?.total}
+                size={14}
+              />
             </Row>
             <Row style={{...styles.priceView}}>
-              <Medium label={bookingDetails?.invoice?.taxTitle} size={14} color={colors.lightgrey1} />
-              <Medium label={'AED '+bookingDetails?.invoice?.tax} size={14} color={colors.lightgrey1} />
+              <Medium
+                label={bookingDetails?.invoice?.taxTitle}
+                size={14}
+                color={colors.lightgrey1}
+              />
+              <Medium
+                label={'AED ' + bookingDetails?.invoice?.tax}
+                size={14}
+                color={colors.lightgrey1}
+              />
             </Row>
             <Row style={{...styles.priceView}}>
               <Bold label={'Grand Total'} size={14} />
-              <Bold label={'AED '+(bookingDetails?.invoice?.total+bookingDetails?.invoice?.tax)} size={14} />
+              <Bold
+                label={
+                  'AED ' +
+                  (bookingDetails?.invoice?.total +
+                    bookingDetails?.invoice?.tax)
+                }
+                size={14}
+              />
             </Row>
-            {isBookingConfirmed ?
-             <View style={{marginTop:mvs(10),alignItems:'center'}}>
-               <SemiBold label={'Booking Confimed Successfully'} size={14} color={colors.green}/>
-               <Buttons.ButtonPrimary title="My Bookings" onClick={()=>navigation.navigate("BottomTab")} style={{...styles.button,marginTop:mvs(10)}} />
-            </View>
-            :
-            <Buttons.ButtonPrimary title="Confirm" onClick={()=>completeBooking()} style={styles.button} />
-          }
-            </View>
+            {isBookingConfirmed ? (
+              <View style={{marginTop: mvs(10), alignItems: 'center'}}>
+                <SemiBold
+                  label={'Booking Confimed Successfully'}
+                  size={14}
+                  color={colors.green}
+                />
+                <Buttons.ButtonPrimary
+                  title="My Bookings"
+                  onClick={() => navigation.navigate('BottomTab')}
+                  style={{...styles.button, marginTop: mvs(10)}}
+                />
+              </View>
+            ) : (
+              <Buttons.ButtonPrimary
+                title="Confirm"
+                onClick={() => completeBooking()}
+                style={styles.button}
+              />
+            )}
+          </View>
         </ScrollView>
         <PaymentSheet
           onChange={(mode, m) => {
@@ -422,23 +486,23 @@ const WalkIn = props => {
         /> */}
       </View>
       <ScheduleModal
-          value={selectedValue}
-          items={items}
-          disabled={selectedValue ? false : true}
-          loadingState={updateTime}
-          setDate={setDate}
-          date={date}
-          updateSlot={bookSlot}
-          visible={scheduleModal}
-          setValue={(val) => {
-            //setSlot(val);
-            setSelectedValue(val)
-            setFirstSlotText(null)
-            console.log('setSelectedValue======',selectedValue)
-            setSlotSet(true);
-            // bookSlot()
-          }}
-        />
+        value={selectedValue}
+        items={items}
+        disabled={selectedValue ? false : true}
+        loadingState={updateTime}
+        setDate={setDate}
+        date={date}
+        updateSlot={bookSlot}
+        visible={scheduleModal}
+        setValue={val => {
+          //setSlot(val);
+          setSelectedValue(val);
+          setFirstSlotText(null);
+          console.log('setSelectedValue======', selectedValue);
+          setSlotSet(true);
+          // bookSlot()
+        }}
+      />
       {/* <ScheduleModal
         date={date}
         setDate={setDate}
@@ -463,16 +527,16 @@ const WalkIn = props => {
         title={'Coupon'}
         visible={couponModal}
       />
-      {/* {console.log('timeSlot======', couponValue)} */}
+      <Toast />
     </View>
   );
 };
 const mapStateToProps = store => ({
- // user_info: store.state.user_info,
+  // user_info: store.state.user_info,
 });
 const mapDispatchToProps = {
-  book_slot:(id,params)=>DIVIY_API.book_slot(id,params),
-  update_payment_method:(id,params)=>DIVIY_API.update_payment(id,params),
-  complete_booking:(id)=>DIVIY_API.complete_booking(id)
+  book_slot: (id, params) => DIVIY_API.book_slot(id, params),
+  update_payment_method: (id, params) => DIVIY_API.update_payment(id, params),
+  complete_booking: id => DIVIY_API.complete_booking(id),
 };
 export default connect(mapStateToProps, mapDispatchToProps)(WalkIn);

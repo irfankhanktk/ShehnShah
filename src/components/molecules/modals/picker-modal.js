@@ -35,6 +35,7 @@ const PickerModal = ({
                 style={{width: '100%'}}
                 onPress={() => {
                   setValue(item);
+                  setVisible(false);
                 }}>
                 <Row style={{...styles.PAYMENTDROPDOWN}}>
                   <Bold

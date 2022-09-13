@@ -76,7 +76,8 @@ export const Walk_In_Styles = StyleSheet.create({
         marginTop:mvs(14)
       },
       button:{
-        marginTop:mvs(19)
+        marginTop:mvs(39),
+        
       },
       sheetRowView:{
         borderBottomWidth:0,

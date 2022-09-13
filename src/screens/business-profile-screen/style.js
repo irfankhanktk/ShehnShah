@@ -46,7 +46,21 @@ export const STYLES = StyleSheet.create({
   contactInformation: {
     width: '95%',
     alignSelf: 'center',
-    height: mvs(40),
+    height: mvs(45),
     marginBottom: 10,
+    // borderWidth: 1,
+  },
+  contactInformationtime: {
+    width: '95%',
+    alignSelf: 'center',
+    height: mvs(90),
+    marginBottom: 10,
+    borderBottomWidth: 0,
+  },
+  downimg: {
+    width: 18,
+    height: 18,
+    resizeMode: 'cover',
+    //position: 'absolute',
   },
 });
