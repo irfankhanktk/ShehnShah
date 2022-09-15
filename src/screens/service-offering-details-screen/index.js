@@ -24,6 +24,7 @@ import {BaseURL} from '../../ApiServices';
 import {
   CarWash,
   Map,
+  Percent,
   Ratings,
   RightArrow,
   Total,
@@ -39,6 +40,7 @@ import moment from 'moment';
 import Toast from 'react-native-toast-message';
 import {addBookingID, addOfferingID} from '../../Redux/Reducers';
 import {useNavigation} from '@react-navigation/native';
+import LabelValue from '../../components/molecules/label-value-row';
 const about =
   'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
 const services = [
@@ -136,6 +138,7 @@ const ServiceOfferingDetails = props => {
           setserviceDetails(result);
           setLoading(true);
           console.log('service details========', serviceDetails);
+          console.log(serviceDetails?.otherConditions)
         }
        
       })
@@ -204,7 +207,7 @@ const ServiceOfferingDetails = props => {
                   <Regular color={colors.B606060} label={'Lead Time:'} />
                   <Medium
                     color={colors.G3CB971}
-                    label={`${serviceDetails?.postTime+serviceDetails?.preTime+serviceDetails?.postGrace+serviceDetails?.preGrace} Minutes`}
+                    label={`${serviceDetails?.leadTime} Minutes`}
                   />
                 </Row>
               </ShimmerPlaceholder>
@@ -265,10 +268,25 @@ const ServiceOfferingDetails = props => {
                     )}
                    />
                 </Row>
+                  {serviceDetails?.discount?.highlight && ( 
+                  <Row justifyContent="flex-start" style={{marginTop:mvs(6)}}>
+                    <Percent />
+                    <Regular
+                      size={mvs(12)}
+                      color={colors.B2E3036}
+                      label={' '+serviceDetails?.discount?.highlight}
+                    />
+                  </Row>)}
+                  {serviceDetails?.discount?.view?.statusLine?.shortLine && (
+                        <Regular label={serviceDetails?.discount?.view?.statusLine?.shortLine}
+                         color={colors.black} numberOfLines={2}
+                         size={12}
+                         style={{marginTop:mvs(20),zIndex:1}}/>
+                  )}
               </ShimmerPlaceholder>
             </View>
           </Row>
-          <TotalRateMap loading={loading} data={state} />
+          <TotalRateMap loading={loading} data={state} address={serviceDetails?.business?.view?.address}/>
           <Row style={{marginTop: mvs(17)}}>
             <ScrollView
               horizontal
@@ -322,6 +340,25 @@ const ServiceOfferingDetails = props => {
               )}
             </ShimmerPlaceholder>
           </View>
+          {serviceDetails?.view?.renderTncs==true &&(<View>
+            <HeadingTitle title="Terms & Conditions" />
+            {
+              Object.entries(serviceDetails?.view?.tncs).map(([key, value])=>
+              {
+                return <LabelValue label={''+key} value={serviceDetails?.view?.tncs[key]?.value} />
+              })
+            }
+            
+          </View>)}
+         <View>
+            <HeadingTitle title="Other Conditions" />
+            {
+             serviceDetails?.otherConditions?.map((item, index)=>
+              {
+                return <LabelValue label={''+item} value={''} />
+              })
+            }
+          </View>
           <HeadingTitle title="Rating & Reviews" />
           <View style={{paddingHorizontal: mvs(18)}}>
             <Row justifyContent={'space-between'}>
@@ -353,23 +390,17 @@ const ServiceOfferingDetails = props => {
               flexGrow: 1,
               paddingBottom: mvs(30),
             }}>
-           { serviceDetails?.coupons &&( <CouponPromo {...props} loading={loading} 
-           coupons={serviceDetails?.coupons} business={serviceDetails?.business}/>)}
-            {/* <Row style={{ paddingHorizontal: mvs(18), marginTop: mvs(20),marginBottom:mvs(10) }}>
-                            <Bold label={'People also search for'} size={mvs(20)} color={colors.black} />
-                            <TouchableOpacity>
-                                <Regular label={'See All'} size={mvs(16)} color={colors.primary} />
-                            </TouchableOpacity>
-                        </Row>
-                        <ServiceOffering /> */}
+           { serviceDetails?.coupons &&
+           ( <CouponPromo {...props} loading={loading} 
+              coupons={serviceDetails?.coupons} business={serviceDetails?.business}/>
+           )}
           </View>
           <View style={{paddingHorizontal: mvs(18)}}>
             <Buttons.ButtonPrimary
-              //onClick={() => navigation.navigate('WalkIn')}
-              onClick={
-                bookingState?.serviceBooking?.bookingID > 0
+               onClick={
+                serviceDetails?.bookingId!=null
                   ? navigation.navigate('WalkIn', {
-                      bookingID: bookingState?.serviceBooking?.bookingID,
+                      bookingID: serviceDetails?.bookingId,
                       businessID: bookingState?.serviceBooking?.offeringID,
                     })
                   : BookNow
@@ -377,11 +408,7 @@ const ServiceOfferingDetails = props => {
               disabled={payload.bookNowStart}
               loading={payload.bookNowStart}
               // onClick={() => props?.navigation?.navigate('WalkIn')}
-              title={
-                bookingState?.serviceBooking?.bookingID > 0
-                  ? 'Resume User'
-                  : 'Book Now'
-              }
+              title={serviceDetails?.view?.buttonTitle}
             />
           </View>
         </ScrollView>

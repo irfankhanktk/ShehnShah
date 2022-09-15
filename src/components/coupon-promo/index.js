@@ -25,7 +25,7 @@ const CouponPromo = ({coupons=[],business={},...props}) => {
             <TouchableOpacity
               onPress={() => props?.navigation?.navigate('CouponDetails',{id:ele?.id,bId:business?.id})}
               style={{
-                width: mvs(134),
+                width: mvs(174),
                 marginRight: mvs(7),
                 borderTopRightRadius: mvs(8),
                 borderRadius: mvs(8),
@@ -68,13 +68,14 @@ const CouponPromo = ({coupons=[],business={},...props}) => {
                   />
                   <TouchableOpacity
                     style={{
-                      width: mvs(83),
+                      width: mvs(123),
                       backgroundColor: colors.primary,
                       height: mvs(15),
                       borderRadius: mvs(3),
                       flexDirection: 'row',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      marginTop:mvs(5)
                     }}>
                     <Cross />
                     <Regular
@@ -91,6 +92,12 @@ const CouponPromo = ({coupons=[],business={},...props}) => {
                     color={colors.black}
                     label={ele?.price+' AED'}
                   />
+                  {ele?.view?.statusLine?.shortLine && (
+                        <Regular label={ele?.view?.statusLine?.shortLine}
+                         color={colors.black} numberOfLines={2}
+                         size={12}
+                         style={{marginTop:mvs(5),zIndex:1,textAlign:'center'}}/>
+                  )}
                 </ShimmerPlaceholder>
               </View>
             </TouchableOpacity>

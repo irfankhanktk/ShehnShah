@@ -92,7 +92,7 @@ const ButtonPlus: FC<BProps> = ({
       onPress={onClick}
       style={buttonStyles.plus_button}
       {...props}>
-      <Icon name={icon} color={colors.white} size={mvs(30)} />
+      <Icon name={icon} color={colors.white} size={mvs(30)}/>
     </TouchableOpacity>
   );
 };

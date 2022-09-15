@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, TouchableOpacity, View, Text, Image} from 'react-native';
+import {
+  ScrollView,
+  TouchableOpacity,
+  View,
+  Text,
+  Image,
+  useWindowDimensions,
+  Dimensions,
+  LayoutAnimation,
+  Alert,
+} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {
@@ -37,6 +47,9 @@ import {useNavigation} from '@react-navigation/native';
 import ServiceButton from '../../components/molecules/services-button';
 import SelectDropdown from 'react-native-select-dropdown';
 import Dropdown from '../../assets/images/downarrow.png';
+import MultiSelect from 'react-native-multiple-select';
+import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
+import alertService from '../../services/alert.service';
 
 const Months = [
   {
@@ -76,6 +89,76 @@ const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 // const about =
 //   'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
 const BusinessProfile = ({route}, props) => {
+  const Screenwidth = Dimensions.get('window').width;
+  const rendertabview = () => {
+    return (
+      <TabView
+        navigationState={{index, routes}}
+        renderScene={renderScene}
+        onIndexChange={setindex}
+        renderTabBar={renderTabBar}
+        initialLayout={{width: layout.width}}
+        activeColor={colors.primary}
+        inactiveColor={colors.black}
+      />
+    );
+  };
+
+  const renderTabBar = props => (
+    <TabBar
+      {...props}
+      scrollEnabled={true}
+      indicatorStyle={{backgroundColor: colors.primary}}
+      // tabStyle={{width: mvs(120)}}
+      indicatorContainerStyle={{
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+        },
+        backgroundColor: colors.white,
+      }}
+      renderLabel={({route, focused, color}) => (
+        <Text
+          style={{
+            color: focused ? colors.black : colors.black,
+            fontSize: 15,
+          }}>
+          {route.title}
+        </Text>
+      )}
+      style={{backgroundColor: 'transparent'}}
+    />
+  );
+  const layout = useWindowDimensions();
+  const FirstRoute = () => (
+    <View
+      style={{
+        //padding: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        flex: 1,
+        backgroundColor: '#0e0',
+      }}></View>
+  );
+  const SecondRoute = () => (
+    <View style={{flex: 1, backgroundColor: '#ef4f'}}></View>
+  );
+  const ThirdRoute = () => (
+    <View style={{flex: 1, backgroundColor: '#000'}}></View>
+  );
+  const FourthRoute = () => (
+    <View style={{flex: 1, backgroundColor: 'red'}}></View>
+  );
+  const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute,
+    third: ThirdRoute,
+    fourth: FourthRoute,
+  });
+
+  const [index, setindex] = useState(0);
+
   const {user_info} = props;
   const {id} = route.params;
   const navigation = useNavigation();
@@ -100,7 +183,17 @@ const BusinessProfile = ({route}, props) => {
   const [contact, setcontact] = useState([]);
   const [businessHourse, setbusinessHourse] = useState(null);
   const [ratingg, setratingg] = useState([]);
+  const [servicesdata, setservicesdata] = useState([]);
 
+  const [payyload, setpayyload] = useState({
+    services: [],
+  });
+  const [addForm, setaddForm] = useState({
+    id: '',
+    icon: '',
+    title: '',
+    serviceId: '',
+  });
   const getBusinessProfile = async () => {
     const res = await getData('token');
     var requestOptions = {
@@ -120,14 +213,20 @@ const BusinessProfile = ({route}, props) => {
           setcontact(result.view.contact);
           setbusinessHourse(result.view.hours);
           setratingg(result.rating);
-          setbusinessServices(result.services);
+          setbusinessServices(result);
+          setservicesdata(result.services);
           console.log('businessServices ========> ', businessServices);
 
-          setPayload({
-            ...payload,
-            rating: result.rating,
+          // setPayload({
+          //   ...payload,
+          //   rating: result.rating,
+          // });
+          setpayyload({
+            ...payyload,
+            services: result?.services,
+            // bill:result.bills
           });
-          console.log('Business profile Ratings=======', ratingg);
+          console.log('Business profile Ratings=======', services);
         }
       })
       .catch(error => {
@@ -155,7 +254,7 @@ const BusinessProfile = ({route}, props) => {
       });
 
     await fetch(
-      `${BaseURL}b/om/businesses/${id}/services/1/offerings`,
+      `${BaseURL}p/public/businesses/3333/services/3333/offerings`,
       requestOptions,
     )
       .then(response => response.json())
@@ -163,13 +262,48 @@ const BusinessProfile = ({route}, props) => {
         if (result != null) {
           setLoading(true);
           setbusinessServices(result);
-          console.log('Business services=======', result);
+          console.log('Business services=======', businessServices);
         }
       })
       .catch(error => {
         setLoading(true);
         // navigation.goBack();
         console.log('Business services error', error);
+      });
+  };
+
+  const renderNewOffers = async () => {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      'Authorization',
+      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiODM0MTkyMzE0ZjUzNjljZWFjY2JiMzFkMTgxOTBkMjhkMmZmZjkxYzJmOWI0OTM3MjU0NjJkZGYzODAzN2I0MzA5ODU4NjE5MzRlYWFmODgiLCJpYXQiOjE2NjIzNzUxMjAuNDMyMjgxLCJuYmYiOjE2NjIzNzUxMjAuNDMyMjg2LCJleHAiOjE2OTM5MTExMjAuNDIzNTI0LCJzdWIiOiI0NSIsInNjb3BlcyI6W119.Zl9X8RX4fffUxPynU3DzzGFRlZVfRCychFvbRKpxE-QReIbLmkVG6RU816vEjhm_ptE6o1ry1qJwGKJMKNV-HkDzROIOM00-_ltvE4ljZ2tCu1qmfNOp9NUYSKZhBl74nm8B2uo93PUn3ZMrXkYNO-XYG_aA9xhRmtrDNMW1E7cABIQ1EOW2yuhqoMG4gt_0wVsaH_Y9jyZ886hG0ox4I-qAcp0u469CnqIPVbpWX4DuSu_8aTJgC_3Cxhw8r9-UWrpnONnGf4JlS471kZg81wjEq067qGt4q3_oywLtQ6gqpw9QJ9DLukaMySDrrE2CR9u1Q6WBqPi2vWV5mJ3hZaoK0SoNObnvReQ_8sVry6-EFsDM6hGHnNj5KFQz_03uMyrEsr08cKNDcePgIe4g1XROpSl0jm-M-_i13TiYwraB8lnE7Awb0s48PZxWVgfJpT4G2YKrV-RjXTxmWMZp8LEM0QpOFeBP9iy4RErIE_xvTLzFh57bhq0RlTGNd9W8e2gD36-_kiCGX9cZ7Tbhviks_U91bx26H-VgCug4sPBu_KgWJXBx7Ydjfdk-YxNEqjXPA7SNjrq7S4GxVx2OuxTJD3e_bgXowv4Vmvw5TuYiROq5oz_tQS8W1ctj1Ov4YSHdSDEg1RPub7zXnhri7YsB2ESnk0zONRsn1tlV3vw',
+    );
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    await fetch(
+      `${BaseURL}p/public/businesses/3333/services/3333/offerings`,
+      requestOptions,
+    )
+      .then(response => response.json())
+      .then(result => {
+        if (result != null) {
+          setLoading(true);
+          setbusinessServices(result);
+          console.log(
+            'Business service offerings are =======',
+            businessServices,
+          );
+        }
+      })
+      .catch(error => {
+        setLoading(true);
+        // navigation.goBack();
+        // console.log('Business services error', error);
       });
   };
 
@@ -196,6 +330,27 @@ const BusinessProfile = ({route}, props) => {
     {icon: 'Schedule', title: 'Availability', value: 'See Schedule'},
     {icon: 'Discount', title: 'Discounts', value: 'View Promos'},
   ];
+  // var ServicesData = businessProfile.services;
+
+  // businessProfile.services ? businessProfile.services.length;
+  const [routes] = React.useState([
+    {
+      key: 'first',
+      title: 'SERVICES',
+    },
+    {
+      key: 'second',
+      title: 'Services',
+    },
+    {
+      key: 'third',
+      title: 'Services',
+    },
+    {
+      key: 'fourth',
+      title: 'Services',
+    },
+  ]);
   React.useEffect(() => {
     getBusinessProfile();
   }, [loading]);
@@ -223,39 +378,6 @@ const BusinessProfile = ({route}, props) => {
                 uri={{uri: businessProfile?.cover}}
                 containerStyle={{width: '100%', height: '100%'}}
               />
-              <SelectDropdown
-                buttonStyle={{
-                  //borderWidth: 1,
-                  borderRadius: 5,
-                  position: 'absolute',
-                  width: '30%',
-                  height: '20%',
-                  left: 250,
-                  top: 20,
-                  // width: '40%',
-                  // height: '110%',
-                  backgroundColor: '#fff',
-                }}
-                defaultButtonText="Services"
-                buttonTextStyle={{fontSize: 16}}
-                renderDropdownIcon={() => (
-                  <Image style={styles.downimg} source={Dropdown} />
-                )}
-                data={Months?.name}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index);
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  // text represented after item is selected
-                  // if data array is an array of objects then return selectedItem.property to render after item is selected
-                  return selectedItem;
-                }}
-                rowTextForSelection={(item, index) => {
-                  // text represented for each item in dropdown
-                  // if data array is an array of objects then return item.property to represent item in dropdown
-                  return item;
-                }}
-              />
             </ShimmerPlaceholder>
             <TouchableOpacity
               onPress={() => props?.navigation?.goBack()}
@@ -276,7 +398,11 @@ const BusinessProfile = ({route}, props) => {
                 borderColor: colors.GDFDFDF,
               }}>
               <ShimmerPlaceholder
-                style={{width: mvs(55), borderRadius: mvs(27), height: mvs(55)}}
+                style={{
+                  width: mvs(55),
+                  borderRadius: mvs(27),
+                  height: mvs(55),
+                }}
                 visible={loading}>
                 <ImagePlaceholder
                   borderRadius={mvs(12)}
@@ -368,7 +494,9 @@ const BusinessProfile = ({route}, props) => {
                 <ServiceCard
                   onPress={() => {
                     let y = 421;
-                    if (index === 1) {
+                    if (index === 0) {
+                      y = 0;
+                    } else if (index === 1) {
                       y = 133;
                     } else if (index === 2) {
                       y = 1148;
@@ -523,39 +651,39 @@ const BusinessProfile = ({route}, props) => {
               <ShimmerPlaceholder
                 style={{width: '50%', height: mvs(50)}}
                 visible={loading}>
-                <Row style={{marginLeft: 50}}>
+                <Row style={{marginLeft: 0}}>
                   <View style={{}}>
                     <RatingStar
                       rate={5}
-                      size={mvs(7)}
+                      size={mvs(10)}
                       list={[1, 2, 3, 4, 5]}
                       width={mvs(40)}
                       style={{alignSelf: 'flex-end'}}
                     />
                     <RatingStar
                       rate={5}
-                      size={mvs(7)}
+                      size={mvs(10)}
                       list={[1, 2, 3, 4]}
                       width={mvs(32)}
                       style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
                     />
                     <RatingStar
                       rate={5}
-                      size={mvs(7)}
+                      size={mvs(10)}
                       list={[1, 2, 3]}
                       width={mvs(24)}
                       style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
                     />
                     <RatingStar
                       rate={5}
-                      size={mvs(7)}
+                      size={mvs(10)}
                       list={[1, 2]}
                       width={mvs(16)}
                       style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
                     />
                     <RatingStar
                       rate={5}
-                      size={mvs(7)}
+                      size={mvs(10)}
                       list={[1]}
                       width={mvs(8)}
                       style={{
@@ -567,13 +695,13 @@ const BusinessProfile = ({route}, props) => {
                   </View>
                   <View
                     style={{
-                      paddingLeft: mvs(10),
-                      //borderWidth: 1,
-                      marginRight: 100,
+                      paddingLeft: mvs(12),
+                      // borderWidth: 1,
+                      marginRight: 90,
                     }}>
                     <View
                       style={{
-                        height: mvs(4),
+                        height: mvs(6),
                         borderRadius: mvs(5),
                         backgroundColor: colors.primary,
                         width: mvs(ratingg[0] ? (ratingg[0] / 5) * 100 : 0),
@@ -581,7 +709,7 @@ const BusinessProfile = ({route}, props) => {
                     />
                     <View
                       style={{
-                        height: mvs(4),
+                        height: mvs(6),
                         borderRadius: mvs(5),
                         marginTop: mvs(5),
                         backgroundColor: colors.primary,
@@ -591,7 +719,7 @@ const BusinessProfile = ({route}, props) => {
                     />
                     <View
                       style={{
-                        height: mvs(4),
+                        height: mvs(6),
                         borderRadius: mvs(5),
                         marginTop: mvs(5),
                         backgroundColor: colors.primary,
@@ -600,7 +728,7 @@ const BusinessProfile = ({route}, props) => {
                     />
                     <View
                       style={{
-                        height: mvs(4),
+                        height: mvs(6),
                         borderRadius: mvs(5),
                         marginTop: mvs(5),
                         backgroundColor: colors.primary,
@@ -609,7 +737,7 @@ const BusinessProfile = ({route}, props) => {
                     />
                     <View
                       style={{
-                        height: mvs(4),
+                        height: mvs(6),
                         borderRadius: mvs(5),
                         marginTop: mvs(5),
                         backgroundColor: colors.primary,
@@ -647,10 +775,131 @@ const BusinessProfile = ({route}, props) => {
             style={{
               backgroundColor: colors.FBF8F8,
               flexGrow: 1,
+              // borderWidth: 1,
               paddingBottom: mvs(30),
               marginTop: mvs(20),
             }}>
+            {/* <SelectDropdown
+              buttonStyle={{
+                //borderWidth: 1,
+                borderRadius: 5,
+                //position: 'absolute',
+                width: '30%',
+                height: '20%',
+                left: 250,
+                top: 20,
+                // width: '40%',
+                // height: '110%',
+                backgroundColor: '#fff',
+              }}
+              defaultButtonText="Services"
+              buttonTextStyle={{fontSize: 16}}
+              renderDropdownIcon={() => (
+                <Image style={styles.downimg} source={Dropdown} />
+              )}
+              data={Months?.name}
+              onSelect={(selectedItem, index) => {
+                console.log(selectedItem, index);
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                // text represented after item is selected
+                // if data array is an array of objects then return selectedItem.property to render after item is selected
+                return selectedItem;
+              }}
+              rowTextForSelection={(item, index) => {
+                // text represented for each item in dropdown
+                // if data array is an array of objects then return item.property to represent item in dropdown
+                return item;
+              }}
+            /> */}
+            <>
+              <Row>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{paddingHorizontal: mvs(18)}}>
+                  {servicesdata.map((item, index) => (
+                    <TouchableOpacity
+                      style={{
+                        borderWidth: 1,
+                        width: mvs(200),
+                        padding: 10,
+                        borderRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                      onPress={() => {
+                        renderNewOffers(item.id);
+                      }}>
+                      <Text style={{fontSize: 15, fontWeight: 'bold'}}>
+                        {item.title}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </Row>
+            </>
             <HeadingTitle title="Service offering" />
+            {/* <HeadingTitle title="Services" />
+            <MultiSelect
+              items={servicesdata}
+              uniqueKey="id"
+              onSelectedItemsChange={itemValue => {
+                console.log(
+                  'select Servicves=============',
+                  itemValue.toString(),
+                );
+                getBusinessProfile(itemValue);
+                addForm.id = itemValue;
+                setaddForm({
+                  ...addForm,
+                });
+              }}
+              single={true}
+              selectedItems={addForm.id}
+              selectText="Select Customer"
+              searchInputPlaceholderText="Search Customer..."
+              onChangeInput={text => console.log(text)}
+              tagRemoveIconColor="#CCC"
+              tagBorderColor="#CCC"
+              tagTextColor="#CCC"
+              selectedItemTextColor="#CCC"
+              selectedItemIconColor="#CCC"
+              itemTextColor="#000"
+              displayKey="name"
+              fontSize={15}
+              itemFontSize={18}
+              styleListContainer={{
+                borderWidth: 1,
+                backgroundColor: '#FFF',
+              }}
+              hideDropdown={true}
+              styleInputGroup={{
+                borderWidth: 1,
+              }}
+              styleSelectorContainer={{
+                borderWidth: 1,
+              }}
+              styleDropdownMenu={{
+                borderWidth: 1,
+                height: 60,
+                borderColor: '#fff',
+                paddingLeft: 10,
+              }}
+              styleMainWrapper={{
+                width: '100%',
+                marginTop: 10,
+                borderColor: '#fff',
+              }}
+              styleTextDropdownSelected={{
+                color: '#000',
+              }}
+              searchInputStyle={{
+                color: '#000',
+                fontSize: 18,
+                height: 50,
+              }}
+            /> */}
             <ServiceOffering
               data={businessServices}
               loading={loading}

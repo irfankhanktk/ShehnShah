@@ -10,7 +10,7 @@ import RatingStar from '../rating-star';
 import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
-const TotalRateMap = ({loading, data}) => {
+const TotalRateMap = ({loading, data,address=''}) => {
   return (
     <Row
       alignItems="center"
@@ -50,7 +50,7 @@ const TotalRateMap = ({loading, data}) => {
             <Regular
               style={{transform: [{translateY: mvs(-3)}]}}
               color={colors.G9B9B9B}
-              label={` ${data?.businessReviews?.country}`}
+              label={` ${address}`}
             />
           </Row>
         </ShimmerPlaceholder>
