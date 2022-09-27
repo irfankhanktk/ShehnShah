@@ -644,17 +644,16 @@ const BusinessProfile = props => {
                   {item?.workingTime != 'Closed' ? (
                     <>
                       <LabelValue
+                        bw={0}
                         businessHoursCard={true}
                         label={item?.day}
-                        value={
-                          item?.workingTime
-                          // ? businessHourse[objectKey][0]
-                          // : 'Closed'
-                        }
+                        value={item?.workingTime}
                       />
                     </>
                   ) : (
                     <LabelValue
+                      bw={0}
+                      businessHoursCard={true}
                       label={item?.day}
                       vColor={colors.red}
                       value={'Closed'}

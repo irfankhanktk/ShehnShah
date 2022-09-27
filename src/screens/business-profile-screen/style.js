@@ -56,10 +56,8 @@ export const STYLES = StyleSheet.create({
     justifyContent: 'center',
     borderColor: colors.GE1E1E1,
     height: mvs(50),
-
-    // backgroundColor: 'red',
     marginBottom: 10,
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 0.7,
   },
   downimg: {
     width: 18,

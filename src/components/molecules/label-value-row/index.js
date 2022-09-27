@@ -22,7 +22,7 @@ const LabelValue = ({
         marginHorizontal: mvs(18),
         paddingVertical: businessHoursCard ? 0 : mvs(6),
         marginBottom: mb,
-        borderBottomWidth: businessHoursCard ? 0 : bw,
+        borderBottomWidth: bw,
         borderColor: colors.GE1E1E1,
       }}>
       <Regular
