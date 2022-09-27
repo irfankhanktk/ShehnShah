@@ -3,6 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 const Row = ({
   style = {},
   alignItems = 'flex-start',
+  alignSelf,
   justifyContent = 'space-between',
   children,
 }) => {
@@ -10,7 +11,11 @@ const Row = ({
     <View
       style={[
         styles.container,
-        {alignItems: alignItems, justifyContent: justifyContent},
+        {
+          alignItems: alignItems,
+          alignSelf: alignSelf,
+          justifyContent: justifyContent,
+        },
         style,
       ]}>
       {children}
