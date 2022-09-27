@@ -40,14 +40,27 @@ const CouponCard = ({loading,coupon={}}) => {
         <ShimmerPlaceholder visible={loading}>
           <Row style={{marginTop: mvs(3)}}>
             <Regular
-              color={colors.G777373}
+              color={coupon?.view?.statusLine?.color}
               size={mvs(13)}
-              label={'Expires on '+coupon?.useConditions?.to}
+              label={coupon?.view?.statusLine?.shortLine}
             />
             <Bold size={mvs(16)} label={'$'+coupon?.price} />
           </Row>
         </ShimmerPlaceholder>
+        <Regular
+              numberOfLines={3}
+              color={coupon?.view?.statusLine?.color}
+              size={mvs(13)}
+              label={coupon?.view?.statusLine?.line}
+         />
+         <Regular
+              numberOfLines={5}
+              color={coupon?.view?.statusLine?.color}
+              size={mvs(13)}
+              label={coupon?.view?.statusLine?.longLine}
+         />
       </View>
+      
     </Row>
   );
 };

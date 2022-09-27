@@ -9,6 +9,7 @@ import {
   Dimensions,
   LayoutAnimation,
   Alert,
+  Share,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {connect, useDispatch, useSelector} from 'react-redux';
@@ -17,17 +18,15 @@ import {
   Map,
   Minute,
   Ratings,
-  Share,
+  Share as ShareIcon,
+  SpeedoMeter,
 } from '../../assets/common-icons';
-import {Bg} from '../../assets/images';
-import PageLoader from '../../components/atoms/page-loader';
 import ImagePlaceholder from '../../components/atoms/Placeholder';
 import Row from '../../components/atoms/row';
 import ServiceCard from '../../components/molecules/service-card';
 import ThemeContext from '../../context/theme-context';
 import Regular from '../../presentation/typography/regular-text';
 import {mvs} from '../../services/metrices';
-import DIVIY_API from '../../store/api-calls';
 import HeadingTitle from './../../components/molecules/heading-title/index';
 import LabelValue from './../../components/molecules/label-value-row/index';
 import ReviewsRaing from './../../components/molecules/reviews-rating/index';
@@ -39,57 +38,21 @@ import RatingStar from './../../components/molecules/rating-star/index';
 import ReviewModal from './../../components/molecules/modals/review-modal';
 import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
-
 import {getData} from '../../localStorage';
 import {BaseURL} from '../../ApiServices';
 import {addReviews} from '../../Redux/Reducers/ReviewsReducer';
 import {useNavigation} from '@react-navigation/native';
-import ServiceButton from '../../components/molecules/services-button';
-import SelectDropdown from 'react-native-select-dropdown';
-import Dropdown from '../../assets/images/downarrow.png';
-import MultiSelect from 'react-native-multiple-select';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
-import alertService from '../../services/alert.service';
-
-const Months = [
-  {
-    name: 'Lisa',
-    id: 'Sky',
-    //sex: female,
-  },
-
-  // {
-  //   name: 'Lisa',
-  //   surname: 'Sky',
-  //   age: 21,
-  //   //sex: female,
-  // },
-  // {
-  //   name: 'Thomas',
-  //   surname: 'Prat',
-  //   age: 33,
-  //   //sex: male,
-  // },
-  // {
-  //   name: 'Paul',
-  //   surname: 'Sing',
-  //   age: 88,
-  //   //sex: male,
-  // },
-  // {
-  //   name: 'Andrew',
-  //   surname: 'Brown',
-  //   age: 23,
-  //   //sex: male,
-  // },
-];
-
+import SERVICES from '../../services/common-services';
+import CouponPromo from '../../components/coupon-promo';
+import DIVIY_API from '../../store/api-calls';
+import {useBusinessProfile} from './useBusinessProfile';
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
 // const about =
 //   'Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years.Gresasy Elbo Auto Repair has been the leader in automotive repair in the Triad area for twenty years  continuing the outstanding level of service Triad area residents expect from our';
-const BusinessProfile = ({route}, props) => {
-  const Screenwidth = Dimensions.get('window').width;
+const BusinessProfile = props => {
+  const {get_bussiness_coupons, route} = props;
   const rendertabview = () => {
     return (
       <TabView
@@ -161,6 +124,7 @@ const BusinessProfile = ({route}, props) => {
 
   const {user_info} = props;
   const {id} = route.params;
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [images, setImages] = React.useState([]);
@@ -183,8 +147,10 @@ const BusinessProfile = ({route}, props) => {
   const [contact, setcontact] = useState([]);
   const [businessHourse, setbusinessHourse] = useState(null);
   const [ratingg, setratingg] = useState([]);
-  const [servicesdata, setservicesdata] = useState([]);
+  const [bussinessCoupons, setBussinessCoupons] = useState([]);
 
+  const [servicesdata, setservicesdata] = useState([]);
+  const [totalDistance, setDistance] = useState(0.0);
   const [payyload, setpayyload] = useState({
     services: [],
   });
@@ -215,8 +181,8 @@ const BusinessProfile = ({route}, props) => {
           setratingg(result.rating);
           setbusinessServices(result);
           setservicesdata(result.services);
-          console.log('businessServices ========> ', businessServices);
-
+          getUserLocation(result?.lat, result?.lng);
+          getBussinessCoupons(id);
           // setPayload({
           //   ...payload,
           //   rating: result.rating,
@@ -226,7 +192,6 @@ const BusinessProfile = ({route}, props) => {
             services: result?.services,
             // bill:result.bills
           });
-          console.log('Business profile Ratings=======', services);
         }
       })
       .catch(error => {
@@ -246,7 +211,6 @@ const BusinessProfile = ({route}, props) => {
             myArra?.push(result[i]?.pics);
           }
           setPayload({...payload, picsArrayReviews: myArra});
-          console.log('Business reviews=======', result);
         }
       })
       .catch(error => {
@@ -262,7 +226,6 @@ const BusinessProfile = ({route}, props) => {
         if (result != null) {
           setLoading(true);
           setbusinessServices(result);
-          console.log('Business services=======', businessServices);
         }
       })
       .catch(error => {
@@ -271,7 +234,17 @@ const BusinessProfile = ({route}, props) => {
         console.log('Business services error', error);
       });
   };
+  const getUserLocation = async (restLati, restLongi) => {
+    const position = await SERVICES._get_current_location();
+    var distance = SERVICES._get_distance(
+      restLati,
+      restLongi,
+      position.coords.latitude,
+      position.coords.longitude,
+    );
 
+    setDistance(distance);
+  };
   const renderNewOffers = async () => {
     var myHeaders = new Headers();
     myHeaders.append(
@@ -294,10 +267,6 @@ const BusinessProfile = ({route}, props) => {
         if (result != null) {
           setLoading(true);
           setbusinessServices(result);
-          console.log(
-            'Business service offerings are =======',
-            businessServices,
-          );
         }
       })
       .catch(error => {
@@ -306,7 +275,12 @@ const BusinessProfile = ({route}, props) => {
         // console.log('Business services error', error);
       });
   };
+  const getBussinessCoupons = async id => {
+    //id=1
+    const res = await get_bussiness_coupons(id);
 
+    setBussinessCoupons(res?.data);
+  };
   const services = [
     {
       icon: 'Services',
@@ -359,7 +333,27 @@ const BusinessProfile = ({route}, props) => {
   //     <PageLoader />
   //   </View>
   // }
-
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: 'App Link',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {}
+  };
+  console.log('Business:::', businessProfile);
+  console.log('businessHourse:', businessHourse);
+  const {getUpdatedBusinessHours} = useBusinessProfile(businessHourse);
+  const updatedBusiness = getUpdatedBusinessHours();
+  console.log('businessServices:::', businessServices);
   return (
     <View style={styles.container}>
       <View style={{...styles.body}}>
@@ -374,10 +368,34 @@ const BusinessProfile = ({route}, props) => {
             <ShimmerPlaceholder
               style={{width: '100%', height: '100%'}}
               visible={loading}>
-              <ImagePlaceholder
-                uri={{uri: businessProfile?.cover}}
-                containerStyle={{width: '100%', height: '100%'}}
-              />
+              <View>
+                <ImagePlaceholder
+                  uri={{uri: businessProfile?.cover}}
+                  containerStyle={{
+                    width: '100%',
+                    height: '100%',
+                  }}
+                />
+                <View
+                  style={{
+                    width: mvs(95),
+                    padding: mvs(5),
+                    borderRadius: mvs(5),
+                    backgroundColor: '#eee',
+                    position: 'absolute',
+                    top: '75%',
+                    left: mvs(300),
+                    right: 0,
+                    bottom: 12,
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                  }}>
+                  <ShareIcon />
+                  <View style={{borderWidth: 0.5, height: mvs(20)}} />
+                  <HeartOutline />
+                </View>
+              </View>
             </ShimmerPlaceholder>
             <TouchableOpacity
               onPress={() => props?.navigation?.goBack()}
@@ -394,7 +412,7 @@ const BusinessProfile = ({route}, props) => {
               style={{
                 padding: mvs(10),
                 borderRadius: mvs(23),
-                borderWidth: 0.7,
+                //borderWidth: 0.7,
                 borderColor: colors.GDFDFDF,
               }}>
               <ShimmerPlaceholder
@@ -434,14 +452,14 @@ const BusinessProfile = ({route}, props) => {
                   <Row
                     justifyContent={'space-between'}
                     style={{width: mvs(60)}}>
-                    <TouchableOpacity>
-                      <Share />
+                    <TouchableOpacity onPress={() => onShare()}>
+                      {/* <ShareIcon /> */}
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {
                         setVisible(true);
                       }}>
-                      <HeartOutline />
+                      {/* <HeartOutline /> */}
                     </TouchableOpacity>
                   </Row>
                 </Row>
@@ -457,11 +475,18 @@ const BusinessProfile = ({route}, props) => {
                     <Regular
                       color={colors.G9B9B9B}
                       size={mvs(16)}
-                      label={` ${businessProfile?.country}`}
+                      label={` ${businessProfile?.view?.address}`}
                     />
                   </Row>
-                  <Row style={{width: mvs(80), alignItems: 'flex-end'}}>
-                    <Minute />
+                  <Row
+                    style={{
+                      width: mvs(65),
+                      // borderWidth: 1,
+                      alignItems: 'flex-end',
+                      marginBottom: 5,
+                    }}>
+                    {/* <Minute /> */}
+                    <SpeedoMeter />
                     <Bold
                       style={{
                         lineHeight: mvs(15),
@@ -469,7 +494,7 @@ const BusinessProfile = ({route}, props) => {
                       }}
                       color={colors.B323232}
                       size={mvs(15)}
-                      label={' 5.4 KM'}
+                      label={totalDistance + 'KM'}
                     />
                   </Row>
                 </Row>
@@ -511,6 +536,7 @@ const BusinessProfile = ({route}, props) => {
                   value={index === 2 ? null : item.value}
                   title={item.title}
                   icon={item.icon}
+                  rating={ratingg[7] ? ratingg[7] : 0}
                   div={services.length - 1 !== index}
                 />
               ))}
@@ -548,21 +574,23 @@ const BusinessProfile = ({route}, props) => {
                 <ShimmerPlaceholder
                   style={{
                     marginRight: mvs(10),
-                    height: mvs(158),
-                    width: mvs(236),
+                    height: mvs(200),
+                    width: mvs(345),
                   }}
                   visible={loading}>
                   <View
                     key={index}
                     style={{
                       marginRight: mvs(10),
-                      height: mvs(158),
-                      width: mvs(236),
+                      height: mvs(200),
+                      width: mvs(345),
+                      // borderWidth: 1,
                     }}>
                     <ImagePlaceholder
                       containerStyle={{
                         height: '100%',
                         width: '100%',
+
                         borderRadius: mvs(16),
                       }}
                       uri={{uri: ele}}
@@ -582,11 +610,14 @@ const BusinessProfile = ({route}, props) => {
                 value={businessProfile?.view?.contact?.Address}
               />
             </ShimmerPlaceholder>
-            {/* <ShimmerPlaceholder
+            <ShimmerPlaceholder
               style={styles.contactInformation}
               visible={loading}>
-              <LabelValue label={'Website'} value={contact?.web} />
-            </ShimmerPlaceholder> */}
+              <LabelValue
+                label={'Website'}
+                value={businessProfile?.contact?.webiste}
+              />
+            </ShimmerPlaceholder>
             <ShimmerPlaceholder
               style={styles.contactInformation}
               visible={loading}>
@@ -602,175 +633,38 @@ const BusinessProfile = ({route}, props) => {
               />
             </ShimmerPlaceholder>
           </View>
-          {businessHourse && (
+          {updatedBusiness && (
             <>
               <HeadingTitle title="Business Hours" />
-              {/* {Object.keys(businessHourse).forEach(function (key, index) {
-               
-              })} */}
-              {Object.keys(businessHourse).map(objectKey => (
+
+              {updatedBusiness?.map(item => (
                 <ShimmerPlaceholder
                   style={styles.contactInformationtime}
                   visible={loading}>
-                  <LabelValue
-                    label={objectKey}
-                    value={
-                      businessHourse[objectKey][0]
-                        ? businessHourse[objectKey][0]
-                        : ''
-                    }
-                  />
-                  <LabelValue
-                    label={''}
-                    value={
-                      businessHourse[objectKey][1]
-                        ? businessHourse[objectKey][1]
-                        : ''
-                    }></LabelValue>
+                  {item?.workingTime != 'Closed' ? (
+                    <>
+                      <LabelValue
+                        businessHoursCard={true}
+                        label={item?.day}
+                        value={
+                          item?.workingTime
+                          // ? businessHourse[objectKey][0]
+                          // : 'Closed'
+                        }
+                      />
+                    </>
+                  ) : (
+                    <LabelValue
+                      label={item?.day}
+                      vColor={colors.red}
+                      value={'Closed'}
+                    />
+                  )}
                 </ShimmerPlaceholder>
               ))}
             </>
           )}
 
-          <HeadingTitle title="Rating & Reviews" />
-          <View style={{paddingHorizontal: mvs(18)}}>
-            <Row justifyContent={'space-between'}>
-              <ShimmerPlaceholder
-                style={{
-                  width: mvs(180),
-                  //  / height: mvs(70),
-                }}
-                visible={loading}>
-                <Bold
-                  color={colors.black}
-                  style={{transform: [{translateY: -mvs(10)}]}}
-                  size={mvs(42)}
-                  label={ratingg.length > 0 ? ratingg[7] : 0}
-                />
-              </ShimmerPlaceholder>
-              <ShimmerPlaceholder
-                style={{width: '50%', height: mvs(50)}}
-                visible={loading}>
-                <Row style={{marginLeft: 0}}>
-                  <View style={{}}>
-                    <RatingStar
-                      rate={5}
-                      size={mvs(10)}
-                      list={[1, 2, 3, 4, 5]}
-                      width={mvs(40)}
-                      style={{alignSelf: 'flex-end'}}
-                    />
-                    <RatingStar
-                      rate={5}
-                      size={mvs(10)}
-                      list={[1, 2, 3, 4]}
-                      width={mvs(32)}
-                      style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
-                    />
-                    <RatingStar
-                      rate={5}
-                      size={mvs(10)}
-                      list={[1, 2, 3]}
-                      width={mvs(24)}
-                      style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
-                    />
-                    <RatingStar
-                      rate={5}
-                      size={mvs(10)}
-                      list={[1, 2]}
-                      width={mvs(16)}
-                      style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
-                    />
-                    <RatingStar
-                      rate={5}
-                      size={mvs(10)}
-                      list={[1]}
-                      width={mvs(8)}
-                      style={{
-                        alignSelf: 'flex-end',
-                        justifyContent: 'flex-end',
-                        marginTop: mvs(2.4),
-                      }}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      paddingLeft: mvs(12),
-                      // borderWidth: 1,
-                      marginRight: 90,
-                    }}>
-                    <View
-                      style={{
-                        height: mvs(6),
-                        borderRadius: mvs(5),
-                        backgroundColor: colors.primary,
-                        width: mvs(ratingg[0] ? (ratingg[0] / 5) * 100 : 0),
-                      }}
-                    />
-                    <View
-                      style={{
-                        height: mvs(6),
-                        borderRadius: mvs(5),
-                        marginTop: mvs(5),
-                        backgroundColor: colors.primary,
-                        width: mvs(ratingg[1] ? (ratingg[1] / 5) * 100 : 0),
-                        // width: mvs(45.3),
-                      }}
-                    />
-                    <View
-                      style={{
-                        height: mvs(6),
-                        borderRadius: mvs(5),
-                        marginTop: mvs(5),
-                        backgroundColor: colors.primary,
-                        width: mvs(ratingg[2] ? (ratingg[2] / 5) * 100 : 0),
-                      }}
-                    />
-                    <View
-                      style={{
-                        height: mvs(6),
-                        borderRadius: mvs(5),
-                        marginTop: mvs(5),
-                        backgroundColor: colors.primary,
-                        width: mvs(ratingg[3] ? (ratingg[3] / 5) * 100 : 0),
-                      }}
-                    />
-                    <View
-                      style={{
-                        height: mvs(6),
-                        borderRadius: mvs(5),
-                        marginTop: mvs(5),
-                        backgroundColor: colors.primary,
-                        width: mvs(ratingg[4] ? (ratingg[4] / 5) * 100 : 0),
-                      }}
-                    />
-                  </View>
-                </Row>
-              </ShimmerPlaceholder>
-            </Row>
-            <Row>
-              <Bold color={colors.black} size={mvs(12)} label={'out of 5'} />
-              <Bold
-                color={colors.black}
-                size={mvs(12)}
-                label={ratingg[5] ? ratingg[5] + '  ratings' : 0 + ' ratings'}
-              />
-            </Row>
-          </View>
-          <ReviewsRaing
-            picsArray={payload?.picsArrayReviews}
-            data={businessReviews?.map(item => item)}
-            loading={loading}
-          />
-          {/* <HeadingTitle title='Services' />
-          <View style={{ paddingHorizontal: mvs(18) }}>
-            <ServiceButton icon='CarWash' title='Car Wash' />
-            <ServiceButton icon='Maintenance' title='Maintenance Schedule' />
-            <ServiceButton icon='Oil' title='Oil and Filter service' />
-            <ServiceButton icon='Brake' title='Brake Service' />
-            <ServiceButton icon='Brake' title='Brake Service' />
-            <ServiceButton icon='Engine' title='Engine' />
-          </View> */}
           <View
             style={{
               backgroundColor: colors.FBF8F8,
@@ -779,41 +673,8 @@ const BusinessProfile = ({route}, props) => {
               paddingBottom: mvs(30),
               marginTop: mvs(20),
             }}>
-            {/* <SelectDropdown
-              buttonStyle={{
-                //borderWidth: 1,
-                borderRadius: 5,
-                //position: 'absolute',
-                width: '30%',
-                height: '20%',
-                left: 250,
-                top: 20,
-                // width: '40%',
-                // height: '110%',
-                backgroundColor: '#fff',
-              }}
-              defaultButtonText="Services"
-              buttonTextStyle={{fontSize: 16}}
-              renderDropdownIcon={() => (
-                <Image style={styles.downimg} source={Dropdown} />
-              )}
-              data={Months?.name}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index);
-              }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                // text represented after item is selected
-                // if data array is an array of objects then return selectedItem.property to render after item is selected
-                return selectedItem;
-              }}
-              rowTextForSelection={(item, index) => {
-                // text represented for each item in dropdown
-                // if data array is an array of objects then return item.property to represent item in dropdown
-                return item;
-              }}
-            /> */}
             <>
-              <Row>
+              {/* <Row>
                 <ScrollView
                   horizontal
                   showsHorizontalScrollIndicator={false}
@@ -837,78 +698,145 @@ const BusinessProfile = ({route}, props) => {
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
-              </Row>
+              </Row> */}
             </>
             <HeadingTitle title="Service offering" />
-            {/* <HeadingTitle title="Services" />
-            <MultiSelect
-              items={servicesdata}
-              uniqueKey="id"
-              onSelectedItemsChange={itemValue => {
-                console.log(
-                  'select Servicves=============',
-                  itemValue.toString(),
-                );
-                getBusinessProfile(itemValue);
-                addForm.id = itemValue;
-                setaddForm({
-                  ...addForm,
-                });
-              }}
-              single={true}
-              selectedItems={addForm.id}
-              selectText="Select Customer"
-              searchInputPlaceholderText="Search Customer..."
-              onChangeInput={text => console.log(text)}
-              tagRemoveIconColor="#CCC"
-              tagBorderColor="#CCC"
-              tagTextColor="#CCC"
-              selectedItemTextColor="#CCC"
-              selectedItemIconColor="#CCC"
-              itemTextColor="#000"
-              displayKey="name"
-              fontSize={15}
-              itemFontSize={18}
-              styleListContainer={{
-                borderWidth: 1,
-                backgroundColor: '#FFF',
-              }}
-              hideDropdown={true}
-              styleInputGroup={{
-                borderWidth: 1,
-              }}
-              styleSelectorContainer={{
-                borderWidth: 1,
-              }}
-              styleDropdownMenu={{
-                borderWidth: 1,
-                height: 60,
-                borderColor: '#fff',
-                paddingLeft: 10,
-              }}
-              styleMainWrapper={{
-                width: '100%',
-                marginTop: 10,
-                borderColor: '#fff',
-              }}
-              styleTextDropdownSelected={{
-                color: '#000',
-              }}
-              searchInputStyle={{
-                color: '#000',
-                fontSize: 18,
-                height: 50,
-              }}
-            /> */}
             <ServiceOffering
               data={businessServices}
               loading={loading}
               moveTo="ServiceOfferingDetails"
             />
-            {/* <CouponPromo /> */}
+            {bussinessCoupons?.length > 0 && (
+              <CouponPromo
+                coupons={bussinessCoupons}
+                loading={loading}
+                business={businessProfile}
+              />
+            )}
           </View>
+          <HeadingTitle title="Rating & Reviews" />
+          <View style={{paddingHorizontal: mvs(18)}}>
+            <Row justifyContent={'space-between'}>
+              <ShimmerPlaceholder style={{width: mvs(110)}} visible={loading}>
+                <Bold
+                  color={colors.black}
+                  style={{transform: [{translateY: -mvs(10)}]}}
+                  size={mvs(42)}
+                  label={ratingg.length > 0 ? ratingg[7] : 0}
+                />
+              </ShimmerPlaceholder>
+              <ShimmerPlaceholder
+                style={{flex: 1, height: mvs(60)}}
+                visible={loading}>
+                <Row justifyContent="flex-start" alignItems="center">
+                  <View style={{justifyContent: 'space-between'}}>
+                    <RatingStar
+                      rate={5}
+                      size={mvs(10)}
+                      list={[1, 2, 3, 4, 5]}
+                      width={mvs(40)}
+                      style={{alignSelf: 'flex-end'}}
+                    />
+                    <RatingStar
+                      rate={5}
+                      size={mvs(10)}
+                      ratingCount={4}
+                      list={[1, 2, 3, 4]}
+                      width={mvs(32)}
+                      style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
+                    />
+                    <RatingStar
+                      rate={5}
+                      size={mvs(10)}
+                      list={[1, 2, 3]}
+                      width={mvs(24)}
+                      ratingCount={3}
+                      style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
+                    />
+                    <RatingStar
+                      rate={5}
+                      ratingCount={2}
+                      size={mvs(10)}
+                      list={[1, 2]}
+                      width={mvs(16)}
+                      style={{alignSelf: 'flex-end', marginTop: mvs(2.4)}}
+                    />
+                    <RatingStar
+                      rate={5}
+                      ratingCount={1}
+                      size={mvs(10)}
+                      list={[1]}
+                      width={mvs(16)}
+                      style={{alignSelf: 'flex-end'}}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      marginLeft: mvs(5),
+                      flex: 1,
+                      justifyContent: 'space-between',
+                    }}>
+                    <View style={{...styles.ratingBar, marginTop: mvs(0)}}>
+                      <View
+                        style={{
+                          ...styles.ratingPercentage,
+                          width: mvs(ratingg[0] ? (ratingg[0] / 5) * 100 : 0),
+                        }}
+                      />
+                    </View>
+                    <View style={styles.ratingBar}>
+                      <View
+                        style={{
+                          ...styles.ratingPercentage,
+                          width: mvs(ratingg[1] ? (ratingg[1] / 5) * 100 : 0),
+                        }}
+                      />
+                    </View>
+                    <View style={styles.ratingBar}>
+                      <View
+                        style={{
+                          ...styles.ratingPercentage,
+                          width: mvs(ratingg[2] ? (ratingg[2] / 5) * 100 : 0),
+                        }}
+                      />
+                    </View>
+                    <View style={styles.ratingBar}>
+                      <View
+                        style={{
+                          ...styles.ratingPercentage,
+                          width: mvs(ratingg[3] ? (ratingg[3] / 5) * 100 : 0),
+                        }}
+                      />
+                    </View>
+                    <View style={styles.ratingBar}>
+                      <View
+                        style={{
+                          ...styles.ratingPercentage,
+                          width: mvs(ratingg[4] ? (ratingg[4] / 5) * 100 : 0),
+                        }}
+                      />
+                    </View>
+                  </View>
+                </Row>
+              </ShimmerPlaceholder>
+            </Row>
+            <Row>
+              <Bold color={colors.black} size={mvs(12)} label={'out of 5'} />
+              <Bold
+                color={colors.black}
+                size={mvs(12)}
+                label={ratingg[5] ? ratingg[5] + '  ratings' : 0 + ' ratings'}
+              />
+            </Row>
+          </View>
+          <ReviewsRaing
+            picsArray={payload?.picsArrayReviews}
+            data={businessReviews?.map(item => item)}
+            loading={loading}
+          />
         </ScrollView>
       </View>
+
       <ReviewModal
         setVisible={() => setVisible(false)}
         items={images}
@@ -918,5 +846,10 @@ const BusinessProfile = ({route}, props) => {
     </View>
   );
 };
-
-export default BusinessProfile;
+const mapStateToProps = store => ({
+  // user_info: store.state.user_info,
+});
+const mapDispatchToProps = {
+  get_bussiness_coupons: id => DIVIY_API.get_bussiness_coupons(id),
+};
+export default connect(mapStateToProps, mapDispatchToProps)(BusinessProfile);

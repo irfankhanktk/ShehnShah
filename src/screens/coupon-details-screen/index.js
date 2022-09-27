@@ -12,41 +12,43 @@ import CouponCard from './../../components/molecules/coupon-card/index';
 import {Styles as styles} from './styles';
 import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
-
+import ServiceOffering from './../../components/service-offering/index';
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 import {getData} from '../../localStorage';
 import DIVIY_API from '../../store/api-calls';
 import Buttons from '../../components/atoms/Button';
+import SemiBold from '../../presentation/typography/semibold-text';
 
 const CouponDetails = props => {
-  const {route, navigation,get_details,avail_coupon,update_coupon_payment,complete_coupon_purchase} = props;
+  const {route, navigation,get_details,avail_coupon} = props;
   const [isMoreBtn, setIsMoreBtn] = React.useState(true);
   const [loading, setLoading] = React.useState(true);
   const [coupon,setCoupon]=useState({})
+  const[refresh,setRefresh]=useState(false);
   useEffect(()=>{
      getCouponDetails();
-  },[])
+  },[refresh])
   const getCouponDetails=async()=>{
-    const response=await get_details(route.params?.id,route.params.bId);
+    var id=await getData("customer_id");
+    id=1
+    const response=await get_details(route.params?.id,route.params.bId,id);
     console.log("Coupon Data ")
     if(response?.data){
       console.log(response?.data)
       setCoupon(response?.data)
     }
-}
+  }
   function getString(list){
     console.log(list.tos)
   }
   const availCoupon=async()=>{
-    const id=await getData("customer_id");
+    var id=await getData("customer_id");
+    id=1;
     console.log("Customer id is ",id)
     console.log("Coupon id is ",coupon?.id)
     const availResponse=await avail_coupon(id,coupon?.id)
     console.log("Avail Response",availResponse?.data)
-    const paymentResponse=await update_coupon_payment(id,coupon?.id)
-    console.log("payment Response",paymentResponse?.data)
-    const completeResponse=await complete_coupon_purchase(id,coupon?.id)
-    console.log("payment Response",completeResponse?.data)
+    setRefresh(!refresh)
   }
   return (
     <View style={styles.conntainer}>
@@ -57,7 +59,7 @@ const CouponDetails = props => {
           <View style={{paddingHorizontal: mvs(18)}}>
             <CouponCard loading={loading} coupon={coupon}/>
           </View>
-          <TotalRateMap loading={loading} />
+          <TotalRateMap loading={loading} data={{businessReviews:coupon?.business}} address={coupon?.business?.view?.address}/>
           <HeadingTitle title="About Coupon" />
           <View style={{paddingHorizontal: mvs(18)}}>
             <ShimmerPlaceholder visible={loading}>
@@ -97,88 +99,53 @@ const CouponDetails = props => {
             </ShimmerPlaceholder>
           </View>
           <HeadingTitle title={'Coupon Terms & Conditions'} />
+          { coupon?.view?.tncs &&
+              Object.entries(coupon?.view?.tncs).map(([key, value])=>
+              {
+                return <LabelValue label={''+key} value={coupon?.view?.tncs[key]?.value} />
+              })
+            }
+         
           <ShimmerPlaceholder
             style={{width: '95%', alignSelf: 'center'}}
             visible={loading}>
-            <LabelValue value={coupon?.saleConditions?.from} label={'Valid From'} />
+           <View>
+           
+          {coupon?.otherConditions?.length>0 && (  <HeadingTitle title="Other Conditions" />)}
+            {
+             coupon?.otherConditions?.map((item, index)=>
+              {
+                return <LabelValue key={index} label={''+item} value={''} />
+              })
+            }
+          </View>
           </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            style={{width: '95%', alignSelf: 'center'}}
-            visible={loading}>
-            <LabelValue value={coupon?.saleConditions?.to} label={'Expires On'} />
-          </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            style={{width: '95%', alignSelf: 'center'}}
-            visible={loading}>
-            <LabelValue
-              label={'Valid For Up To Total Purchase Value Of'}
-              value={'AED 1,000'}
+          <ServiceOffering
+              data={coupon?.offerings}
+              loading={loading}
+              isCouponOffering={true}
+              moveTo="ServiceOfferingDetails"
             />
-          </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            style={{width: '95%', alignSelf: 'center'}}
-            visible={loading}>
-            <LabelValue
-              label={'Valid For Up To Total Discount Value Of'}
-              value={'AED 1,000'}
-            />
-          </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            style={{width: '95%', alignSelf: 'center'}}
-            visible={loading}>
-            <LabelValue label={'Maximum Services Limit'} value={coupon?.saleConditions?.totalLimit} />
-          </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            style={{width: '95%', alignSelf: 'center'}}
-            visible={loading}>
-            <LabelValue label={'Daily Services Limit'} value={coupon?.saleConditions?.dailyLimit} />
-          </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            style={{width: '95%', alignSelf: 'center'}}
-            visible={loading}>
-            <LabelValue label={'Weekly Services Limit '} value={coupon?.saleConditions?.weeklyLimit} />
-          </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            style={{width: '95%', alignSelf: 'center'}}
-            visible={loading}>
-            <LabelValue label={'Monthly Services Limit '} value={coupon?.saleConditions?.monthlyLimit} />
-          </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            style={{width: '95%', alignSelf: 'center'}}
-            visible={loading}>
-            <LabelValue
-              label={'Validity Days'}
-              value={coupon?.useConditions?.days?.toString()}
-            />
-          </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            style={{width: '95%', alignSelf: 'center'}}
-            visible={loading}>
-            <LabelValue
-              label={'Validity Time'}
-              value={coupon?.useConditions?.shifts?.toString()}
-            />
-          </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            style={{width: '95%', alignSelf: 'center'}}
-            visible={loading}>
-            <LabelValue
-              label={'Booking Is Required '}
-              value={'24 hours Prior'}
-            />
-          </ShimmerPlaceholder>
-          <ShimmerPlaceholder
-            style={{width: '95%', alignSelf: 'center'}}
-            visible={loading}>
-
-                 <LabelValue
-                  label={coupon?.otherConditions}
-                  value={''}
-                  lines={5}
+            {coupon?.view?.resume && (
+              <View style={{marginTop: mvs(10), alignItems: 'center'}}>
+                <SemiBold
+                  label={coupon?.view?.resumeMessage}
+                  size={14}
+                  numberOfLines={3}
+                  color={colors.green}
                 />
-          </ShimmerPlaceholder>
-          <Buttons.ButtonPrimary title='Avail Coupon' style={{marginHorizontal:mvs(22),width:'90%'}} onClick={()=>availCoupon()}/>
-        </ScrollView>
+              </View>
+            )}
+          {coupon?.view?.sellable &&( 
+           <Buttons.ButtonPrimary 
+            title={coupon?.view?.buttonTitle} 
+            style={{marginHorizontal:mvs(22),width:'90%',marginTop:mvs(15)}}
+             onClick={()=>{
+                 coupon?.saleId==null?
+                  availCoupon()
+                 :navigation.navigate("SaleCoupon",{saleId:coupon?.saleId})
+              }}/>)}
+         </ScrollView>
       </View>
     </View>
   );
@@ -187,9 +154,7 @@ const mapStateToProps = store => ({
   // user_info: store.state.user_info,
  });
  const mapDispatchToProps = {
-   get_details:(id,bid)=>DIVIY_API.get_coupons_details(id,bid),
+   get_details:(id,bid,cid)=>DIVIY_API.get_coupons_details(id,bid,cid),
    avail_coupon:(id,cid)=>DIVIY_API.avail_coupon(id,cid),
-   update_coupon_payment:(id,cid)=>DIVIY_API.update_coupon_payment(id,cid),
-   complete_coupon_purchase:(id,cid)=>DIVIY_API.complete_coupon_purchase(id,cid)
  };
  export default connect(mapStateToProps, mapDispatchToProps)(CouponDetails);

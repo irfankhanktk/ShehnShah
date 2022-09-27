@@ -11,8 +11,10 @@ import ImagePlaceholder from '../atoms/Placeholder';
 import HeadingTitle from '../molecules/heading-title';
 import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
+import {useNavigation} from '@react-navigation/native';
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 const CouponPromo = ({coupons=[],business={},...props}) => {
+  const navigation=useNavigation();
   return (
     <View>
       <HeadingTitle title="Coupons & Promos" />
@@ -23,7 +25,7 @@ const CouponPromo = ({coupons=[],business={},...props}) => {
           contentContainerStyle={{paddingHorizontal: mvs(18)}}>
           {coupons.map((ele, index) => (
             <TouchableOpacity
-              onPress={() => props?.navigation?.navigate('CouponDetails',{id:ele?.id,bId:business?.id})}
+              onPress={() =>{navigation.navigate('CouponDetails',{id:ele?.id,bId:business?.id})}}
               style={{
                 width: mvs(174),
                 marginRight: mvs(7),
@@ -94,7 +96,7 @@ const CouponPromo = ({coupons=[],business={},...props}) => {
                   />
                   {ele?.view?.statusLine?.shortLine && (
                         <Regular label={ele?.view?.statusLine?.shortLine}
-                         color={colors.black} numberOfLines={2}
+                         color={ele?.view?.statusLine?.color} numberOfLines={2}
                          size={12}
                          style={{marginTop:mvs(5),zIndex:1,textAlign:'center'}}/>
                   )}

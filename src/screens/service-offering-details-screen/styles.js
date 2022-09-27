@@ -21,5 +21,17 @@ export const Styles = StyleSheet.create({
     height:mvs(200),
     width:'100%',
 
+  },
+  ratingBar:{
+    height: mvs(6),
+    borderRadius: mvs(5),
+    backgroundColor: colors.lightgrey2,
+    width: '100%',
+    marginTop: mvs(5.5),
+  },
+  ratingPercentage:{
+    height: mvs(6),
+    borderRadius: mvs(5),
+    backgroundColor: colors.primary,
   }
 });

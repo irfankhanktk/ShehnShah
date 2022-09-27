@@ -53,14 +53,30 @@ export const STYLES = StyleSheet.create({
   contactInformationtime: {
     width: '95%',
     alignSelf: 'center',
-    height: mvs(90),
+    justifyContent: 'center',
+    borderColor: colors.GE1E1E1,
+    height: mvs(50),
+
+    // backgroundColor: 'red',
     marginBottom: 10,
-    borderBottomWidth: 0,
+    borderBottomWidth: 0.5,
   },
   downimg: {
     width: 18,
     height: 18,
     resizeMode: 'cover',
     //position: 'absolute',
+  },
+  ratingBar: {
+    height: mvs(6),
+    borderRadius: mvs(5),
+    backgroundColor: colors.lightgrey2,
+    width: '100%',
+    marginTop: mvs(5.5),
+  },
+  ratingPercentage: {
+    height: mvs(6),
+    borderRadius: mvs(5),
+    backgroundColor: colors.primary,
   },
 });

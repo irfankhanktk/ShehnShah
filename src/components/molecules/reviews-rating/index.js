@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, FlatList} from 'react-native';
 import {mvs, width} from '../../../services/metrices';
 import Row from './../../atoms/row';
 import colors from './../../../services/colors';
@@ -11,9 +11,12 @@ import {Bg} from '../../../assets/images';
 import {createShimmerPlaceholder} from 'react-native-shimmer-placeholder';
 import LinearGradient from 'react-native-linear-gradient';
 import HumanizeDuration from 'humanize-duration';
+import moment from 'moment';
 const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
 
 const ReviewsRaing = ({bg = '#ffedce', picsArray, data, loading}) => {
+  console.log("Reviews are ")
+  console.log(data)
   return (
     <View style={{marginTop: mvs(30)}}>
       <ScrollView
@@ -32,7 +35,7 @@ const ReviewsRaing = ({bg = '#ffedce', picsArray, data, loading}) => {
                 backgroundColor: bg,
                 borderRadius: mvs(5),
               }}>
-              <Row justifyContent="flex-start">
+              <Row justifyContent="flex-start" alignItems='center'>
                 <ShimmerPlaceholder
                   style={{
                     height: mvs(50),
@@ -46,10 +49,10 @@ const ReviewsRaing = ({bg = '#ffedce', picsArray, data, loading}) => {
                       width: mvs(33),
                       borderRadius: mvs(17),
                     }}
-                    uri={Bg}
+                    uri={{uri:ele?.customer?.image}}
                   />
                 </ShimmerPlaceholder>
-                <View style={{marginLeft: mvs(10)}}>
+                <View style={{marginLeft: mvs(10),flex:1,}}>
                   <ShimmerPlaceholder
                     style={{
                       height: mvs(50),
@@ -59,20 +62,17 @@ const ReviewsRaing = ({bg = '#ffedce', picsArray, data, loading}) => {
                     <SemiBold
                       size={mvs(14)}
                       color={colors.B1B1B1B}
-                      label={'Garnet Bins '}
+                      label={ele?.customer?.name}
                     />
                     <RatingStar
                       fill={colors.B323232}
-                      rate={ele[index]?.rate}
+                      rate={ele?.rate}
                       width={mvs(90)}
+                      tintColor={'#ffedce'}
                     />
                   </ShimmerPlaceholder>
                 </View>
                 <ShimmerPlaceholder
-                  style={{
-                    alignSelf: 'center',
-                    marginLeft: mvs(90),
-                  }}
                   visible={loading}>
                   <View style={{flex: 1,marginRight:mvs(10)}}>
                     <Regular
@@ -81,12 +81,7 @@ const ReviewsRaing = ({bg = '#ffedce', picsArray, data, loading}) => {
                         color: colors.black,
                         fontSize: mvs(12),
                       }}
-                      label={HumanizeDuration(
-                        Date.parse(ele[index]?.date.getTime()),
-                        {
-                          language: 'en',
-                        },
-                      )}
+                      label={moment(ele?.date).fromNow()}
                     />
                   </View>
                 </ShimmerPlaceholder>
@@ -108,29 +103,37 @@ const ReviewsRaing = ({bg = '#ffedce', picsArray, data, loading}) => {
                   label={ele[index]?.remark}
                 />
               </ShimmerPlaceholder>
-              <Row justifyContent={'space-between'}>
-                {picsArray?.length > 0 &&
-                  picsArray.map((ele, index) => (
-                    <View key={index} style={{height: mvs(52), width: mvs(52)}}>
-                      <ShimmerPlaceholder
-                        style={{
-                          height: '100%',
-                          width: '100%',
-                          borderRadius: mvs(16),
-                        }}
-                        visible={loading}>
-                        <ImagePlaceholder
-                          containerStyle={{
-                            height: '100%',
-                            width: '100%',
-                            borderRadius: mvs(16),
-                          }}
-                          uri={Bg}
-                        />
-                      </ShimmerPlaceholder>
-                    </View>
-                  ))}
-              </Row>
+              
+                {ele?.pics?.length > 0 &&(
+                <FlatList
+                  contentContainerStyle={{}}
+                   horizontal
+                   data={ele?.pics}
+                   renderItem={
+                  ({item, index, }) =>
+                   <View key={index} style={{height: mvs(52), width: mvs(52),marginHorizontal:mvs(10)}}>
+                  <ShimmerPlaceholder
+                    style={{
+                      height: '100%',
+                      width: '100%',
+                      borderRadius: mvs(16),
+                    }}
+                    visible={loading}>
+                    <ImagePlaceholder
+                      containerStyle={{
+                        height: '100%',
+                        width: '100%',
+                        borderRadius: mvs(16),
+                      }}
+                      uri={{uri:item}}
+                    />
+                  </ShimmerPlaceholder>
+                </View>
+                }
+                   keyExtractor={item => item.id}
+                 />
+                )}
+             
             </View>
           ))}
       </ScrollView>

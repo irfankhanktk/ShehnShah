@@ -12,7 +12,6 @@ client = axios.create({
 client.interceptors.request.use(
   async config => {
     const token = await AsyncStorage.getItem('token');
-    console.log("Token is ",token)
     config.headers = {
       Accept: 'application/json',
       'Cache-Control': 'no-cache',

@@ -19,6 +19,7 @@ import PersonalDetails from '../../screens/personal-details/personal-details';
 import Profile from '../../screens/profile/profile';
 import TabNavigator from '../tab-navigator/tab-navigator';
 import WalkIn from '../../screens/walk-in/walk-in';
+import SaleCoupon from '../../screens/sale-coupon/sale-coupon';
 const Stack = createStackNavigator();
 const horizontalAnimation = {
   headerShown: false,
@@ -58,6 +59,7 @@ export const MainNavigator = () => {
         <Stack.Screen name="PersonalDetails" component={PersonalDetails} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="WalkIn" component={WalkIn} />
+        <Stack.Screen name="SaleCoupon" component={SaleCoupon} />
       </Stack.Navigator>
     </SafeAreaView>
   );

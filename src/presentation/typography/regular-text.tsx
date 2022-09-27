@@ -10,6 +10,7 @@ type FcProps = {
   color?: string;
   lineHeight?:number
   size?: number ;
+  textDecoration:string,
   onPress?: () => void;
   style?: object;
   children?: any;
@@ -20,6 +21,7 @@ const Regular: React.FC<FcProps> = ({
   size=mvs(15),
   color=colors.B1E1F20,
   style,
+  textDecoration,
   children,
   lineHeight,
   ...props
@@ -28,7 +30,7 @@ const Regular: React.FC<FcProps> = ({
     <Text
       numberOfLines={numberOfLines}
       {...props}
-      style={{...styles.label,lineHeight:lineHeight, color: color, fontSize: size, ...style}}>
+      style={{...styles.label,lineHeight:lineHeight,textDecorationLine:textDecoration, color: color, fontSize: size, ...style}}>
       {label}
       {children}
     </Text>

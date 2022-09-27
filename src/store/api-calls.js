@@ -82,11 +82,39 @@ const get_customer_coupons_history = (id) => {
     }
   };
 };
-const get_coupons_details = (id,bussinessId) => {
+const get_coupons_details = (id,bussinessId,cid) => {
+  //bussinessId=3334;
+  return async (dispatch, getState) => {
+    try {
+      console.log(URLS.coupon.get_coupon_details+bussinessId+"/coupons/"+id+"?customerId="+cid)
+      const response = await API_REQUESTS.getData(
+        URLS.coupon.get_coupon_details+bussinessId+"/coupons/"+id+"?customerId="+cid,
+      );
+     return response;
+    } catch (error) {
+      throw new Error(SERVICES._returnError(error));
+    }
+  };
+};
+const get_bussiness_coupons = (bussinessId) => {
+  //bussinessId=3334
+  return async (dispatch, getState) => {
+    try {
+      console.log(URLS.coupon.get_coupon_details+bussinessId+"/coupons")
+      const response = await API_REQUESTS.getData(
+        URLS.coupon.get_coupon_details+bussinessId+"/services/1/coupons"
+      );
+     return response;
+    } catch (error) {
+      throw new Error(SERVICES._returnError(error));
+    }
+  };
+};
+const get_coupon_sale_details = (customerId,saleId) => {
   return async (dispatch, getState) => {
     try {
       const response = await API_REQUESTS.getData(
-        URLS.coupon.get_coupon_details+bussinessId+"/coupons/"+id,
+        URLS.coupon.get_available_coupons+customerId+"/sales/"+saleId
       );
      return response;
     } catch (error) {
@@ -218,7 +246,9 @@ const DIVIY_API = {
   upload_review_picture,
   remove_review_picture,
   complete_booking,
-  get_available_booking_coupons
+  get_available_booking_coupons,
+  get_bussiness_coupons,
+  get_coupon_sale_details
 };
 
 export default DIVIY_API;

@@ -7,6 +7,7 @@ type FcProps={
   numberOfLines?: number;
   color?: string;
   size?: number ;
+  textDecoration?:string;
   onPress?: () => void;
   style?: object;
   children?: any;
@@ -16,6 +17,7 @@ const Bold : React.FC<FcProps> = ({
   numberOfLines = 1,
   size,
   color=colors.B1E1F20,
+  textDecoration,
   style,
   children=<></>,
   ...props
@@ -24,7 +26,7 @@ const Bold : React.FC<FcProps> = ({
     <Text
       numberOfLines={numberOfLines}
       {...props}
-      style={{...styles.label, color: color, fontSize: size, ...style}}>
+      style={{...styles.label, color: color,textDecorationLine:textDecoration, fontSize: size, ...style}}>
       {label}
       {children}
     </Text>
