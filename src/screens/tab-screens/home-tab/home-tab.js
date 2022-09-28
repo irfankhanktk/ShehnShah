@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, ScrollView, StatusBar, View} from 'react-native';
+import {FlatList, ScrollView, View} from 'react-native';
 import {connect} from 'react-redux';
 import {BaseURL} from '../../../ApiServices';
 import Buttons from '../../../components/atoms/Button';
 import {CustomHeader} from '../../../components/molecules/header/header-1x';
-// import HomeCard from './../../../components/molecules/home-card/home-card';
 import {mvs} from '../../../services/metrices';
 import DIVIY_API from '../../../store/api-calls';
 import {Home_Styles as styles} from './home-styles';
@@ -44,7 +43,7 @@ const Home = props => {
         {payLoad?.data &&
           payLoad?.data?.map((item, index) => (
             <View style={{marginVertical: mvs(10)}} key={index}>
-              <Buttons.ButtonPrimary    
+              <Buttons.ButtonPrimary
                 onClick={() =>
                   props?.navigation?.navigate('BusinessProfile', {id: item.id})
                 }

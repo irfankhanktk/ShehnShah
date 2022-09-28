@@ -2,7 +2,6 @@ import {useTheme} from '@react-navigation/native';
 import moment from 'moment';
 import React from 'react';
 import {ScrollView, View} from 'react-native';
-import {connect} from 'react-redux';
 import Buttons from '../../components/atoms/Button';
 import {INPUT_FIELD} from '../../components/atoms/Input';
 import {CustomHeader} from '../../components/molecules/header/header-1x';
